@@ -85,10 +85,9 @@ import { getPhotoByName as p } from "../lib/photoHelper";
     </span>
     <script>
         function initHomeSlides() {
-            const swapChildren = document
-                .querySelectorAll("[data-swap-child]")
-                .values()
-                .toArray();
+            const swapChildren = Array.from(
+                document.querySelectorAll("[data-swap-child]")
+            );
 
             const captionContainer = document.querySelector(
                 "[data-caption-container]"
