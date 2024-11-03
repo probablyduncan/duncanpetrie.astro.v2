@@ -4,6 +4,7 @@ import { getPhotosByNamesAndTags } from "../lib/photoHelper";
 import Layout from "../components/layout_components/layout.astro";
 import AnnotatedLink from "../components/prose_components/annotatedLink.astro";
 import TextContainer from "../components/prose_components/textContainer.astro";
+import { LINKS } from "../lib/linkHelper";
 
 export async function getStaticPaths() {
     const photoProjects = await getCollection("photo");
@@ -56,7 +57,7 @@ const firstPhoto = photos.shift();
     </main>
     <footer class="mb-[50svh] mt-[20vh]">
         <span>More</span>
-        <AnnotatedLink type="underline" staticUnderline={false} href="/links" class:list={"hover:mx-1"}>photography</AnnotatedLink>
+        <AnnotatedLink type="underline" staticUnderline={false} href={LINKS.index} class:list={"hover:mx-1"}>photography</AnnotatedLink>
         <span>-&gt;</span>
     </footer>
 </Layout>
