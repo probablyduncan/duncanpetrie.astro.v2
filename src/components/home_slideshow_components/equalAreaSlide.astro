@@ -1,0 +1,64 @@
+---
+import type { PhotoName } from "../../data/photoTypes.generated";
+import { getPhotoByName } from "../../lib/photoHelper";
+import AnnotatedLink from "../prose_components/annotatedLink.astro";
+
+interface Props {
+    photoName?: PhotoName;
+    fromText?: string;
+    fromHref?: string;
+    shadow?: string;
+    border?: string;
+    show?: boolean;
+    baseWidth?: string;
+}
+
+const {
+    photoName,
+    shadow,
+    border,
+    fromText,
+    fromHref,
+    show = false,
+    baseWidth = "600px",
+} = Astro.props;
+const photo = getPhotoByName(photoName);
+
+const style = [];
+const extraWidths = ["0px"];
+
+if (border) {
+    style.push(`border: ${border};`);
+    extraWidths.push(border.split(" ")[0]);
+}
+
+if (shadow) {
+    style.push(`box-shadow: ${shadow};`);
+    style.push(`margin-right: ${shadow.split(" ")[0]};`);
+    style.push(`margin-bottom: ${shadow.split(" ")[1]};`);
+    extraWidths.push(shadow.split(" ")[0]);
+}
+
+style.push(`max-width: min(calc(100% - (${extraWidths.join(" + ")})), calc((100vh - 128px) * ${photo.ratio}));`)
+
+style.push(`width: calc(${baseWidth} * ${Math.sqrt(photo.ratio) / Math.sqrt(3/2)});`);
+---
+
+<figure
+    data-swap-child
+    data-caption={photo.joinedCaption}
+    data-from-text={fromText}
+    data-from-href={fromHref}
+    class:list={{ "sm:flex justify-center items-center my-64 sm:my-0": true, "sm:hidden": !show }}
+>
+    <img
+        data-swap-button
+        src={photo.paths.medium}
+        alt={photo.joinedCaption}
+        class="sm:cursor-crosshair box-border"
+        style={style.join(" ")}
+    />
+    <!-- <figcaption class="font-semibold text-sm sm:hidden m-2">
+        {photo.joinedCaption}
+    </figcaption> -->
+</figure>

@@ -38,7 +38,7 @@ const INDEX_LINKS = {
 ---
 
 <Layout title="Projects - Duncan Petrie" photoName="parchment-paper-window-margate-2023-09-04">
-    <main class="columns-2 pl-16">
+    <main class="sm:columns-2 w-full sm:w-auto pl-16 sm:pl-16 mt-32 mb-[40vh]">
         {
             Object.keys(INDEX_LINKS).map((g) => (
                 <div class="pb-4">
@@ -60,4 +60,6 @@ const INDEX_LINKS = {
             ))
         }
     </main>
+    <span slot="bottomleft"></span>
+    <span slot="bottomright"></span>
 </Layout>

@@ -5,6 +5,7 @@ export const LINKS = {
     home: "/",
     info: "/about/",
     index: "/links/",
+    work: "/links/",
     prints: "/prints/",
     palimpsest: "/palimpsest/",
     horizons: "/horizons/",
