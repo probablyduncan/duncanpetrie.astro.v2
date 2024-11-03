@@ -6,7 +6,8 @@ import mdx from '@astrojs/mdx';
 // https://astro.build/config
 export default defineConfig({
   integrations: [tailwind(), mdx()],
-  site: 'https://duncanpetrie.com',
+  site: 'https://probablyduncan.github.io',
+  base: 'duncanpetrie.astro.v2',
   prefetch: {
     prefetchAll: true
   }
