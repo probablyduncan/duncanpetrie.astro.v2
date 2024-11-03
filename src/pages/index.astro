@@ -1,16 +1,133 @@
 ---
+import Layout from "../components/layout_components/layout.astro";
+import AnnotatedLink from "../components/prose_components/annotatedLink.astro";
+import type { PhotoName } from "../data/photoTypes.generated";
+import { LINKS } from "../lib/linkHelper";
+import { getPhotoByName as p, PhotoData } from "../lib/photoHelper";
+const photoNames: (PhotoName | PhotoName[])[] = [
+    "la-corbiere-st-brelade-jersey-2024-05-25",
+    "north-atlantic-pennance-point-2021-01-14",
+    [
+        "shed-train-window-weymouth-2024-09-03",
+        "bear-witness-belsize-park-2024-05-17",
+    ],
+    "forest-library-isle-of-wight-2024-04-26",
+    "cycling-gudmundsen-drive-door-county-2019-08-31",
+];
 
+const photos: PhotoData[][] = photoNames.map((pArrOrSingle: PhotoName | PhotoName[]) =>
+    Array.isArray(pArrOrSingle) ? pArrOrSingle.map((pSingle) => p(pSingle)) : [p(pArrOrSingle)]
+);
+
+const flexCenter = "flex justify-center items-center h-full w-full p-4";
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout>
+    <div class="swiper w-full h-svh">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide" data-caption={photos[0][0].joinedCaption} data-from-link={LINKS.palimpsest} data-from-text="Palimpsest">
+                <div class={flexCenter}>
+                    <img
+                        src={photos[0][0].paths.large}
+                        alt={photos[0][0].joinedCaption}
+                        draggable="false"
+                        class="max-w-[600px] select-none cursor-crosshair shadow-[4px_4px_0_rgba(10,_114,_123,_0.09)]"
+                    />
+                </div>
+            </div>
+            <div class="swiper-slide" data-caption={photos[1][0].joinedCaption} data-from-link={LINKS.horizons} data-from-text="Horizons">
+                <div class={flexCenter}>
+                    <img
+                        src={photos[1][0].paths.large}
+                        alt={photos[1][0].joinedCaption}
+                        draggable="false"
+                        class="max-w-[600px] select-none cursor-crosshair border-4 border-[#e2e8f0]"
+                    />
+                </div>
+            </div>
+            <div class="swiper-slide" data-caption={photos[2][1].joinedCaption} data-from-link={LINKS.palimpsest} data-from-text="Palimpsest">
+                <div class={flexCenter + " gap-4"}>
+                    <img
+                        src={photos[2][0].paths.medium}
+                        alt={photos[2][0].joinedCaption}
+                        draggable="false"
+                        class="max-w-[280px] select-none cursor-crosshair"
+                    />
+                    <img
+                        src={photos[2][1].paths.medium}
+                        alt={photos[2][1].joinedCaption}
+                        draggable="false"
+                        class="max-w-[282px] select-none cursor-crosshair border-[3px] border-[#0A0907]"
+                    />
+                </div>
+            </div>
+            <div class="swiper-slide" data-caption={photos[3][0].joinedCaption} data-from-link={LINKS.palimpsest} data-from-text="Palimpsest">
+                <div class={flexCenter}>
+                    <img
+                        src={photos[3][0].paths.large}
+                        alt={photos[3][0].joinedCaption}
+                        draggable="false"
+                        class="max-w-[400px] select-none cursor-crosshair border-[3px] border-[#C8CDB9]"
+                    />
+                </div>
+            </div>
+            <div class="swiper-slide" data-caption={photos[4][0].joinedCaption} data-from-link={LINKS.heartland} data-from-text="Heartland">
+                <div class={flexCenter}>
+                    <img
+                        src={photos[4][0].paths.large}
+                        alt={photos[4][0].joinedCaption}
+                        draggable="false"
+                        class="max-w-[600px] select-none cursor-crosshair shadow-[4px_4px_0px_rgba(0,0,0,0.8)]"
+                    />
+                </div>
+            </div>
+        </div>
+    </div>
+    <span slot="bottomleft" data-caption-container>
+        {photos[0][0].joinedCaption}
+    </span>
+    <span slot="bottomright">
+        <span>From:</span>
+        <AnnotatedLink data-from-link-container type="circle" staticUnderline={true}>Horizons</AnnotatedLink>
+    </span>
+    <script>
+        import Swiper from "swiper";
+        import {} from "swiper/modules";
+        import "swiper/css";
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const swiper = new Swiper(".swiper", {
+                on: {
+                    realIndexChange: (s) => {
+
+                        const data = (s.wrapperEl.children[s.realIndex] as HTMLElement).dataset;
+                        const fromLink = document.querySelector("[data-from-link-container]");
+                        fromLink.innerHTML = data.fromText;
+                        fromLink["href"] = data.fromLink;
+                        document.querySelector("[data-caption-container]").innerHTML = data.caption;
+                    },
+                    
+                },
+                // loop: true,
+                // rewind: true,
+                simulateTouch: false, // controls whether mouse can swipe
+                // spaceBetween: 0,
+                modules: [],
+            });
+
+            swiper.el.querySelectorAll("img").forEach((e) =>
+                e.addEventListener("click", () => {
+                    swiper.slideNext(0, true);
+                })
+            );
+
+            document.addEventListener("keydown", (e) => {
+                if (e.key === "ArrowLeft") {
+                    swiper.slidePrev(0, true);
+                } else if (e.key === "ArrowRight") {
+                    swiper.slideNext(0, true);
+                }
+            });
+        });
+    </script>
+</Layout>

@@ -1,0 +1,112 @@
+---
+import type { RoughAnnotationType } from "rough-notation/lib/model";
+import SmartLink from "./smartLink.astro";
+
+interface Props {
+    type?: RoughAnnotationType;
+    staticUnderline?: boolean;
+    href?: string;
+    title?: string;
+}
+
+const {
+    type = "underline",
+    staticUnderline = true,
+    ...passthrough
+} = Astro.props;
+---
+
+<SmartLink
+    {...passthrough}
+    data-type={type}
+    class:list={{
+        "annotated-link focus-visible:outline-none": true,
+        "hover:opacity-80 focus-visible:opacity-80 transition-opacity":
+            type === "circle" || type === "box",
+        "hover:text-white focus-visible:text-white": type === "highlight",
+        "underline hover:no-underline": staticUnderline,
+    }}><slot /></SmartLink
+><script>
+    //the script tag here is on the same line to prevent white space injection
+    import { annotate } from "rough-notation";
+    import type {
+        RoughAnnotationConfig,
+        RoughAnnotationType,
+    } from "rough-notation/lib/model";
+
+    (() => {
+        function initAnnotatedLinks() {
+
+            document.querySelectorAll("a.annotated-link + svg.rough-annotation").forEach(e => e.remove());
+
+            // const colors = ['salmon', 'cornflowerblue', 'coral', 'darkolivegreen', 'darkseagreen', 'darkslategrey', 'indianred', 'orangered']
+            document.querySelectorAll("a.annotated-link").forEach((_e) => {
+                // const color = colors[Math.floor(Math.random() * colors.length)];
+
+                const e = _e as HTMLAnchorElement;
+                const type = e.dataset.type;
+
+                const config: RoughAnnotationConfig = {
+                    type: type as RoughAnnotationType,
+                    color: "black",
+                    multiline: true,
+                };
+
+                switch (type) {
+                    case "circle":
+                        config.animationDuration = 300;
+                        config.iterations = 1;
+                        config.padding = [5, 10];
+                        break;
+                    case "highlight":
+                        config.animationDuration = 450;
+                        break;
+                    case "box":
+                        config.animationDuration = 300;
+                        config.iterations = 1;
+                        config.padding = [5, 10];
+                        break;
+                    case "underline":
+                        config.animationDuration = 200;
+                        config.strokeWidth = 3;
+                        config.iterations = 1;
+                        config.padding = [0, 0];
+                        break;
+                }
+
+                const annotation = annotate(e, config);
+
+                function showAnimated() {
+                    if (!annotation.isShowing()) {
+                        annotation.animate = true;
+                        annotation.show();
+                    }
+                }
+
+                function showStatic() {
+                    if (!annotation.isShowing()) {
+                        annotation.animate = false;
+                        annotation.show();
+                    }
+                }
+
+                function hide() {
+                    if (annotation.isShowing()) {
+                        annotation.hide();
+                    }
+                }
+
+                // hover effects
+                e.addEventListener("mouseenter", showAnimated);
+                e.addEventListener("mouseleave", hide);
+
+                // focus effects
+                e.addEventListener("focusin", showStatic);
+                e.addEventListener("focusout", hide);
+            });
+        }
+
+        // document.addEventListener("astro:after-swap", initAnnotatedLinks);
+        initAnnotatedLinks();
+    })();
+</script>

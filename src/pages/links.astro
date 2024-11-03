@@ -1,0 +1,63 @@
+---
+import Layout from "../components/layout_components/layout.astro";
+import AnnotatedLink from "../components/prose_components/annotatedLink.astro";
+import { LINKS } from "../lib/linkHelper";
+
+const INDEX_LINKS = {
+    Photo: {
+        "Palimpsest": LINKS.palimpsest,
+        "To Pigeon-Fill the Sky": LINKS.pigeon,
+        "Lingermyth": LINKS.lingermyth,
+        "Horizons": LINKS.horizons,
+        "Heartland": LINKS.heartland,
+    },
+    Links: {
+        Instagram: LINKS.instagram,
+        Youtube: LINKS.youtube,
+        Linkedin: LINKS.linkedin,
+        Github: LINKS.github,
+        // Email: LINKS.email,
+        // Info: LINKS.info,
+    },
+    Text: {
+        "On Yearning": LINKS.yearn,
+        "The List of the Wind": LINKS.wind,
+        "The Man Upstairs": LINKS.upstairs,
+        "A Necklace of Stars": LINKS.stars,
+        // "Fluffy Cloud": LINKS.fluffy,
+    },
+    Film: {
+        "The Triumph of the Commons": LINKS.wiki,
+        "Pizza, really fast": LINKS.pizza,
+    },
+    Sundry: {
+        "Unfinished Songs": LINKS.songs,
+        "Wrap Map": LINKS.wrapmap,
+    },
+} as const;
+---
+
+<Layout title="Projects - Duncan Petrie" photoName="parchment-paper-window-margate-2023-09-04">
+    <main class="columns-2 pl-16">
+        {
+            Object.keys(INDEX_LINKS).map((g) => (
+                <div class="pb-4">
+                    <h2 class="font-serif font-bold text-xl">{g}</h2>
+                    <ul>
+                        {Object.keys(INDEX_LINKS[g]).map((l) => (
+                            <li>
+                                <AnnotatedLink
+                                    type="circle"
+                                    staticUnderline={false}
+                                    href={INDEX_LINKS[g][l]}
+                                    class:list={"text-sm"}>
+                                    {l}
+                                </AnnotatedLink>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            ))
+        }
+    </main>
+</Layout>

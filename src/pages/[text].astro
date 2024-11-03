@@ -1,0 +1,27 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../components/layout_components/layout.astro";
+import AnnotatedLink from "../components/prose_components/annotatedLink.astro";
+import TextContainer from "../components/prose_components/textContainer.astro";
+
+export async function getStaticPaths() {
+    const textProjects = await getCollection("text");
+    return textProjects.map((props) => ({
+        params: { text: props.slug },
+        props: { props },
+    }));
+}
+
+const {
+    props: { data, ...props },
+} = Astro.props;
+const { Content } = await props.render();
+---
+
+<Layout>
+    <main class="mt-60 px-4 w-full max-w-[600px] mb-[50vh]">
+        <TextContainer {...data} columns={0}>
+            <Content components={{ a: AnnotatedLink }} />
+        </TextContainer>
+    </main>
+</Layout>

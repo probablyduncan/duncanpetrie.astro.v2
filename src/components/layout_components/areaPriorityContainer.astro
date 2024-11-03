@@ -1,0 +1,45 @@
+---
+interface Props {
+    ratio: number; // of the child in the slot
+    maxRatio?: number | number[]; // the widest image (or the narrowest image, flipped). Any vertical (r<1) should be flipped (1/r) so we can compare them all?
+    containerWidth?: string; // css value, '800px' or '100%' or whatever
+    containerMaxWidth?: string; // ^
+    containerMaxHeight?: string; // ^
+}
+
+const {
+    ratio,
+    maxRatio: _maxRatio = 3 / 2,
+    containerWidth = "100%",
+    containerMaxWidth = "100%",
+    containerMaxHeight = "100vh",
+} = Astro.props;
+
+// we want either the single max ratio, if passed in, or the narrowest ratio if we're given an array
+const maxRatio = Array.isArray(_maxRatio)
+    ? _maxRatio.reduce(
+          (prev, curr) => Math.max(prev, curr >= 1 ? curr : 1 / curr),
+          1
+      )
+    : _maxRatio;
+
+/**
+ *      AREA-PRIORITY
+ *      Here, we want all images to fit inside a square and all have roughly the same area.
+ *      That means wider ones will be wider and taller ones will be taller
+ *
+ *      MAX-SIZE (not implemented)
+ *      Here, we want a child to be the largest it can be within a container of variable aspect ratio
+ *      Not sure how to do this without knowing the parent aspect ratio? "@container" prop maybe
+ *      https://stackoverflow.com/a/66786774
+ */
+---
+
+<div
+    style=`width: ${containerWidth}; max-width: min(${containerMaxWidth}, ${containerMaxHeight});`
+    class="aspect-square flex justify-center items-center">
+    <div
+        style={`width: ${(100 * Math.sqrt(ratio) / Math.sqrt(maxRatio)).toFixed(5)}%; max-width: ${Math.min(1, ratio) * 100}%;`}>
+        <slot />
+    </div>
+</div>

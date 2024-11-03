@@ -1,0 +1,16 @@
+---
+import { resolveLink } from "../../lib/linkHelper";
+
+interface Props {
+    href?: string;
+    title?: string;
+    newTab?: boolean;
+    class?: string;
+}
+
+const { href, title, newTab, class: classes, ...passthrough } = Astro.props;
+const innerHtml = await Astro.slots.render("default");
+const resolved = resolveLink({ href, innerHtml, title, forceNewTab: newTab });
+---
+
+<a {...resolved} {...passthrough} class={classes}><slot /></a>

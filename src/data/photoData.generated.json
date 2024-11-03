@@ -1,0 +1,311 @@
+[
+    {
+        "name": "shed-train-window-weymouth-2024-09-03",
+        "paths": {
+            "large": "\\photos\\shed-train-window-weymouth-2024-09-03_l.webp",
+            "medium": "\\photos\\shed-train-window-weymouth-2024-09-03_m.webp",
+            "small": "\\photos\\shed-train-window-weymouth-2024-09-03_s.webp"
+        },
+        "caption": "Shed, train window, Weymouth",
+        "datestring": "2024-09-03T10:18:03.000Z",
+        "rating": 4,
+        "camera": "NIKON D500",
+        "lens": "24.0-120.0 mm f/4.0",
+        "focallength": 70,
+        "aperture": 5.6,
+        "shutter": 0.0025,
+        "iso": 800,
+        "ratio": 0.6666666666666666,
+        "tags": [
+            "lux",
+            "weymouth",
+            "england"
+        ]
+    },
+    {
+        "name": "la-corbiere-st-brelade-jersey-2024-05-25",
+        "paths": {
+            "large": "\\photos\\la-corbiere-st-brelade-jersey-2024-05-25_l.webp",
+            "medium": "\\photos\\la-corbiere-st-brelade-jersey-2024-05-25_m.webp",
+            "small": "\\photos\\la-corbiere-st-brelade-jersey-2024-05-25_s.webp"
+        },
+        "caption": "La Corbière, St. Brélade, Jersey",
+        "datestring": "2024-05-25T11:05:40.000Z",
+        "rating": 5,
+        "camera": "NIKON D500",
+        "lens": "24.0-120.0 mm f/4.0",
+        "focallength": 28,
+        "aperture": 5.6,
+        "shutter": 0.00125,
+        "iso": 400,
+        "ratio": 1.5,
+        "tags": [
+            "site-best",
+            "site-palimpsest",
+            "lux",
+            "site-all",
+            "jersey",
+            "uk"
+        ]
+    },
+    {
+        "name": "bear-witness-belsize-park-2024-05-17",
+        "paths": {
+            "large": "\\photos\\bear-witness-belsize-park-2024-05-17_l.webp",
+            "medium": "\\photos\\bear-witness-belsize-park-2024-05-17_m.webp",
+            "small": "\\photos\\bear-witness-belsize-park-2024-05-17_s.webp"
+        },
+        "caption": "Bear, witness, Belsize Park",
+        "datestring": "2024-05-17T05:32:49.000Z",
+        "rating": 5,
+        "camera": "NIKON D500",
+        "lens": "24.0-120.0 mm f/4.0",
+        "focallength": 34,
+        "aperture": 5.6,
+        "shutter": 0.0025,
+        "iso": 800,
+        "ratio": 0.6666666666666666,
+        "tags": [
+            "lux",
+            "site-palimpsest",
+            "site-all",
+            "london",
+            "england",
+            "uk"
+        ]
+    },
+    {
+        "name": "window-safari-primrose-hill-2024-05-13",
+        "paths": {
+            "large": "\\photos\\window-safari-primrose-hill-2024-05-13_l.webp",
+            "medium": "\\photos\\window-safari-primrose-hill-2024-05-13_m.webp",
+            "small": "\\photos\\window-safari-primrose-hill-2024-05-13_s.webp"
+        },
+        "caption": "Window Safari, Primrose Hill",
+        "datestring": "2024-05-13T04:57:59.000Z",
+        "rating": 5,
+        "camera": "NIKON D500",
+        "lens": "24.0-120.0 mm f/4.0",
+        "focallength": 70,
+        "aperture": 5.6,
+        "shutter": 0.0025,
+        "iso": 800,
+        "ratio": 1.3337595907928388,
+        "tags": [
+            "site-best",
+            "site-palimpsest",
+            "lux",
+            "site-all",
+            "primrose hill",
+            "london",
+            "england",
+            "uk"
+        ]
+    },
+    {
+        "name": "forest-library-isle-of-wight-2024-04-26",
+        "paths": {
+            "large": "\\photos\\forest-library-isle-of-wight-2024-04-26_l.webp",
+            "medium": "\\photos\\forest-library-isle-of-wight-2024-04-26_m.webp",
+            "small": "\\photos\\forest-library-isle-of-wight-2024-04-26_s.webp"
+        },
+        "caption": "Forest library, Isle of Wight",
+        "datestring": "2024-04-26T11:57:11.000Z",
+        "rating": 5,
+        "camera": "NIKON D500",
+        "lens": "24.0-120.0 mm f/4.0",
+        "focallength": 24,
+        "aperture": 5.6,
+        "shutter": 0.0025,
+        "iso": 400,
+        "ratio": 0.6666064002892786,
+        "tags": [
+            "site-best",
+            "site-palimpsest",
+            "lux",
+            "site-all",
+            "isle of wight",
+            "uk"
+        ]
+    },
+    {
+        "name": "parchment-paper-window-margate-2023-09-04",
+        "paths": {
+            "large": "\\photos\\parchment-paper-window-margate-2023-09-04_l.webp",
+            "medium": "\\photos\\parchment-paper-window-margate-2023-09-04_m.webp",
+            "small": "\\photos\\parchment-paper-window-margate-2023-09-04_s.webp"
+        },
+        "caption": "Parchment paper, window, Margate",
+        "datestring": "2023-09-04T08:54:23.000Z",
+        "rating": 5,
+        "camera": "NIKON D500",
+        "lens": "70.0-200.0 mm f/2.8",
+        "focallength": 70,
+        "aperture": 8,
+        "shutter": 0.0015625,
+        "iso": 400,
+        "ratio": 1.5,
+        "tags": [
+            "site-best",
+            "site-palimpsest",
+            "lux",
+            "site-all",
+            "margate",
+            "kent",
+            "england",
+            "uk"
+        ]
+    },
+    {
+        "name": "surrogate-sea-villajoyosa-2022-02-18",
+        "paths": {
+            "large": "\\photos\\surrogate-sea-villajoyosa-2022-02-18_l.webp",
+            "medium": "\\photos\\surrogate-sea-villajoyosa-2022-02-18_m.webp",
+            "small": "\\photos\\surrogate-sea-villajoyosa-2022-02-18_s.webp"
+        },
+        "caption": "Surrogate sea, Villajoyosa",
+        "datestring": "2022-02-18T16:16:59.000Z",
+        "rating": 5,
+        "camera": "NIKON D500",
+        "lens": "TAMRON 18-400mm F3.5-6.3 Di II VC HLD B028N",
+        "focallength": 35,
+        "aperture": 5.6,
+        "shutter": 0.003125,
+        "iso": 400,
+        "ratio": 1.5001645278051992,
+        "tags": [
+            "lux",
+            "_lingermyth",
+            "site-best",
+            "313 all",
+            "site-lingermyth",
+            "site-all",
+            "alicante",
+            "spain"
+        ]
+    },
+    {
+        "name": "hell-awaits-falmouth-2021-10-30",
+        "paths": {
+            "large": "\\photos\\hell-awaits-falmouth-2021-10-30_l.webp",
+            "medium": "\\photos\\hell-awaits-falmouth-2021-10-30_m.webp",
+            "small": "\\photos\\hell-awaits-falmouth-2021-10-30_s.webp"
+        },
+        "caption": "Hell awaits, Falmouth",
+        "datestring": "2021-10-30T12:27:42.000Z",
+        "rating": 5,
+        "camera": "NIKON D500",
+        "lens": "TAMRON 18-400mm F3.5-6.3 Di II VC HLD B028N",
+        "focallength": 35,
+        "aperture": 5.6,
+        "shutter": 0.00125,
+        "iso": 800,
+        "ratio": 1,
+        "tags": [
+            "lux",
+            "311 final",
+            "_lingermyth",
+            "site-best",
+            "311 all",
+            "site-lingermyth",
+            "site-all",
+            "falmouth",
+            "cornwall",
+            "uk"
+        ]
+    },
+    {
+        "name": "melted-moon-falmouth-bay-2021-10-15",
+        "paths": {
+            "large": "\\photos\\melted-moon-falmouth-bay-2021-10-15_l.webp",
+            "medium": "\\photos\\melted-moon-falmouth-bay-2021-10-15_m.webp",
+            "small": "\\photos\\melted-moon-falmouth-bay-2021-10-15_s.webp"
+        },
+        "caption": "Melted moon, Falmouth Bay",
+        "datestring": "2021-10-15T16:46:37.000Z",
+        "rating": 5,
+        "camera": "NIKON D500",
+        "lens": "70.0-200.0 mm f/2.8",
+        "focallength": 70,
+        "aperture": 4,
+        "shutter": 0.03333333333333333,
+        "iso": 800,
+        "ratio": 0.800090661831369,
+        "tags": [
+            "lux",
+            "311 final",
+            "_lingermyth",
+            "site-best",
+            "site-horizons",
+            "site-lingermyth",
+            "site-all",
+            "311 all",
+            "yearning",
+            "falmouth",
+            "cornwall",
+            "uk"
+        ]
+    },
+    {
+        "name": "north-atlantic-pennance-point-2021-01-14",
+        "paths": {
+            "large": "\\photos\\north-atlantic-pennance-point-2021-01-14_l.webp",
+            "medium": "\\photos\\north-atlantic-pennance-point-2021-01-14_m.webp",
+            "small": "\\photos\\north-atlantic-pennance-point-2021-01-14_s.webp"
+        },
+        "caption": "North Atlantic, Pennance Point",
+        "datestring": "2021-01-14T16:42:06.000Z",
+        "rating": 5,
+        "camera": "NIKON D500",
+        "lens": "70.0-200.0 mm f/2.8",
+        "focallength": 75,
+        "aperture": 2.8,
+        "shutter": 0.025,
+        "iso": 100,
+        "ratio": 1.4998628257887516,
+        "tags": [
+            "_photos that shoud have names",
+            "abstracts",
+            "site-best",
+            "site-horizons",
+            "site-all",
+            "abstracts all",
+            "yearning",
+            "bookmaybeidk",
+            "world",
+            "falmouth",
+            "cornwall",
+            "uk"
+        ]
+    },
+    {
+        "name": "cycling-gudmundsen-drive-door-county-2019-08-31",
+        "paths": {
+            "large": "\\photos\\cycling-gudmundsen-drive-door-county-2019-08-31_l.webp",
+            "medium": "\\photos\\cycling-gudmundsen-drive-door-county-2019-08-31_m.webp",
+            "small": "\\photos\\cycling-gudmundsen-drive-door-county-2019-08-31_s.webp"
+        },
+        "caption": "Cycling, Gudmundsen Drive, Door County",
+        "datestring": "2019-08-31T15:21:57.000Z",
+        "rating": 5,
+        "camera": "NIKON D500",
+        "lens": "TAMRON 18-400mm F3.5-6.3 Di II VC HLD B028N",
+        "focallength": 18,
+        "aperture": 13,
+        "shutter": 0.125,
+        "iso": 100,
+        "ratio": 1.5,
+        "tags": [
+            "story - island",
+            "_new",
+            "site-all",
+            "site-best",
+            "site-heartland",
+            "_photos that shoud have names",
+            "world",
+            "door county",
+            "wisconsin",
+            "usa"
+        ]
+    }
+]

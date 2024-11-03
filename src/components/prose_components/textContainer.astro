@@ -1,0 +1,46 @@
+---
+interface Props {
+    title?: string;
+    subtitle?: string;
+    columns?: number;
+    hyphens?: boolean;
+    startIcon?: boolean;
+    endIcon?: boolean;
+}
+
+const {
+    title,
+    // columns = 2,
+    hyphens = false,
+    startIcon = true,
+    endIcon = true,
+} = Astro.props;
+
+const columns: number = 0;
+---
+
+{
+    title && (
+        <h1
+            class:list={{
+                "text-5xl font-serif font-semibold": true,
+                "md:ml-20": columns === 1,
+            }}
+        >
+            {title}
+        </h1>
+    )
+}
+<article
+    class:list={{
+        "max-w-[unset] [&_>_*]:w-full flex flex-col items-center pt-5 [&_>*]:pb-4 relative": true,
+        "[&_>p:first-of-type]:arrow-indent": startIcon,
+        "[&_>p:last-of-type]:end-bullet": endIcon,
+        "lg:columns-2 gap-8": columns === 2,
+        "md:mx-20": columns === 1,
+        "hyphens-auto": hyphens,
+        "hyphens-manual": !hyphens,
+    }}
+>
+    <slot />
+</article>

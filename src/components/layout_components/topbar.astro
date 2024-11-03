@@ -1,0 +1,53 @@
+---
+import { LINKS } from "../../lib/linkHelper";
+import AnnotatedLink from "../prose_components/annotatedLink.astro";
+
+const left = {
+    Home: LINKS.home,
+    Index: LINKS.index,
+    Info: LINKS.info,
+    Prints: LINKS.prints,
+};
+
+const right = {
+    "Palimpsest": LINKS.palimpsest,
+    "To Pigeon-Fill the Sky": LINKS.pigeon,
+    "The List of the Wind": LINKS.wind,
+};
+
+interface Props {
+    current?: string;
+}
+---
+
+<nav class="text-sm font-semibold">
+    <div class="flex gap-2 z-50 fixed top-4 left-4">
+        {
+            Object.keys(left).map((display) => (
+                <AnnotatedLink
+                    href={left[display]}
+                    type="circle"
+                    staticUnderline={false}>
+                    {display}
+                </AnnotatedLink>
+            ))
+        }
+    </div>
+    <!-- <div class="flex justify-center fixed top-4 w-60 left-[calc(50vw-(15rem/2))]">
+        <AnnotatedLink href="/" type="circle" staticUnderline={false}>
+            DUNCANPETRIE.COM
+        </AnnotatedLink>
+    </div> -->
+    <div class="flex gap-2 z-50 fixed top-4 right-4">
+        {
+            Object.keys(right).map((display) => (
+                <AnnotatedLink
+                    href={right[display]}
+                    type="circle"
+                    staticUnderline={false}>
+                    {display}
+                </AnnotatedLink>
+            ))
+        }
+    </div>
+</nav>

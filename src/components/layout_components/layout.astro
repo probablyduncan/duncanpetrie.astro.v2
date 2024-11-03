@@ -1,0 +1,85 @@
+---
+import ViewTransitions from "astro/components/ViewTransitions.astro";
+import "../../styles/global.css";
+import type { PhotoName } from "../../data/photoTypes.generated";
+import { getPhotoByName } from "../../lib/photoHelper";
+import AnnotatedLink from "../prose_components/annotatedLink.astro";
+
+interface Props {
+    title?: string;
+    photoName?: PhotoName;
+    includeBottomNav?: boolean;
+}
+
+const {
+    title = "Duncan Petrie",
+    photoName = "la-corbiere-st-brelade-jersey-2024-05-25",
+    includeBottomNav = true,
+} = Astro.props;
+const description =
+    "Duncan Petrie is a London-based photographer and writer from Milwaukee, Wisconsin. He explores nature in the human landscape, and what the world might look like when we are gone.";
+const imgPath = getPhotoByName(photoName).paths.medium;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+---
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+
+        <link
+            rel="apple-touch-icon"
+            sizes="180x180"
+            href="/apple-touch-icon.png"
+        />
+        <link
+            rel="icon"
+            type="image/png"
+            sizes="32x32"
+            href="/favicon-32x32.png"
+        />
+        <link
+            rel="icon"
+            type="image/png"
+            sizes="16x16"
+            href="/favicon-16x16.png"
+        />
+
+        <link rel="manifest" href="/site.webmanifest" />
+        <link rel="canonical" href={canonicalURL} />
+        <meta name="viewport" content="width=device-width" />
+
+        <title>{title}</title>
+        <meta name="title" content={title} />
+        <meta name="description" content={description} />
+
+        <!-- Open Graph / Facebook -->
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={Astro.url} />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        <meta property="og:image" content={new URL(imgPath, Astro.url)} />
+
+        <!-- Twitter -->
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content={Astro.url} />
+        <meta property="twitter:title" content={title} />
+        <meta property="twitter:description" content={description} />
+        <meta property="twitter:image" content={new URL(imgPath, Astro.url)} />
+
+        <!-- <ViewTransitions /> -->
+         
+        
+    </head>
+    <body class="bg-white text-black dark:bg-black dark:text-white min-h-svh min-w-full flex flex-col justify-center items-center p-0">
+        <nav class="text-sm font-semibold z-10 flex justify-between bg-white border-b-2 border-b-black fixed top-0 left-0 w-[calc(100%-2rem)] mx-4 py-4 sm:relative sm:border-none sm:bg-none sm:p-0">
+            <span class="top-4 left-4 sm:fixed"><slot name="topleft"><AnnotatedLink type="circle" staticUnderline={false}>INFO</AnnotatedLink></slot></span>
+            <span class="top-4 sm:fixed sm:w-32 sm:left-[calc(50%-4rem)]"><slot name="topmiddle"><AnnotatedLink type="circle" staticUnderline={false} href="/">DUNCANPETRIE</AnnotatedLink></slot></span>
+            <span class="top-4 right-4 sm:fixed"><slot name="topright"><AnnotatedLink type="circle" staticUnderline={false}>INDEX</AnnotatedLink></slot></span>
+        </nav>
+        <slot />
+        {includeBottomNav && <div class="text-sm font-semibold z-10 flex flex-row flex-wrap justify-between fixed bottom-4 px-4 w-full sm:relative gap-1 text-left">
+            <span class="sm:fixed bottom-4 left-4"><slot name="bottomleft">v5.1</slot></span>
+            <span class="sm:fixed bottom-4 right-4"><slot name="bottomright">&copy; 2024</slot></span>
+        </div>}
+    </body>
+</html>
