@@ -2,31 +2,31 @@ import { marked } from "marked";
 import astroConfig from "../../astro.config.mjs";
 
 export const LINKS = {
-    home: astroConfig.base + "/",
-    info: astroConfig.base + "/about/",
-    index: astroConfig.base + "/links/",
-    prints: astroConfig.base + "/prints/",
-    palimpsest: astroConfig.base + "/palimpsest/",
-    horizons: astroConfig.base + "/horizons/",
-    heartland: astroConfig.base + "/heartland/",
-    pigeon: astroConfig.base + "/pigeon/",
-    lingermyth: astroConfig.base + "/lingermyth/",
-    yearn: astroConfig.base + "/on-yearning/",
-    wind: astroConfig.base + "/wind/",
-    stars: astroConfig.base + "/stars/",
-    baron: astroConfig.base + "/baron/",
-    upstairs: astroConfig.base + "/man-upstairs/",
-    fluffy: astroConfig.base + "/fluffy-cloud/",
-    wiki: astroConfig.base + "https://www.youtube.com/watch?v=JRXZAaDxGCQ/",
-    pizza: astroConfig.base + "https://youtu.be/-sBHX07eIMY/",
-    songs: astroConfig.base + "/unfinished-songs/",
+    home: "/",
+    info: "/about/",
+    index: "/links/",
+    prints: "/prints/",
+    palimpsest: "/palimpsest/",
+    horizons: "/horizons/",
+    heartland: "/heartland/",
+    pigeon: "/pigeon/",
+    lingermyth: "/lingermyth/",
+    yearn: "/on-yearning/",
+    wind: "/wind/",
+    stars: "/stars/",
+    baron: "/baron/",
+    upstairs: "/man-upstairs/",
+    fluffy: "/fluffy-cloud/",
+    wiki: "https://www.youtube.com/watch?v=JRXZAaDxGCQ/",
+    pizza: "https://youtu.be/-sBHX07eIMY/",
+    songs: "/unfinished-songs/",
     // website: "/design/",
-    email: astroConfig.base + "mailto:duncanpetrie1@gmail.com",
-    instagram: astroConfig.base + "https://instagram.com/probablyduncan",
-    youtube: astroConfig.base + "https://www.youtube.com/channel/UCdyoMZUOsWzPmZN-H916jxg",
-    linkedin: astroConfig.base + "https://www.linkedin.com/in/probablyduncan/",
-    github: astroConfig.base + "https://github.com/probablyduncan",
-    wrapmap: astroConfig.base + "https://www.google.com/maps/d/viewer?mid=15A5_e_KS2Es4xs3ZhXmYR31dRmc0cpA",
+    email: "mailto:duncanpetrie1@gmail.com",
+    instagram: "https://instagram.com/probablyduncan",
+    youtube: "https://www.youtube.com/channel/UCdyoMZUOsWzPmZN-H916jxg",
+    linkedin: "https://www.linkedin.com/in/probablyduncan/",
+    github: "https://github.com/probablyduncan",
+    wrapmap: "https://www.google.com/maps/d/viewer?mid=15A5_e_KS2Es4xs3ZhXmYR31dRmc0cpA",
 } as const;
 
 
@@ -81,6 +81,10 @@ export function resolveLink({ href, title, innerHtml, forceNewTab }: {
     // (like "[writing]()", not like "[google.com]()")
     if (!isExternalLink && !href.startsWith("/")) {
         href = "/" + href;
+    }
+
+    if (!isExternalLink && !href.includes(astroConfig.base)) {
+        href = astroConfig.base + href;
     }
 
     return {
