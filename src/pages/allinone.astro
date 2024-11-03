@@ -1,0 +1,233 @@
+---
+import Layout from "../components/layout_components/layout.astro";
+import { getPhotoByName as p } from "../lib/photoHelper";
+import { Content } from "../content/snippets/about.mdx";
+import AnnotatedLink from "../components/prose_components/annotatedLink.astro";
+import { LINKS } from "../lib/linkHelper";
+import astroConfig from "../../astro.config.mjs";
+import type { PhotoName } from "../data/photoTypes.generated";
+import SmartLink from "../components/prose_components/smartLink.astro";
+import "../styles/global.css";
+
+const INDEX_LINKS = {
+    Photo: {
+        "Palimpsest": LINKS.palimpsest,
+        "To Pigeon-Fill the Sky": LINKS.pigeon,
+        "Lingermyth": LINKS.lingermyth,
+        "Horizons": LINKS.horizons,
+        "Heartland": LINKS.heartland,
+    },
+    Links: {
+        Instagram: LINKS.instagram,
+        Youtube: LINKS.youtube,
+        Linkedin: LINKS.linkedin,
+        Github: LINKS.github,
+        // Email: LINKS.email,
+        // Info: LINKS.info,
+    },
+    Text: {
+        "On Yearning": LINKS.yearn,
+        "The List of the Wind": LINKS.wind,
+        "The Man Upstairs": LINKS.upstairs,
+        "A Necklace of Stars": LINKS.stars,
+        // "Fluffy Cloud": LINKS.fluffy,
+    },
+    Film: {
+        "The Triumph of the Commons": LINKS.wiki,
+        "Pizza, really fast": LINKS.pizza,
+    },
+    Sundry: {
+        "Unfinished Songs": LINKS.songs,
+        "Wrap Map": LINKS.wrapmap,
+    },
+} as const;
+
+const title = "Duncan Petrie";
+const description =
+    "Duncan Petrie is a London-based photographer and writer from Milwaukee, Wisconsin. He explores nature in the human landscape, and what the world might look like when we are gone.";
+const metaImgPath = p("la-corbiere-st-brelade-jersey-2024-05-25").paths.medium;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+---
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+
+        <link
+            rel="apple-touch-icon"
+            sizes="180x180"
+            href={astroConfig.base + "/apple-touch-icon.png"}
+        />
+        <link
+            rel="icon"
+            type="image/png"
+            sizes="32x32"
+            href={astroConfig.base + "/favicon-32x32.png"}
+        />
+        <link
+            rel="icon"
+            type="image/png"
+            sizes="16x16"
+            href={astroConfig.base + "/favicon-16x16.png"}
+        />
+
+        <link rel="manifest" href={astroConfig.base + "/site.webmanifest"} />
+        <link rel="canonical" href={canonicalURL} />
+        <meta name="viewport" content="width=device-width" />
+
+        <title>{title}</title>
+        <meta name="title" content={title} />
+        <meta name="description" content={description} />
+
+        <!-- Open Graph / Facebook -->
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={Astro.url} />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        <meta property="og:image" content={new URL(metaImgPath, Astro.url)} />
+
+        <!-- Twitter -->
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content={Astro.url} />
+        <meta property="twitter:title" content={title} />
+        <meta property="twitter:description" content={description} />
+        <meta
+            property="twitter:image"
+            content={new URL(metaImgPath, Astro.url)}
+        />
+    </head>
+    <body class="w-screen h-svh">
+        <main class="swiper w-full h-full">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <div
+                        class="w-full h-full flex justify-center pt-[1.7rem]"
+                    >
+                        <div class="w-[512px] max-w-[min(100%,calc(80svh-2.7rem))]">
+                            <img
+                                src={p("melted-moon-falmouth-bay-2021-10-15")
+                                    .paths.large}
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="w-full h-full flex justify-center items-center">
+                        <div
+                            class="max-w-md mb-24 sm:ml-8 mx-4
+        [&_>h1]:text-5xl [&_>h1]:font-semibold [&_>h1]:font-serif [&_>h1]:ligatures
+        [&_>p:first-of-type]:arrow-indent relative [&_>*]:pt-4"
+                        >
+                            <Content components={{ a: AnnotatedLink }} />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <nav class="text-sm font-semibold">
+            <span class="top-4 left-4 fixed z-10"
+                ><AnnotatedLink type="circle" staticUnderline={false}
+                    >INFO</AnnotatedLink
+                ></span
+            >
+            <span class="top-4 fixed z-10 w-32 left-[calc(50%-4rem)]"
+                ><SmartLink
+                    class="hover:opacity-80 focus-visible:opacity-80 transition-opacity"
+                    href={LINKS.home}>DUNCANPETRIE</SmartLink
+                ></span
+            >
+            <span class="top-4 right-4 fixed z-10"
+                ><AnnotatedLink type="circle" staticUnderline={false}
+                    >WORK</AnnotatedLink
+                ></span
+            >
+        </nav>
+    </body>
+    <script>
+        import Swiper from "swiper";
+        import {} from "swiper/modules";
+        import "swiper/css";
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const swiper = new Swiper(".swiper", {
+                on: {
+                    realIndexChange: (s) => {
+                        // const data = (s.wrapperEl.children[s.realIndex] as HTMLElement).dataset;
+                        // const fromLink = document.querySelector("[data-from-link-container]");
+                        // fromLink.innerHTML = data.fromText;
+                        // fromLink["href"] = data.fromLink;
+                        // document.querySelector("[data-caption-container]").innerHTML = data.caption;
+                    },
+                },
+                // loop: true,
+                // rewind: true,
+                // simulateTouch: false, // controls whether mouse can swipe
+                // spaceBetween: 0,
+                modules: [],
+            });
+
+            // swiper.el.querySelectorAll("img").forEach((e) =>
+            //     e.addEventListener("click", () => {
+            //         swiper.slideNext(0, true);
+            //     })
+            // );
+
+            // document.addEventListener("keydown", (e) => {
+            //     if (e.key === "ArrowLeft") {
+            //         swiper.slidePrev(0, true);
+            //     } else if (e.key === "ArrowRight") {
+            //         swiper.slideNext(0, true);
+            //     }
+            // });
+        });
+    </script>
+</html>
+<!-- <Layout includeBottomNav={false}>
+    <main>
+        <section
+            class="w-screen min-h-svh flex justify-center sm:pt-[1.7rem] border-b-2 border-black"
+        >
+            <figure class="w-[638px] px-4">
+                <img
+                    src={p("melted-moon-falmouth-bay-2021-10-15").paths.large}
+                />
+            </figure>
+        </section>
+        <section class="w-screen min-h-svh flex justify-center items-center border-b-2 border-black">
+            <div
+                class="max-w-md mb-12 sm:ml-8 mx-4
+    [&_>h1]:text-5xl [&_>h1]:font-semibold [&_>h1]:font-serif [&_>h1]:ligatures
+    [&_>p:first-of-type]:arrow-indent relative [&_>*]:pt-4"
+            >
+                <Content components={{ a: AnnotatedLink }} />
+            </div>
+        </section>
+        <section class="w-screen min-h-svh flex justify-center items-center">
+            <div
+                class="sm:columns-2 w-full sm:w-auto pl-16 sm:pl-16 mt-32 mb-[40vh]"
+            >
+                {
+                    Object.keys(INDEX_LINKS).map((g) => (
+                        <div class="pb-4">
+                            <h2 class="font-serif font-bold text-xl">{g}</h2>
+                            <ul>
+                                {Object.keys(INDEX_LINKS[g]).map((l) => (
+                                    <li>
+                                        <AnnotatedLink
+                                            type="circle"
+                                            staticUnderline={false}
+                                            href={INDEX_LINKS[g][l]}
+                                            class:list={"text-sm"}
+                                        >
+                                            {l}
+                                        </AnnotatedLink>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    ))
+                }
+            </div>
+        </section>
+    </main>
+</Layout> -->

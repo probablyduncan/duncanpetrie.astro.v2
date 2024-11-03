@@ -23,6 +23,7 @@ export const LINKS = {
     songs: "/unfinished-songs/",
     // website: "/design/",
     email: "mailto:duncanpetrie1@gmail.com",
+    mailto: "mailto:duncanpetrie1@gmail.com",
     instagram: "https://instagram.com/probablyduncan",
     youtube: "https://www.youtube.com/channel/UCdyoMZUOsWzPmZN-H916jxg",
     linkedin: "https://www.linkedin.com/in/probablyduncan/",
