@@ -22,7 +22,7 @@ import { getPhotoByName as p } from "../lib/photoHelper";
             fromText="Horizons"
         />
         <figure
-            class="my-64 sm:my-0 sm:hidden"
+            class="my-64 sm:my-0 sm:hidden flex justify-center"
             data-swap-child
             data-caption="Bear, witness, Belsize Park. 2024."
             data-from-text="Palimpsest"
@@ -37,14 +37,14 @@ import { getPhotoByName as p } from "../lib/photoHelper";
                         .medium}
                     alt={p("shed-train-window-weymouth-2024-09-03")
                         .joinedCaption}
-                    class="sm:cursor-crosshair"
+                    class="sm:cursor-crosshair w-[calc(50%-0.5rem)]"
                 />
                 <img
                     data-swap-button
                     src={p("bear-witness-belsize-park-2024-05-17").paths.medium}
                     alt={p("bear-witness-belsize-park-2024-05-17")
                         .joinedCaption}
-                    class="sm:cursor-crosshair border-[3px] border-[#0A0907]"
+                    class="sm:cursor-crosshair border-[3px] border-[#0A0907] w-[calc(50%-0.5rem)]"
                 />
             </div>
             <!-- <figcaption class="font-semibold text-sm sm:hidden">
@@ -85,10 +85,9 @@ import { getPhotoByName as p } from "../lib/photoHelper";
     </span>
     <script>
         function initHomeSlides() {
-            const swapChildren: HTMLElement[] = document
+            const swapChildren = document
                 .querySelectorAll("[data-swap-child]")
-                .entries()
-                .map((e) => e[1] as HTMLElement)
+                .values()
                 .toArray();
 
             const captionContainer = document.querySelector(
@@ -109,7 +108,7 @@ import { getPhotoByName as p } from "../lib/photoHelper";
                         : current?.previousElementSibling
                 ) as HTMLElement;
                 if (!next) {
-                    next = swapChildren.at(forwards ? 0 : -1);
+                    next = swapChildren.at(forwards ? 0 : -1) as HTMLElement;
                 }
 
                 swapChildren.forEach((e) => e.classList.add("sm:hidden"));

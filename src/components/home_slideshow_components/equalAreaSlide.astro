@@ -25,21 +25,20 @@ const {
 const photo = getPhotoByName(photoName);
 
 const style = [];
-const extraWidths = ["0px"];
+let extraWidth = "0px";
 
 if (border) {
     style.push(`border: ${border};`);
-    extraWidths.push(border.split(" ")[0]);
 }
 
 if (shadow) {
     style.push(`box-shadow: ${shadow};`);
     style.push(`margin-right: ${shadow.split(" ")[0]};`);
     style.push(`margin-bottom: ${shadow.split(" ")[1]};`);
-    extraWidths.push(shadow.split(" ")[0]);
+    extraWidth = shadow.split(" ")[0];
 }
 
-style.push(`max-width: min(calc(100% - (${extraWidths.join(" + ")})), calc((100vh - 128px) * ${photo.ratio}));`)
+style.push(`max-width: min(calc(100% - ${extraWidth}), calc((100vh - 128px) * ${photo.ratio}));`)
 
 style.push(`width: calc(${baseWidth} * ${Math.sqrt(photo.ratio) / Math.sqrt(3/2)});`);
 ---
@@ -49,7 +48,7 @@ style.push(`width: calc(${baseWidth} * ${Math.sqrt(photo.ratio) / Math.sqrt(3/2)
     data-caption={photo.joinedCaption}
     data-from-text={fromText}
     data-from-href={fromHref}
-    class:list={{ "sm:flex justify-center items-center my-64 sm:my-0": true, "sm:hidden": !show }}
+    class:list={{ "flex justify-center items-center my-64 sm:my-0": true, "sm:hidden": !show }}
 >
     <img
         data-swap-button
