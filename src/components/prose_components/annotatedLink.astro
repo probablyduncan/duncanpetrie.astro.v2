@@ -38,7 +38,7 @@ const {
     (() => {
         const annotationArray: RoughAnnotation[] = [];
 
-        function cleanupAnnotations() {
+        function forceMouseLeave() {
             // Force a mouseleave event on all annotated links
             document.querySelectorAll("a.annotated-link").forEach((link) => {
                 // Dispatch a synthetic mouseleave event
@@ -49,16 +49,14 @@ const {
                 });
                 link.dispatchEvent(leaveEvent);
 
-                // Also remove any hover-related classes or states
-                link.classList.remove("hover");
-                delete (link as any).dataset.hovering;
-
                 // Force blur state
                 if (document.activeElement === link) {
                     (document.activeElement as HTMLElement).blur();
                 }
             });
+        }
 
+        function cleanupAnnotations() {
             // First hide all annotations
             annotationArray.forEach((a) => {
                 if (a.isShowing()) {
@@ -189,6 +187,8 @@ const {
                 // Store cleanup reference
                 (element as any)._cleanupAnnotation = cleanup;
             });
+
+            forceMouseLeave();
         }
 
         // Handle page visibility changes
