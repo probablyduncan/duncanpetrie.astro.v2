@@ -38,8 +38,6 @@ const {
         function initAnnotatedLinks() {
 
             console.log("init!!");
-            console.log(document.querySelectorAll("svg.rough-annotation > *"))
-            document.querySelectorAll("svg.rough-annotation > *").forEach(e => e.remove());
 
             // const colors = ['salmon', 'cornflowerblue', 'coral', 'darkolivegreen', 'darkseagreen', 'darkslategrey', 'indianred', 'orangered']
             document.querySelectorAll("a.annotated-link").forEach((_e) => {
@@ -110,5 +108,11 @@ const {
 
         // document.addEventListener("astro:after-swap", initAnnotatedLinks);
         initAnnotatedLinks();
+
+        window.addEventListener("pageshow", () => {
+            console.log('pageshow');
+            console.log(document.querySelectorAll("svg.rough-annotation > *"));
+            document.querySelectorAll("svg.rough-annotation > *").forEach(e => e.remove());
+        });
     })();
 </script>
