@@ -30,12 +30,13 @@ const {
     //the script tag here is on the same line to prevent white space injection
     import { annotate } from "rough-notation";
     import type {
+        RoughAnnotation,
         RoughAnnotationConfig,
         RoughAnnotationType,
     } from "rough-notation/lib/model";
 
     (() => {
-        const hideFunctions = [];
+        const annotationArray: RoughAnnotation[] = [];
         function initAnnotatedLinks() {
             console.log("init!!");
 
@@ -75,7 +76,7 @@ const {
                 }
 
                 const annotation = annotate(e, config);
-                hideFunctions.push(annotation.hide);
+                annotationArray.push(annotation);
 
                 function showAnimated() {
                     if (!annotation.isShowing()) {
@@ -110,13 +111,24 @@ const {
         // document.addEventListener("astro:after-swap", initAnnotatedLinks);
         initAnnotatedLinks();
 
+        document.addEventListener("visibilitychange", () => {
+            console.log("visibilitychange");
+            console.log("hideFunctions", annotationArray);
+            console.log("document.hidden", document.hidden);
+            console.log("document.visibilityState", document.visibilityState);
+            annotationArray.forEach((a) => {
+                a.hide();
+            });
+        });
+
         window.addEventListener("pagehide", (e) => {
             console.log("pagehide");
             if (e.persisted) {
+                document.addEventListener("load", () => {});
                 console.log("persisted");
-                console.log("hideFunctions", hideFunctions);
-                hideFunctions.forEach((hide) => {
-                    hide();
+                console.log("hideFunctions", annotationArray);
+                annotationArray.forEach((a) => {
+                    a.hide();
                 });
             }
         });
