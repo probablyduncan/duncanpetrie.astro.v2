@@ -36,7 +36,6 @@ const {
 
     (() => {
         function initAnnotatedLinks() {
-
             console.log("init!!");
 
             // const colors = ['salmon', 'cornflowerblue', 'coral', 'darkolivegreen', 'darkseagreen', 'darkslategrey', 'indianred', 'orangered']
@@ -103,19 +102,33 @@ const {
                 // focus effects
                 e.addEventListener("focusin", showStatic);
                 e.addEventListener("focusout", hide);
+
+                window.addEventListener("pagehide", (e) => {
+                    console.log('pagehide');
+                    if (e.persisted) {
+                        console.log('persisted. hiding');
+                        annotation.hide();
+                    }
+                });
             });
         }
 
         // document.addEventListener("astro:after-swap", initAnnotatedLinks);
         initAnnotatedLinks();
 
-        window.addEventListener("pageshow", (e) => {
-            console.log('pageshow fired');
-            console.log('persisted', e.persisted);
-            console.log('document', document)
-            console.log('svg.rough-annotation', document.querySelectorAll("svg.rough-annotation"));
-            console.log('> *', document.querySelectorAll("svg.rough-annotation > *"));
-            // document.querySelectorAll("svg.rough-annotation > *").forEach(e => e.remove());
-        });
+        // window.addEventListener("pageshow", (e) => {
+        //     console.log("pageshow fired");
+        //     console.log("persisted", e.persisted);
+        //     console.log("document", document);
+        //     console.log(
+        //         "svg.rough-annotation",
+        //         document.querySelectorAll("svg.rough-annotation")
+        //     );
+        //     console.log(
+        //         "> *",
+        //         document.querySelectorAll("svg.rough-annotation > *")
+        //     );
+        //     // document.querySelectorAll("svg.rough-annotation > *").forEach(e => e.remove());
+        // });
     })();
 </script>
