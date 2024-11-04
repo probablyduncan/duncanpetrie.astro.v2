@@ -36,9 +36,7 @@ const {
     } from "rough-notation/lib/model";
 
     (() => {
-        const annotationArray: RoughAnnotation[] = [];
-
-        function forceMouseLeave() {
+        function unfocus() {
             // Force a mouseleave event on all annotated links
             document.querySelectorAll("a.annotated-link").forEach((link) => {
                 // Dispatch a synthetic mouseleave event
@@ -54,23 +52,6 @@ const {
                     (document.activeElement as HTMLElement).blur();
                 }
             });
-        }
-
-        function cleanupAnnotations() {
-            // First hide all annotations
-            annotationArray.forEach((a) => {
-                if (a.isShowing()) {
-                    a.hide();
-                }
-            });
-
-            // Manually remove any SVG elements that might still be in the DOM
-            document.querySelectorAll("svg.rough-annotation").forEach((svg) => {
-                svg.remove();
-            });
-
-            // Clear the array
-            annotationArray.length = 0;
         }
 
         function createAnnotationConfig(
@@ -108,26 +89,18 @@ const {
         }
 
         function initAnnotatedLinks() {
-            cleanupAnnotations();
-
             // const colors = ['salmon', 'cornflowerblue', 'coral', 'darkolivegreen', 'darkseagreen', 'darkslategrey', 'indianred', 'orangered']
             // const color = colors[Math.floor(Math.random() * colors.length)];
 
             document.querySelectorAll("a.annotated-link").forEach((_e) => {
-                const element = _e as HTMLAnchorElement;
-                const type: RoughAnnotationType = element.dataset
-                    .type as RoughAnnotationType;
+                const link = _e as HTMLAnchorElement;
+                const type = link.dataset.type as RoughAnnotationType;
 
                 if (!type) {
                     return;
                 }
 
-                const annotation = annotate(
-                    element,
-                    createAnnotationConfig(type)
-                );
-
-                annotationArray.push(annotation);
+                const annotation = annotate(link, createAnnotationConfig(type));
 
                 function showAnimated() {
                     if (!annotation.isShowing()) {
@@ -149,76 +122,14 @@ const {
                     }
                 }
 
-                // hover effects
-                element.addEventListener("mouseenter", showAnimated);
-                element.addEventListener("mouseleave", hide);
-
-                // focus effects
-                element.addEventListener("focusin", showStatic);
-                element.addEventListener("focusout", hide);
-
-                element.addEventListener("click", hide);
-
-                // Store event listeners for cleanup
-                const listeners = {
-                    mouseenter: showAnimated,
-                    mouseleave: hide,
-                    focusin: showStatic,
-                    focusout: hide,
-                    click: hide,
-                };
-
-                // Add listeners
-                Object.entries(listeners).forEach(([event, handler]) => {
-                    element.addEventListener(event, handler, { passive: true });
-                });
-
-                // Store cleanup function
-                element.dataset.cleanupAnnotation = "true";
-
-                // Add cleanup function to remove listeners when needed
-                const cleanup = () => {
-                    Object.entries(listeners).forEach(([event, handler]) => {
-                        element.removeEventListener(event, handler);
-                    });
-                    delete element.dataset.cleanupAnnotation;
-                };
-
-                // Store cleanup reference
-                (element as any)._cleanupAnnotation = cleanup;
+                link.addEventListener("mouseenter", showAnimated);
+                link.addEventListener("mouseleave", hide);
+                link.addEventListener("focusin", showStatic);
+                link.addEventListener("focusout", hide);
             });
 
-            forceMouseLeave();
+            unfocus();
         }
-
-        // Handle page visibility changes
-        document.addEventListener("visibilitychange", () => {
-            if (document.visibilityState === "hidden") {
-                cleanupAnnotations();
-            }
-        });
-
-        // Handle page cache
-        window.addEventListener("pagehide", (e) => {
-            cleanupAnnotations();
-
-            // Clean up event listeners
-            document
-                .querySelectorAll("[data-cleanup-annotation]")
-                .forEach((el) => {
-                    if ((el as any)._cleanupAnnotation) {
-                        (el as any)._cleanupAnnotation();
-                    }
-                });
-        });
-
-        // Handle page show (when coming back from cache)
-        window.addEventListener("pageshow", (e) => {
-            if (e.persisted) {
-                cleanupAnnotations();
-                initAnnotatedLinks(); // Reinitialize if coming from cache
-            }
-        });
 
         // Initialize on first load
         initAnnotatedLinks();
