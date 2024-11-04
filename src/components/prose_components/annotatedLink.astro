@@ -127,13 +127,17 @@ const {
                 link.addEventListener("focusin", showStatic);
                 link.addEventListener("focusout", hide);
             });
-
-            unfocus();
         }
 
-        // Initialize on first load
         initAnnotatedLinks();
         document.addEventListener("astro:after-swap", initAnnotatedLinks);
+
+        window.addEventListener("pageshow", (e) => {
+            if (e.persisted) {
+                // reset hover states when page is restored from bfcache
+                unfocus();
+            }
+        });
 
         new MutationObserver((mutations) => {
             mutations.forEach((mutation) => {
