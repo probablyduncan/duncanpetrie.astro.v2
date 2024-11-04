@@ -30,30 +30,11 @@ const {
     //the script tag here is on the same line to prevent white space injection
     import { annotate } from "rough-notation";
     import type {
-        RoughAnnotation,
         RoughAnnotationConfig,
         RoughAnnotationType,
     } from "rough-notation/lib/model";
 
     (() => {
-        function unfocus() {
-            // Force a mouseleave event on all annotated links
-            document.querySelectorAll("a.annotated-link").forEach((link) => {
-                // Dispatch a synthetic mouseleave event
-                const leaveEvent = new MouseEvent("mouseleave", {
-                    bubbles: true,
-                    cancelable: true,
-                    view: window,
-                });
-                link.dispatchEvent(leaveEvent);
-
-                // Force blur state
-                if (document.activeElement === link) {
-                    (document.activeElement as HTMLElement).blur();
-                }
-            });
-        }
-
         function createAnnotationConfig(
             type: RoughAnnotationType
         ): RoughAnnotationConfig {
@@ -132,22 +113,35 @@ const {
         initAnnotatedLinks();
         document.addEventListener("astro:after-swap", initAnnotatedLinks);
 
+        // reset hover states when page is restored from bfcache
         window.addEventListener("pageshow", (e) => {
             if (e.persisted) {
-                // reset hover states when page is restored from bfcache
-                unfocus();
+                document
+                    .querySelectorAll("a.annotated-link")
+                    .forEach((link) => {
+                        const leaveEvent = new MouseEvent("mouseleave", {
+                            bubbles: true,
+                            cancelable: true,
+                            view: window,
+                        });
+                        link.dispatchEvent(leaveEvent);
+
+                        if (document.activeElement === link) {
+                            (document.activeElement as HTMLElement).blur();
+                        }
+                    });
             }
         });
 
-        new MutationObserver((mutations) => {
-            mutations.forEach((mutation) => {
-                if (mutation.addedNodes.length > 0) {
-                    console.log("Added nodes:", mutation.addedNodes);
-                }
-                if (mutation.removedNodes.length > 0) {
-                    console.log("Removed nodes:", mutation.removedNodes);
-                }
-            });
-        }).observe(document.body, { childList: true, subtree: true });
+        // new MutationObserver((mutations) => {
+        //     mutations.forEach((mutation) => {
+        //         if (mutation.addedNodes.length > 0) {
+        //             console.log("Added nodes:", mutation.addedNodes);
+        //         }
+        //         if (mutation.removedNodes.length > 0) {
+        //             console.log("Removed nodes:", mutation.removedNodes);
+        //         }
+        //     });
+        // }).observe(document.body, { childList: true, subtree: true });
     })();
 </script>
