@@ -37,45 +37,78 @@ const {
 
     (() => {
         const annotationArray: RoughAnnotation[] = [];
+
+        function cleanupAnnotations() {
+            // First hide all annotations
+            annotationArray.forEach((a) => {
+                if (a.isShowing()) {
+                    a.hide();
+                }
+            });
+
+            // Manually remove any SVG elements that might still be in the DOM
+            document.querySelectorAll("svg.rough-annotation").forEach((svg) => {
+                svg.remove();
+            });
+
+            // Clear the array
+            annotationArray.length = 0;
+        }
+
+        function createAnnotationConfig(
+            type: RoughAnnotationType
+        ): RoughAnnotationConfig {
+            const config: RoughAnnotationConfig = {
+                type,
+                color: "black",
+                multiline: true,
+            };
+
+            switch (type) {
+                case "circle":
+                    config.animationDuration = 300;
+                    config.iterations = 1;
+                    config.padding = [5, 10];
+                    break;
+                case "highlight":
+                    config.animationDuration = 450;
+                    break;
+                case "box":
+                    config.animationDuration = 300;
+                    config.iterations = 1;
+                    config.padding = [5, 10];
+                    break;
+                case "underline":
+                    config.animationDuration = 200;
+                    config.strokeWidth = 3;
+                    config.iterations = 1;
+                    config.padding = [0, 0];
+                    break;
+            }
+
+            return config;
+        }
+
         function initAnnotatedLinks() {
-            console.log("init!!");
+            cleanupAnnotations();
 
             // const colors = ['salmon', 'cornflowerblue', 'coral', 'darkolivegreen', 'darkseagreen', 'darkslategrey', 'indianred', 'orangered']
+            // const color = colors[Math.floor(Math.random() * colors.length)];
+
             document.querySelectorAll("a.annotated-link").forEach((_e) => {
-                // const color = colors[Math.floor(Math.random() * colors.length)];
+                const element = _e as HTMLAnchorElement;
+                const type: RoughAnnotationType = element.dataset
+                    .type as RoughAnnotationType;
 
-                const e = _e as HTMLAnchorElement;
-                const type = e.dataset.type;
-
-                const config: RoughAnnotationConfig = {
-                    type: type as RoughAnnotationType,
-                    color: "black",
-                    multiline: true,
-                };
-
-                switch (type) {
-                    case "circle":
-                        config.animationDuration = 300;
-                        config.iterations = 1;
-                        config.padding = [5, 10];
-                        break;
-                    case "highlight":
-                        config.animationDuration = 450;
-                        break;
-                    case "box":
-                        config.animationDuration = 300;
-                        config.iterations = 1;
-                        config.padding = [5, 10];
-                        break;
-                    case "underline":
-                        config.animationDuration = 200;
-                        config.strokeWidth = 3;
-                        config.iterations = 1;
-                        config.padding = [0, 0];
-                        break;
+                if (!type) {
+                    return;
                 }
 
-                const annotation = annotate(e, config);
+                const annotation = annotate(
+                    element,
+                    createAnnotationConfig(type)
+                );
+
                 annotationArray.push(annotation);
 
                 function showAnimated() {
@@ -99,55 +132,87 @@ const {
                 }
 
                 // hover effects
-                e.addEventListener("mouseenter", showAnimated);
-                e.addEventListener("mouseleave", hide);
+                element.addEventListener("mouseenter", showAnimated);
+                element.addEventListener("mouseleave", hide);
 
                 // focus effects
-                e.addEventListener("focusin", showStatic);
-                e.addEventListener("focusout", hide);
+                element.addEventListener("focusin", showStatic);
+                element.addEventListener("focusout", hide);
 
-                e.addEventListener("click", hide);
+                element.addEventListener("click", hide);
+
+                // Store event listeners for cleanup
+                const listeners = {
+                    mouseenter: showAnimated,
+                    mouseleave: hide,
+                    focusin: showStatic,
+                    focusout: hide,
+                    click: hide,
+                };
+
+                // Add listeners
+                Object.entries(listeners).forEach(([event, handler]) => {
+                    element.addEventListener(event, handler);
+                });
+
+                // Store cleanup function
+                element.dataset.cleanupAnnotation = "true";
+
+                // Add cleanup function to remove listeners when needed
+                const cleanup = () => {
+                    Object.entries(listeners).forEach(([event, handler]) => {
+                        element.removeEventListener(event, handler);
+                    });
+                    delete element.dataset.cleanupAnnotation;
+                };
+
+                // Store cleanup reference
+                (element as any)._cleanupAnnotation = cleanup;
             });
         }
 
-        // document.addEventListener("astro:after-swap", initAnnotatedLinks);
-        initAnnotatedLinks();
-
+        // Handle page visibility changes
         document.addEventListener("visibilitychange", () => {
-            console.log("visibilitychange");
-            console.log("hideFunctions", annotationArray);
-            console.log("document.hidden", document.hidden);
-            console.log("document.visibilityState", document.visibilityState);
-            annotationArray.forEach((a) => {
-                a.hide();
-            });
-        });
-
-        window.addEventListener("pagehide", (e) => {
-            console.log("pagehide");
-            if (e.persisted) {
-                document.addEventListener("load", () => {});
-                console.log("persisted");
-                console.log("hideFunctions", annotationArray);
-                annotationArray.forEach((a) => {
-                    a.hide();
-                });
+            if (document.visibilityState === "hidden") {
+                cleanupAnnotations();
             }
         });
 
-        // window.addEventListener("pageshow", (e) => {
-        //     console.log("pageshow fired");
-        //     console.log("persisted", e.persisted);
-        //     console.log("document", document);
-        //     console.log(
-        //         "svg.rough-annotation",
-        //         document.querySelectorAll("svg.rough-annotation")
-        //     );
-        //     console.log(
-        //         "> *",
-        //         document.querySelectorAll("svg.rough-annotation > *")
-        //     );
-        //     // document.querySelectorAll("svg.rough-annotation > *").forEach(e => e.remove());
-        // });
+        // Handle page cache
+        window.addEventListener("pagehide", (e) => {
+            cleanupAnnotations();
+
+            // Clean up event listeners
+            document
+                .querySelectorAll("[data-cleanup-annotation]")
+                .forEach((el) => {
+                    if ((el as any)._cleanupAnnotation) {
+                        (el as any)._cleanupAnnotation();
+                    }
+                });
+        });
+
+        // Handle page show (when coming back from cache)
+        window.addEventListener("pageshow", (e) => {
+            if (e.persisted) {
+                cleanupAnnotations();
+                initAnnotatedLinks(); // Reinitialize if coming from cache
+            }
+        });
+
+        // Initialize on first load
+        initAnnotatedLinks();
+        document.addEventListener("astro:after-swap", initAnnotatedLinks);
+
+        new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (mutation.addedNodes.length > 0) {
+                    console.log("Added nodes:", mutation.addedNodes);
+                }
+                if (mutation.removedNodes.length > 0) {
+                    console.log("Removed nodes:", mutation.removedNodes);
+                }
+            });
+        }).observe(document.body, { childList: true, subtree: true });
     })();
 </script>
