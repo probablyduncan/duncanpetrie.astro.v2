@@ -59,9 +59,9 @@ const {
                     config.padding = [5, 10];
                     break;
                 case "underline":
-                    config.animationDuration = 200;
+                    config.animationDuration = 300;
                     config.strokeWidth = 3;
-                    config.iterations = 1;
+                    config.iterations = 2;
                     config.padding = [0, 0];
                     break;
             }
@@ -107,6 +107,7 @@ const {
                 link.addEventListener("mouseleave", hide);
                 link.addEventListener("focusin", showStatic);
                 link.addEventListener("focusout", hide);
+                link.addEventListener("click", hide);
             });
         }
 

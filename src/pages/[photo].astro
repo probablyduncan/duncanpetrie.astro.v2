@@ -5,6 +5,8 @@ import Layout from "../components/layout_components/layout.astro";
 import AnnotatedLink from "../components/prose_components/annotatedLink.astro";
 import TextContainer from "../components/prose_components/textContainer.astro";
 import { LINKS } from "../lib/linkHelper";
+import { PHOTO_NAMES, type PhotoName } from "../data/photoTypes.generated";
+import SmartImage from "../components/prose_components/smartImage.astro";
 
 export async function getStaticPaths() {
     const photoProjects = await getCollection("photo");
@@ -20,44 +22,56 @@ const {
 const { Content } = await props.render();
 
 const photos = getPhotosByNamesAndTags(data);
-const firstPhoto = photos.shift();
+const firstPhotoName = PHOTO_NAMES.includes(data.cover as PhotoName)
+    ? data.cover : photos.shift()?.name;
 ---
 
 <Layout title={data.title} includeBottomNav={false}>
-    <main class="px-4 w-full max-w-3xl">
-        {firstPhoto && <figure
-            class="relative w-full sm:mt-[1.7rem] sm:mb-[20svh] mt-20 mb-20"
-        >
-            <img src={firstPhoto.paths.large} alt={firstPhoto.joinedCaption} />
-            <figcaption class="absolute bottom-[-1.8em] right-0 font-semibold text-sm">
-                {firstPhoto.joinedCaption}
-            </figcaption>
-        </figure>}
-        <TextContainer {...data}>
+    <main class="px-4 w-full max-w-[856px] flex flex-col items-center">
+        {
+            firstPhotoName && (
+                <SmartImage
+                    src={firstPhotoName}
+                    class="relative w-full sm:mt-[1.7rem] mt-20"
+                />
+            )
+        }
+        <TextContainer {...data} class="sm:mt-[20svh] mt-20 max-w-[600px]">
             <Content components={{ a: AnnotatedLink }} />
         </TextContainer>
-        <div
-            class="w-full mt-[50vh]"
-        >
+        <div class="w-full mt-[50vh]">
             {
                 photos.map((p) => {
-                    const width = (768 * Math.sqrt(p.ratio) / Math.sqrt(3/2));
-                    const height = width/p.ratio;
-                    return <div class="flex justify-center" style={`margin: max(200px, calc(50svh - ${(height/2)}px)) 0;`}>
-                        <figure class="relative max-w-full" style={`width: ${width}px;`}>
-                            <img src={p.paths.medium} />
-                            <figcaption class="font-semibold text-sm">
-                                {p.joinedCaption}
-                            </figcaption>
-                        </figure>
-                    </div>
+                    const width = (768 * Math.sqrt(p.ratio)) / Math.sqrt(3 / 2);
+                    const height = width / p.ratio;
+                    return (
+                        <div
+                            class="flex justify-center"
+                            style={`margin: max(200px, calc(50svh - ${height / 2}px)) 0;`}
+                        >
+                            <figure
+                                class="relative max-w-full"
+                                style={`width: ${width}px;`}
+                            >
+                                <img src={p.paths.medium} />
+                                <figcaption class="font-semibold text-sm">
+                                    {p.joinedCaption}
+                                </figcaption>
+                            </figure>
+                        </div>
+                    );
                 })
             }
         </div>
     </main>
     <footer class="mb-[50svh] mt-[20vh]">
         <span>More</span>
-        <AnnotatedLink type="underline" staticUnderline={false} href={LINKS.index} class:list={"hover:mx-1"}>photography</AnnotatedLink>
+        <AnnotatedLink
+            type="underline"
+            staticUnderline={false}
+            href={LINKS.index}
+            class:list={"hover:mx-1"}>photography</AnnotatedLink
+        >
         <span>-&gt;</span>
     </footer>
 </Layout>

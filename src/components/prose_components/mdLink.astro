@@ -1,0 +1,10 @@
+---
+import AnnotatedLink from "./annotatedLink.astro";
+const props = Astro.props;
+---
+
+<AnnotatedLink
+    {...props}
+    class:list={"text-blue-600 hover:text-black hover:opacity-80 active:text-purple-800 visited:text-purple-800"}
+    ><slot /></AnnotatedLink
+>

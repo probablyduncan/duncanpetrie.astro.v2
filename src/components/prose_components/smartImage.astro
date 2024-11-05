@@ -1,0 +1,54 @@
+---
+import astroConfig from "../../../astro.config.mjs";
+import { PHOTO_NAMES, type PhotoName } from "../../data/photoTypes.generated";
+import {
+    getImgSize,
+    getPhotoByName,
+    type ImageSize,
+} from "../../lib/photoHelper";
+
+interface Props {
+    src?: string;
+    alt?: string;
+    class?: string;
+    size?: ImageSize;
+}
+
+const { src, alt, class: className, size = "medium" } = Astro.props;
+
+const coverType = src
+    ? PHOTO_NAMES.includes(src as PhotoName)
+        ? "photo"
+        : "image"
+    : "none";
+
+const props: any = {};
+
+if (coverType == "photo") {
+    const photo = getPhotoByName(src as PhotoName);
+    props.ratio = photo.ratio;
+    props.src = photo.paths[size];
+    props.alt = alt ?? photo.joinedCaption;
+} else if (coverType == "image") {
+    const sizePromise = getImgSize(src);
+    props.src = src;
+
+    if (!src.startsWith(astroConfig.base)) {
+        props.src = astroConfig.base + props.src;
+    }
+
+    props.alt = alt;
+    props.ratio = (await sizePromise).ratio;
+}
+---
+
+{
+    coverType != "none" && (
+        <figure class={className}>
+            <img src={props.src} alt={props.alt} />
+            <figcaption class="text-center font-semibold text-sm text-gray-500 mt-2">
+                {props.alt}
+            </figcaption>
+        </figure>
+    )
+}

@@ -1,8 +1,11 @@
 ---
 import { getCollection } from "astro:content";
 import Layout from "../components/layout_components/layout.astro";
-import AnnotatedLink from "../components/prose_components/annotatedLink.astro";
 import TextContainer from "../components/prose_components/textContainer.astro";
+import Toplink from "../components/toplink.astro";
+import SmartImage from "../components/prose_components/smartImage.astro";
+import MdLink from "../components/prose_components/mdLink.astro";
+import MdImg from "../components/prose_components/mdImg.astro";
 
 export async function getStaticPaths() {
     const textProjects = await getCollection("text");
@@ -19,9 +22,18 @@ const { Content } = await props.render();
 ---
 
 <Layout>
-    <main class="mt-60 px-4 w-full max-w-[600px] mb-[50vh]">
-        <TextContainer {...data} columns={0}>
-            <Content components={{ a: AnnotatedLink }} />
+    <main class="px-4 w-full max-w-[856px] flex flex-col items-center">
+        {
+            data.cover && (
+                <SmartImage
+                    src={data.cover}
+                    class="relative w-full sm:mt-[1.7rem] mt-20 sm:mb-[20svh] mb-20"
+                />
+            )
+        }
+        <TextContainer {...data} columns={0} class="max-w-[600px] sm:mt-[20svh] mt-20">
+            <Content components={{ a: MdLink, img: MdImg }} />
         </TextContainer>
     </main>
+    <Toplink slot="bottomleft">Top</Toplink>
 </Layout>
