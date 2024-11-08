@@ -11,10 +11,12 @@ interface Props {
     src?: string;
     alt?: string;
     class?: string;
+    style?: string;
     size?: ImageSize;
+    captionAlign?: "text-right" | "text-left" | "text-center";
 }
 
-const { src, alt, class: className, size = "medium" } = Astro.props;
+const { src, alt, class: classes, size = "medium", style, captionAlign = "text-center" } = Astro.props;
 
 const coverType = src
     ? PHOTO_NAMES.includes(src as PhotoName)
@@ -44,9 +46,9 @@ if (coverType == "photo") {
 
 {
     coverType != "none" && (
-        <figure class={className}>
+        <figure class={classes} style={style}>
             <img src={props.src} alt={props.alt} />
-            <figcaption class="text-center font-semibold text-sm text-gray-500 mt-2">
+            <figcaption class:list={["text-center font-semibold text-sm text-gray-500 mt-2", captionAlign]}>
                 {props.alt}
             </figcaption>
         </figure>

@@ -46,7 +46,7 @@ const flexCenter = "flex justify-center items-center h-full w-full p-4";
                 </div>
             </div>
             <div class="swiper-slide" data-caption={photos[2][1].joinedCaption} data-from-link={LINKS.palimpsest} data-from-text="Palimpsest">
-                <div class={flexCenter + " gap-4"}>
+                <div class={flexCenter + " gap-3 sm:gap-4"}>
                     <img
                         src={photos[2][0].paths.medium}
                         alt={photos[2][0].joinedCaption}
@@ -109,7 +109,7 @@ const flexCenter = "flex justify-center items-center h-full w-full p-4";
                     
                 },
                 // loop: true,
-                // rewind: true,
+                rewind: true,
                 simulateTouch: false, // controls whether mouse can swipe
                 // spaceBetween: 0,
                 modules: [],

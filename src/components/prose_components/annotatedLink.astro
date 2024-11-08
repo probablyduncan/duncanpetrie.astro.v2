@@ -7,11 +7,13 @@ interface Props {
     staticUnderline?: boolean;
     href?: string;
     title?: string;
+    class?: string;
 }
 
 const {
     type = "underline",
     staticUnderline = true,
+    class: classes,
     ...passthrough
 } = Astro.props;
 ---
@@ -19,13 +21,13 @@ const {
 <SmartLink
     {...passthrough}
     data-type={type}
-    class:list={{
+    class:list={[{
         "annotated-link focus-visible:outline-none": true,
         "hover:opacity-80 focus-visible:opacity-80 transition-opacity":
             type === "circle" || type === "box",
         "hover:text-white focus-visible:text-white": type === "highlight",
         "underline hover:no-underline": staticUnderline,
-    }}><slot /></SmartLink
+    }, classes]}><slot /></SmartLink
 ><script>
     //the script tag here is on the same line to prevent white space injection
     import { annotate } from "rough-notation";

@@ -10,209 +10,250 @@ import { LINKS } from "../lib/linkHelper";
 p("north-atlantic-pennance-point-2021-01-14");
 ---
 
-<Layout includeBottomNav={true}>
-    <!-- <button data-swipe-to="-1" slot="topleft">INFO</button> -->
-    <button data-swipe-to="0" slot="topmiddle">DUNCANPETRIE</button>
-    <main class="swiper w-full h-[calc(100svh-8rem)]">
-        <div class="pb-16 swiper-wrapper">
-            <div
-                class="swiper-slide"
-                data-from-text="Horizons"
-                data-from-href={LINKS.horizons}
-            >
-                <div
-                    class="flex items-center justify-center w-full h-full px-4"
+<html lang="en">
+    <head>
+        <BaseHead />
+    </head>
+    <body
+        class="bg-white text-black dark:bg-black dark:text-white min-h-svh w-full font-sans grid grid-rows-[auto_1fr]"
+    >
+        <nav
+            class="font-semibold text-sm z-10 sticky top-0 py-4 mx-4 h-14 bg-white grid grid-cols-3 items-center border-b-2 border-black sm:relative sm:border-none sm:bg-none sm:p-0"
+        >
+            <span class="text-left">
+                <AnnotatedLink
+                    href="/about"
+                    staticUnderline={false}
+                    type="circle"
                 >
-                    <figure>
+                    INFO
+                </AnnotatedLink>
+            </span>
+            <button data-swipe-to="0" class="text-center hover:opacity-80">
+                DUNCANPETRIE
+            </button>
+            <span class="text-right">
+                <AnnotatedLink
+                    href="/links"
+                    staticUnderline={false}
+                    type="circle"
+                >
+                    WORK
+                </AnnotatedLink>
+            </span>
+        </nav>
+        <main class="swiper w-full">
+            <div class="swiper-wrapper">
+                <div
+                    class="swiper-slide"
+                    data-caption={p("north-atlantic-pennance-point-2021-01-14")
+                        .joinedCaption}
+                    data-from-text="Horizons"
+                    data-from-href={LINKS.horizons}
+                >
+                    <figure
+                        class="flex items-center justify-center w-full h-full px-4 pb-14"
+                    >
                         <img
                             draggable="false"
                             src={p("north-atlantic-pennance-point-2021-01-14")
                                 .paths.medium}
-                            class="max-w-[600px] select-none cursor-crosshair border-4 border-[#e2e8f0]"
-                            style={`max-width: min(600px, calc((100svh - 12rem) * ${p("north-atlantic-pennance-point-2021-01-14").ratio}));`}
+                            class="w-full select-none cursor-crosshair border-4 border-[#e2e8f0]"
+                            style={`max-width: min(600px, calc((100svh - 8rem) * ${p("north-atlantic-pennance-point-2021-01-14").ratio}));`}
                         />
-                        <figcaption class="font-semibold text-sm p-1">
+                        <figcaption class="hidden font-semibold text-sm p-1">
                             North Atlantic, from Pennance Point. 2021.
                         </figcaption>
                     </figure>
                 </div>
-            </div>
-            <div
-                class="swiper-slide"
-                data-from-text="Palimpsest"
-                data-from-href={LINKS.palimpsest}
-            >
                 <div
-                    class="flex items-center justify-center w-full h-full px-4"
+                    class="swiper-slide"
+                    data-caption={p("forest-library-isle-of-wight-2024-04-26")
+                        .joinedCaption}
+                    data-from-text="Palimpsest"
+                    data-from-href={LINKS.palimpsest}
                 >
-                    <figure>
+                    <div
+                        class="flex items-center justify-center w-full h-full px-4 pb-14"
+                    >
+                        <figure>
+                            <img
+                                draggable="false"
+                                src={p(
+                                    "forest-library-isle-of-wight-2024-04-26"
+                                ).paths.medium}
+                                class="w-full select-none cursor-crosshair border-[3px] border-[#C8CDB9]"
+                                style={`max-width: min(400px, calc((100svh - 8rem) * ${p("forest-library-isle-of-wight-2024-04-26").ratio}));`}
+                            />
+                            <figcaption
+                                class="hidden font-semibold text-sm p-1"
+                            >
+                                Forest Library, Isle of Wight. 2024.
+                            </figcaption>
+                        </figure>
+                    </div>
+                </div>
+                <div
+                    class="swiper-slide"
+                    data-caption={p("bear-witness-belsize-park-2024-05-17")
+                        .joinedCaption}
+                    data-from-text="Palimpsest"
+                    data-from-href={LINKS.palimpsest}
+                >
+                    <div
+                        class="flex items-center justify-center w-full h-full px-4 gap-3 sm:gap-4"
+                    >
                         <img
-                            draggable="false"
-                            src={p("forest-library-isle-of-wight-2024-04-26")
+                            src={p("shed-train-window-weymouth-2024-09-03")
                                 .paths.medium}
-                            style={`max-width: min(400px, calc((100svh - 12rem) * ${p("forest-library-isle-of-wight-2024-04-26").ratio}));`}
-                            class="select-none cursor-crosshair border-[3px] border-[#C8CDB9]"
-                        />
-                        <figcaption class="font-semibold text-sm p-1">
-                            Forest Library, Isle of Wight. 2024.
-                        </figcaption>
-                    </figure>
-                </div>
-            </div>
-            <div
-                class="swiper-slide"
-                data-from-text="Lingermyth"
-                data-from-href={LINKS.lingermyth}
-            >
-                <div
-                    class="flex items-center justify-center w-full h-full px-4 gap-4"
-                >
-                    <img
-                        src={p("shed-train-window-weymouth-2024-09-03").paths
-                            .medium}
-                        alt={p("shed-train-window-weymouth-2024-09-03")
-                            .joinedCaption}
-                        draggable="false"
-                        class="max-w-[280px] w-[calc(50%-0.5rem)] select-none cursor-crosshair"
-                    />
-                    <img
-                        src={p("bear-witness-belsize-park-2024-05-17").paths
-                            .medium}
-                        alt={p("bear-witness-belsize-park-2024-05-17")
-                            .joinedCaption}
-                        draggable="false"
-                        class="max-w-[282px] w-[calc(50%-0.5rem)] select-none cursor-crosshair border-[3px] border-[#0A0907]"
-                    />
-                </div>
-            </div>
-            <div
-                class="swiper-slide"
-                data-from-text="Lingermyth"
-                data-from-href={LINKS.lingermyth}
-            >
-                <div
-                    class="flex items-center justify-center w-full h-full px-4"
-                >
-                    <figure>
-                        <img
+                            alt={p("shed-train-window-weymouth-2024-09-03")
+                                .joinedCaption}
                             draggable="false"
-                            style={`max-width: min(560px, calc((100svh - 12rem) * ${p("hell-awaits-falmouth-2021-10-30").ratio}));`}
-                            src={p("hell-awaits-falmouth-2021-10-30").paths
-                                .medium}
-                            class="select-none cursor-crosshair border-[3px] border-[#C8CDB9]"
+                            class="max-w-[280px] w-[calc(50%-0.5rem)] select-none cursor-crosshair"
                         />
-                        <figcaption class="font-semibold text-sm p-1">
-                            Hell Awaits, Falmouth, Cornwall. 2021.
-                        </figcaption>
-                    </figure>
+                        <img
+                            src={p("bear-witness-belsize-park-2024-05-17").paths
+                                .medium}
+                            alt={p("bear-witness-belsize-park-2024-05-17")
+                                .joinedCaption}
+                            draggable="false"
+                            class="max-w-[282px] w-[calc(50%-0.5rem)] select-none cursor-crosshair border-[3px] border-[#0A0907]"
+                        />
+                    </div>
+                    <figcaption class="hidden font-semibold text-sm p-1">
+                        Bear, Witness, Belsize Park. 2024.
+                    </figcaption>
+                </div>
+                <div
+                    class="swiper-slide"
+                    data-caption={p("hell-awaits-falmouth-2021-10-30")
+                        .joinedCaption}
+                    data-from-text="Lingermyth"
+                    data-from-href={LINKS.lingermyth}
+                >
+                    <div
+                        class="flex items-center justify-center w-full h-full px-4 pb-14"
+                    >
+                        <figure>
+                            <img
+                                draggable="false"
+                                style={`max-width: min(560px, calc((100svh - 12rem) * ${p("hell-awaits-falmouth-2021-10-30").ratio}));`}
+                                src={p("hell-awaits-falmouth-2021-10-30").paths
+                                    .medium}
+                                class="select-none cursor-crosshair border-[3px] border-[#C8CDB9]"
+                            />
+                            <figcaption
+                                class="hidden font-semibold text-sm p-1"
+                            >
+                                Hell Awaits, Falmouth, Cornwall. 2021.
+                            </figcaption>
+                        </figure>
+                    </div>
                 </div>
             </div>
-        </div>
-    </main>
-    <span
-        slot="bottomleft"
-        class="fixed sm:hidden bottom-4 text-sm font-semibold transition-opacity"
-        data-swipe-hint
-        >SWIPE&nbsp;&nbsp;-&gt;
-    </span>
-    <span slot="bottomright">
-        <!-- <div class="swiper-pagination"></div> -->
-        <span data-bottom-text></span>
-        <AnnotatedLink data-bottom-link href="" />
-    </span>
-    <script>
-        import Swiper from "swiper";
-        // import { Pagination } from "swiper/modules";
-        import "swiper/css";
-        // import "swiper/css/pagination"
+        </main>
+        <footer class="font-semibold text-sm">
+            <span data-swipe-hint class="fixed bottom-4 px-4 h-8 w-full text-center flex items-end justify-center"
+                >SWIPE&nbsp;&nbsp;-&gt;</span
+            >
+            <span class="fixed z-10 bottom-4 px-4 h-8 w-full text-center flex items-end justify-center">
+                <span data-bottom-text></span>
+                <AnnotatedLink data-bottom-link href="" />
+            </span>
+        </footer>
+        <script>
+            import Swiper from "swiper";
+            // import { Pagination } from "swiper/modules";
+            import "swiper/css";
+            // import "swiper/css/pagination"
 
-        let swipeHintActive = true;
-        document.addEventListener("DOMContentLoaded", function () {
-            const swiper = new Swiper(".swiper", {
-                on: {
-                    realIndexChange: (s) => {
-                        if (swipeHintActive) {
-                            swipeHintActive = false;
-                            (
-                                document.querySelector(
-                                    "[data-swipe-hint]"
-                                ) as HTMLElement
-                            ).style.opacity = "0";
-                        }
+            let swipeHintActive = true;
+            document.addEventListener("DOMContentLoaded", function () {
+                const swiper = new Swiper(".swiper", {
+                    on: {
+                        realIndexChange: (s) => {
+                            if (swipeHintActive) {
+                                swipeHintActive = false;
+                                (
+                                    document.querySelector(
+                                        "[data-swipe-hint]"
+                                    ) as HTMLElement
+                                ).style.opacity = "0";
+                            }
 
-                        let fromPref = "From:&nbsp;";
-                        let { fromText, fromHref } = (
-                            s.slides[s.realIndex] as HTMLElement
-                        ).dataset;
+                            let fromPref = "From:&nbsp;";
+                            let { fromText, fromHref } = (
+                                s.slides[s.realIndex] as HTMLElement
+                            ).dataset;
 
-                        if (!fromText || !fromHref) {
-                            fromText = "";
-                            fromHref = "";
-                            fromPref = "";
-                        }
+                            if (!fromText || !fromHref) {
+                                fromText = "";
+                                fromHref = "";
+                                fromPref = "";
+                            }
 
-                        const fromLink =
-                            document.querySelector("[data-bottom-link]");
+                            const fromLink =
+                                document.querySelector("[data-bottom-link]");
 
-                        fromLink.innerHTML = fromText;
-                        fromLink["href"] = fromHref;
+                            fromLink.innerHTML = fromText;
+                            fromLink["href"] = fromHref;
 
-                        document.querySelector("[data-bottom-text]").innerHTML =
-                            fromPref;
+                            document.querySelector(
+                                "[data-bottom-text]"
+                            ).innerHTML = fromPref;
+                        },
                     },
-                },
-                initialSlide: 0,
-                // loop: true,
-                rewind: true,
-                simulateTouch: true, // controls whether mouse can swipe
-                // spaceBetween: 0,
-                // modules: [Pagination],
-                breakpoints: {
-                    640: {
-                        simulateTouch: false, // only simulate touch on small screens
+                    initialSlide: 0,
+                    // loop: true,
+                    rewind: true,
+                    simulateTouch: true, // controls whether mouse can swipe
+                    // spaceBetween: 0,
+                    // modules: [Pagination],
+                    breakpoints: {
+                        640: {
+                            simulateTouch: false, // only simulate touch on small screens
+                        },
                     },
-                },
-                // pagination: {
-                //     type: "bullets",
-                //     dynamicBullets: true,
-                //     el: ".swiper-pagination",
-                // }
-            });
+                    // pagination: {
+                    //     type: "bullets",
+                    //     dynamicBullets: true,
+                    //     el: ".swiper-pagination",
+                    // }
+                });
 
-            swiper.el.querySelectorAll("img").forEach((e) =>
-                e.addEventListener("click", () => {
+                swiper.el.querySelectorAll("img").forEach((e) =>
+                    e.addEventListener("click", () => {
+                        if (window.innerWidth < 640) {
+                            return;
+                        }
+                        swiper.slideNext(0, true);
+                    })
+                );
+
+                document.addEventListener("keydown", (e) => {
                     if (window.innerWidth < 640) {
                         return;
                     }
-                    swiper.slideNext(0, true);
-                })
-            );
 
-            document.addEventListener("keydown", (e) => {
-                if (window.innerWidth < 640) {
-                    return;
-                }
+                    if (e.key === "ArrowLeft") {
+                        swiper.slidePrev(0, true);
+                    } else if (e.key === "ArrowRight") {
+                        swiper.slideNext(0, true);
+                    }
+                });
 
-                if (e.key === "ArrowLeft") {
-                    swiper.slidePrev(0, true);
-                } else if (e.key === "ArrowRight") {
-                    swiper.slideNext(0, true);
-                }
+                document.querySelectorAll("[data-swipe-to]").forEach((e) => {
+                    const slide = parseInt((e as HTMLElement).dataset.swipeTo);
+                    if (slide || slide === 0) {
+                        e.addEventListener("click", () => {
+                            swiper.slideTo(
+                                (swiper.slides.length + slide) %
+                                    swiper.slides.length
+                            );
+                        });
+                    }
+                });
             });
-
-            document.querySelectorAll("[data-swipe-to]").forEach((e) => {
-                console.log(e);
-                const slide = parseInt((e as HTMLElement).dataset.swipeTo);
-                console.log(slide);
-                if (slide || slide === 0) {
-                    e.addEventListener("click", () => {
-                        swiper.slideTo(
-                            (swiper.slides.length + slide) %
-                                swiper.slides.length
-                        );
-                    });
-                }
-            });
-        });
-    </script>
-</Layout>
+        </script>
+    </body></html
+>

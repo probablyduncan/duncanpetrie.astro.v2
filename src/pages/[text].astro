@@ -22,12 +22,14 @@ const { Content } = await props.render();
 ---
 
 <Layout>
-    <main class="px-4 w-full max-w-[856px] flex flex-col items-center">
+    <main class="px-4 w-full max-w-[856px] flex flex-col items-center mb-[50svh]">
         {
             data.cover && (
                 <SmartImage
                     src={data.cover}
-                    class="relative w-full sm:mt-[1.7rem] mt-20 sm:mb-[20svh] mb-20"
+                    alt={data.coverCaption}
+                    class="relative w-full sm:mt-[1.7rem] mt-20"
+                    captionAlign="text-right"
                 />
             )
         }
@@ -35,5 +37,6 @@ const { Content } = await props.render();
             <Content components={{ a: MdLink, img: MdImg }} />
         </TextContainer>
     </main>
-    <Toplink slot="bottomleft">Top</Toplink>
+    <Toplink slot="bottomright">Top</Toplink>
+    <span slot="bottomleft"></span>
 </Layout>

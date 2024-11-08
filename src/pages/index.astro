@@ -29,10 +29,11 @@ import { getPhotoByName as p } from "../lib/photoHelper";
             data-from-href={LINKS.palimpsest}
         >
             <div
-                class="flex justify-center items-center w-[568px] gap-4 max-w-[calc(100vw_-_2rem)]"
+                class="flex justify-center items-center w-[568px] gap-3 sm:gap-4 max-w-[calc(100vw_-_2rem)]"
             >
                 <img
                     data-swap-button
+                    draggable="false"
                     src={p("shed-train-window-weymouth-2024-09-03").paths
                         .medium}
                     alt={p("shed-train-window-weymouth-2024-09-03")

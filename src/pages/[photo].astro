@@ -7,6 +7,8 @@ import TextContainer from "../components/prose_components/textContainer.astro";
 import { LINKS } from "../lib/linkHelper";
 import { PHOTO_NAMES, type PhotoName } from "../data/photoTypes.generated";
 import SmartImage from "../components/prose_components/smartImage.astro";
+import MdImg from "../components/prose_components/mdImg.astro";
+import MdLink from "../components/prose_components/mdLink.astro";
 
 export async function getStaticPaths() {
     const photoProjects = await getCollection("photo");
@@ -32,12 +34,14 @@ const firstPhotoName = PHOTO_NAMES.includes(data.cover as PhotoName)
             firstPhotoName && (
                 <SmartImage
                     src={firstPhotoName}
+                    alt={data.coverCaption}
                     class="relative w-full sm:mt-[1.7rem] mt-20"
+                    captionAlign="text-right"
                 />
             )
         }
         <TextContainer {...data} class="sm:mt-[20svh] mt-20 max-w-[600px]">
-            <Content components={{ a: AnnotatedLink }} />
+            <Content components={{ a: MdLink, img: MdImg }} />
         </TextContainer>
         <div class="w-full mt-[50vh]">
             {
@@ -49,7 +53,8 @@ const firstPhotoName = PHOTO_NAMES.includes(data.cover as PhotoName)
                             class="flex justify-center"
                             style={`margin: max(200px, calc(50svh - ${height / 2}px)) 0;`}
                         >
-                            <figure
+                            <SmartImage src={p.name} class="relative max-w-full" style={`width: ${width}px`} captionAlign="text-right" />
+                            {/* <figure
                                 class="relative max-w-full"
                                 style={`width: ${width}px;`}
                             >
@@ -57,7 +62,7 @@ const firstPhotoName = PHOTO_NAMES.includes(data.cover as PhotoName)
                                 <figcaption class="font-semibold text-sm">
                                     {p.joinedCaption}
                                 </figcaption>
-                            </figure>
+                            </figure> */}
                         </div>
                     );
                 })

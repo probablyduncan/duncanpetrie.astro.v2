@@ -12,16 +12,17 @@ const textBodyOptions = {
     startIcon: z.boolean().default(true),
     endIcon: z.boolean().default(true),
     hyphens: z.boolean().default(false),
+
+    cover: z.enum(PHOTO_NAMES).or(z.string()).optional(),
+    coverCaption: z.string().optional(),
 }
 
-const photoSrc = z.enum(PHOTO_NAMES).or(z.string()).optional();
 
 const photo = defineCollection({
     type: 'content',
     schema: z.object({
         ...standardOptions,
         ...textBodyOptions,
-        cover: photoSrc,
 
         // photos
         names: z.array(z.enum(PHOTO_NAMES)).optional(),
@@ -36,7 +37,6 @@ const text = defineCollection({
     schema: z.object({
         ...standardOptions,
         ...textBodyOptions,
-        cover: photoSrc,
     })
 })
 
