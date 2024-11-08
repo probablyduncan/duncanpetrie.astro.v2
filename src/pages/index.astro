@@ -1,138 +1,186 @@
 ---
-import EqualAreaSlide from "../components/home_slideshow_components/equalAreaSlide.astro";
+import astroConfig from "../../astro.config.mjs";
 import Layout from "../components/layout_components/layout.astro";
 import AnnotatedLink from "../components/prose_components/annotatedLink.astro";
 import { LINKS } from "../lib/linkHelper";
-import { getPhotoByName as p } from "../lib/photoHelper";
+import { getPhotoByName as p, PhotoData } from "../lib/photoHelper";
+
+const flexCenter =
+    "flex w-full sm:h-full sm:items-center sm:justify-center px-4 pt-14 mt-4 pb-8 sm:pt-4 sm:pb-4";
 ---
 
 <Layout>
-    <main class="sm:flex justify-center items-center p-4">
-        <EqualAreaSlide
-            show={true}
-            photoName="la-corbiere-st-brelade-jersey-2024-05-25"
-            shadow="4px 4px 0 rgba(10, 114, 123, 0.09)"
-            fromHref={LINKS.palimpsest}
-            fromText="Palimpsest"
-        />
-        <EqualAreaSlide
-            photoName="north-atlantic-pennance-point-2021-01-14"
-            border="4px solid #e2e8f0"
-            fromHref={LINKS.horizons}
-            fromText="Horizons"
-        />
-        <figure
-            class="my-64 sm:my-0 sm:hidden flex justify-center"
-            data-swap-child
-            data-caption="Bear, witness, Belsize Park. 2024."
-            data-from-text="Palimpsest"
-            data-from-href={LINKS.palimpsest}
-        >
+    <div class="swiper w-full h-svh">
+        <div class="swiper-wrapper">
             <div
-                class="flex justify-center items-center w-[568px] gap-3 sm:gap-4 max-w-[calc(100vw_-_2rem)]"
+                class="swiper-slide"
+                data-caption={p("north-atlantic-pennance-point-2021-01-14")
+                    .joinedCaption}
+                data-from-link={astroConfig.base + LINKS.horizons}
+                data-from-text="Horizons"
             >
-                <img
-                    data-swap-button
-                    draggable="false"
-                    src={p("shed-train-window-weymouth-2024-09-03").paths
-                        .medium}
-                    alt={p("shed-train-window-weymouth-2024-09-03")
-                        .joinedCaption}
-                    class="sm:cursor-crosshair w-[calc(50%-0.5rem)]"
-                />
-                <img
-                    data-swap-button
-                    src={p("bear-witness-belsize-park-2024-05-17").paths.medium}
-                    alt={p("bear-witness-belsize-park-2024-05-17")
-                        .joinedCaption}
-                    class="sm:cursor-crosshair border-[3px] border-[#0A0907] w-[calc(50%-0.5rem)]"
-                />
+                <div class={flexCenter}>
+                    <img
+                        src={p("north-atlantic-pennance-point-2021-01-14").paths
+                            .large}
+                        alt={p("north-atlantic-pennance-point-2021-01-14")
+                            .joinedCaption}
+                        draggable="false"
+                        class="max-w-[600px] select-none cursor-crosshair border-4 border-[#e2e8f0]"
+                    />
+                </div>
             </div>
-            <!-- <figcaption class="font-semibold text-sm sm:hidden">
-                Bear, witness, Belsize Park. 2024.
-            </figcaption> -->
-        </figure>
-        <EqualAreaSlide
-            photoName="cycling-gudmundsen-drive-door-county-2019-08-31"
-            shadow="4px 4px 0px rgba(0, 0, 0, 0.8)"
-            fromHref={LINKS.heartland}
-            fromText="Heartland"
-        />
-        <EqualAreaSlide
-            photoName="forest-library-isle-of-wight-2024-04-26"
-            border="3px solid #C8CDB9"
-            fromHref={LINKS.palimpsest}
-            fromText="Palimpsest"
-        />
-        <EqualAreaSlide
-            photoName="hell-awaits-falmouth-2021-10-30"
-            border="4px solid rgba(1, 113, 123, 0.09)"
-            fromHref={LINKS.lingermyth}
-            fromText="Lingermyth"
-        />
-    </main>
-    <span slot="bottomleft" class="hidden sm:inline" data-caption-container>
-        {p("la-corbiere-st-brelade-jersey-2024-05-25").joinedCaption}
+            <div
+                class="swiper-slide"
+                data-caption={p("forest-library-isle-of-wight-2024-04-26")
+                    .joinedCaption}
+                data-from-link={astroConfig.base + LINKS.palimpsest}
+                data-from-text="Palimpsest"
+            >
+                <div class={flexCenter}>
+                    <img
+                        src={p("forest-library-isle-of-wight-2024-04-26").paths
+                            .large}
+                        alt={p("forest-library-isle-of-wight-2024-04-26")
+                            .joinedCaption}
+                        draggable="false"
+                        class="max-w-[400px] select-none cursor-crosshair border-[3px] border-[#C8CDB9]"
+                    />
+                </div>
+            </div>
+            <div
+                class="swiper-slide"
+                data-caption={p(
+                    "cycling-gudmundsen-drive-door-county-2019-08-31"
+                ).joinedCaption}
+                data-from-link={astroConfig.base + LINKS.heartland}
+                data-from-text="Heartland"
+            >
+                <div class={flexCenter}>
+                    <img
+                        src={p(
+                            "cycling-gudmundsen-drive-door-county-2019-08-31"
+                        ).paths.large}
+                        alt={p(
+                            "cycling-gudmundsen-drive-door-county-2019-08-31"
+                        ).joinedCaption}
+                        draggable="false"
+                        class="max-w-[600px] select-none cursor-crosshair shadow-[4px_4px_0px_rgba(0,0,0,0.8)]"
+                    />
+                </div>
+            </div>
+            <div
+                class="swiper-slide"
+                data-caption={p("bear-witness-belsize-park-2024-05-17")
+                    .joinedCaption}
+                data-from-link={astroConfig.base + LINKS.palimpsest}
+                data-from-text="Palimpsest"
+            >
+                <div class={flexCenter + " gap-3 sm:gap-4"}>
+                    <img
+                        src={p("shed-train-window-weymouth-2024-09-03").paths
+                            .medium}
+                        alt={p("shed-train-window-weymouth-2024-09-03")
+                            .joinedCaption}
+                        draggable="false"
+                        class="max-w-[270px] w-[calc(50%-0.5rem)] select-none cursor-crosshair"
+                    />
+                    <img
+                        src={p("bear-witness-belsize-park-2024-05-17").paths
+                            .medium}
+                        alt={p("bear-witness-belsize-park-2024-05-17")
+                            .joinedCaption}
+                        draggable="false"
+                        class="max-w-[270px] w-[calc(50%-0.5rem)] select-none cursor-crosshair border-[3px] border-[#0A0907]"
+                    />
+                </div>
+            </div>
+            <div
+                class="swiper-slide"
+                data-caption={p("la-corbiere-st-brelade-jersey-2024-05-25")
+                    .joinedCaption}
+                data-from-link={astroConfig.base + LINKS.palimpsest}
+                data-from-text="Palimpsest"
+            >
+                <div class={flexCenter}>
+                    <img
+                        src={p("la-corbiere-st-brelade-jersey-2024-05-25").paths
+                            .large}
+                        alt={p("la-corbiere-st-brelade-jersey-2024-05-25")
+                            .joinedCaption}
+                        draggable="false"
+                        class="max-w-[600px] select-none cursor-crosshair shadow-[4px_4px_0_rgba(10,_114,_123,_0.09)]"
+                    />
+                </div>
+            </div>
+        </div>
+    </div>
+    <span slot="bottomleft" data-caption-container class="hidden sm:inline">
+        {p("north-atlantic-pennance-point-2021-01-14").joinedCaption}
     </span>
-    <span slot="bottomright" class="hidden sm:inline">
-        <span>From</span>
+    <span slot="bottomright" class="text-gray-500 sm:text-black">
+        <span>From:</span>
         <AnnotatedLink
             data-from-link-container
             type="circle"
-            staticUnderline={true}
+            staticUnderline={true}>Horizons</AnnotatedLink
         >
-            Palimpsest
-        </AnnotatedLink>
     </span>
     <script>
-        function initHomeSlides() {
-            const swapChildren = Array.from(
-                document.querySelectorAll("[data-swap-child]")
+        import Swiper from "swiper";
+        import {} from "swiper/modules";
+        import "swiper/css";
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const swiper = new Swiper(".swiper", {
+                on: {
+                    realIndexChange: (s) => {
+                        const data = (
+                            s.wrapperEl.children[s.realIndex] as HTMLElement
+                        ).dataset;
+                        const fromLink = document.querySelector(
+                            "[data-from-link-container]"
+                        );
+                        fromLink.innerHTML = data.fromText;
+                        fromLink["href"] = data.fromLink;
+                        document.querySelector(
+                            "[data-caption-container]"
+                        ).innerHTML = data.caption;
+                    },
+                },
+                modules: [],
+                // spaceBetween: 0,
+                // loop: true,
+                rewind: true,
+                simulateTouch: false, // controls whether mouse can swipe
+                breakpoints: {
+                    640: {
+                        simulateTouch: false, // only simulate touch on small screens
+                    },
+                },
+            });
+
+            swiper.el.querySelectorAll("img").forEach((e) =>
+                e.addEventListener("click", () => {
+                    if (window.innerWidth >= 640) {
+                        swiper.slideNext(0, true);
+                    } else if (
+                        document.querySelector("a[data-from-link-container]")["href"]
+                    ) {
+                        window.location = document.querySelector(
+                            "a[data-from-link-container]"
+                        )["href"]
+                    }
+                })
             );
-
-            const captionContainer = document.querySelector(
-                "[data-caption-container]"
-            ) as HTMLElement;
-            const fromLinkContainer = document.querySelector(
-                "[data-from-link-container]"
-            ) as HTMLAnchorElement;
-
-            function nextSlide(forwards = true) {
-                const current = swapChildren.find(
-                    (e) => !e.classList.contains("sm:hidden")
-                );
-
-                let next = (
-                    forwards
-                        ? current?.nextElementSibling
-                        : current?.previousElementSibling
-                ) as HTMLElement;
-                if (!next) {
-                    next = swapChildren.at(forwards ? 0 : -1) as HTMLElement;
-                }
-
-                swapChildren.forEach((e) => e.classList.add("sm:hidden"));
-                next.classList.remove("sm:hidden");
-
-                captionContainer.innerHTML = next.dataset.caption;
-                fromLinkContainer.innerHTML = next.dataset.fromText;
-                fromLinkContainer.href = next.dataset.fromHref;
-            }
-
-            document
-                .querySelectorAll("[data-swap-button]")
-                .forEach((e) => e.addEventListener("click", () => nextSlide()));
 
             document.addEventListener("keydown", (e) => {
                 if (e.key === "ArrowLeft") {
-                    nextSlide(false);
+                    swiper.slidePrev(0, true);
                 } else if (e.key === "ArrowRight") {
-                    nextSlide();
+                    swiper.slideNext(0, true);
                 }
             });
-        }
-
-        initHomeSlides();
-        document.addEventListener("astro:after-swap", initHomeSlides);
+        });
     </script>
 </Layout>
