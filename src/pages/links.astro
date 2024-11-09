@@ -5,6 +5,7 @@ import { LINKS } from "../lib/linkHelper";
 
 const INDEX_LINKS = {
     Photo: {
+        "order": 1,
         "Palimpsest": LINKS.palimpsest,
         "To Pigeon-Fill the Sky": LINKS.pigeon,
         "Lingermyth": LINKS.lingermyth,
@@ -12,6 +13,7 @@ const INDEX_LINKS = {
         "Heartland": LINKS.heartland,
     },
     Links: {
+        order: 4,
         Instagram: LINKS.instagram,
         Youtube: LINKS.youtube,
         Linkedin: LINKS.linkedin,
@@ -20,6 +22,7 @@ const INDEX_LINKS = {
         // Info: LINKS.info,
     },
     Text: {
+        "order": 2,
         "On Yearning": LINKS.yearn,
         "The List of the Wind": LINKS.wind,
         "The Man Upstairs": LINKS.upstairs,
@@ -27,37 +30,47 @@ const INDEX_LINKS = {
         // "Fluffy Cloud": LINKS.fluffy,
     },
     Film: {
+        "order": 3,
         "The Triumph of the Commons": LINKS.wiki,
         "Pizza, really fast": LINKS.pizza,
     },
     Sundry: {
+        "order": 5,
         "Unfinished Songs": LINKS.songs,
         "Wrap Map": LINKS.wrapmap,
     },
 } as const;
 ---
 
-<Layout title="Projects - Duncan Petrie" photoName="parchment-paper-window-margate-2023-09-04">
-    <main class="sm:columns-2 w-full sm:w-auto pl-8 sm:pl-16 my-32">
+<Layout
+    title="Work - Duncan Petrie"
+    photoName="parchment-paper-window-margate-2023-09-04"
+>
+    <main class="flex flex-col sm:block sm:columns-2 w-full sm:w-auto pl-8 sm:pl-16 my-32">
         {
-            Object.keys(INDEX_LINKS).map((g) => (
-                <div class="pb-4">
-                    <h2 class="font-serif font-bold text-xl">{g}</h2>
-                    <ul>
-                        {Object.keys(INDEX_LINKS[g]).map((l) => (
-                            <li>
-                                <AnnotatedLink
-                                    type="circle"
-                                    staticUnderline={false}
-                                    href={INDEX_LINKS[g][l]}
-                                    class:list={"text-sm"}>
-                                    {l}
-                                </AnnotatedLink>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            ))
+            Object.keys(INDEX_LINKS).map((g) => {
+                const links = Object.keys(INDEX_LINKS[g]);
+                const order = INDEX_LINKS[g][links.shift()];
+                return (
+                    <div class="pb-4" style={`order: ${order};`}>
+                        <h2 class="font-serif font-bold text-xl">{g}</h2>
+                        <ul>
+                            {links.map((l) => (
+                                <li>
+                                    <AnnotatedLink
+                                        type="circle"
+                                        staticUnderline={false}
+                                        href={INDEX_LINKS[g][l]}
+                                        class:list={"text-sm"}
+                                    >
+                                        {l}
+                                    </AnnotatedLink>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                );
+            })
         }
     </main>
     <span slot="bottomleft"></span>
