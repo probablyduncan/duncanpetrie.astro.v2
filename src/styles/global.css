@@ -3,99 +3,105 @@
 @tailwind utilities;
 
 @layer base {
-    @font-face {
-        font-family: Inter;
-        font-style: normal;
-        font-weight: 100 900;
-        font-display: swap;
-        font-feature-settings:
-            "liga" 1,
-            "calt" 1;
-        src: url("/duncanpetrie.astro.v2/fonts/InterVariable.woff2") format("woff2");
-    }
+  @font-face {
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 400, 600;
+    font-display: swap;
+    font-feature-settings:
+      "liga" 1,
+      "calt" 1,
+      "ss01",
+      /* "ss02", */
+      "ss07",
+      "ss08",
+      "cv12",
+      "cv13",
+      "tnum",
+      "zero";
+    src: url("/duncanpetrie.astro.v2/fonts/inter.woff2") format("woff2");
+  }
 
-    @font-face {
-        font-family: Inter;
-        font-style: italic;
-        font-weight: 100 900;
-        font-display: swap;
-        font-feature-settings:
-            "liga" 1,
-            "calt" 1;
-        src: url("/duncanpetrie.astro.v2/fonts/InterVariable-Italic.woff2") format("woff2");
-    }
+  @font-face {
+    font-family: Inter;
+    font-style: italic;
+    font-weight: 400, 600;
+    font-display: swap;
+    font-feature-settings:
+      "liga" 1,
+      "calt" 1,
+      "ss01",
+      /* "ss02", */
+      "ss07",
+      "ss08",
+      "cv12",
+      "cv13",
+      "tnum",
+      "zero";
+    src: url("/duncanpetrie.astro.v2/fonts/inter-italic.woff2") format("woff2");
+  }
 
-    @font-face {
-        font-family: Junicode;
-        font-style: normal;
-        font-weight: 600;
-        font-display: swap;
-        font-feature-settings:
-            "cv10" 2,
-            "cv10" 4,
-            "cv10" 2;
-        src: url("/duncanpetrie.astro.v2/fonts/JunicodeVF-Roman.woff2") format("woff2");
-    }
+  @font-face {
+    font-family: Junicode;
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    font-feature-settings:
+      "cv10" 2,
+      "cv10" 4,
+      "cv10" 2;
+    src: url("/duncanpetrie.astro.v2/fonts/junicode.woff2") format("woff2");
+  }
 
-    /* @font-face {
-        font-family: Junicode;
-        font-style: italic;
-        font-weight: 100 900;
-        font-display: swap;
-        font-feature-settings:
-            "cv10" 2,
-            "cv10" 4,
-            "cv10" 2;
-        src: url("/fonts/JunicodeVF-Italic.woff2") format("woff2");
-    } */
+  @font-face {
+    font-family: "Arial-Inter";
+    ascent-override: 90.2%;
+    descent-override: 22.48%;
+    line-gap-override: 0%;
+    size-adjust: 107.4%;
+    src: local("Arial");
+  }
 
-    @font-face {
-        font-family: "Arial-Inter";
-        ascent-override: 90.2%;
-        descent-override: 22.48%;
-        line-gap-override: 0%;
-        size-adjust: 107.4%;
-        src: local("Arial");
-    }
+  @font-face {
+    font-family: "Junicode-Fallback";
+    src: local("Times New Roman");
+  }
 
-    @font-face {
-        font-family: "Junicode-Fallback";
-        src: local("Times New Roman");
-    }
+  @font-face {
+    font-family: "Inter-Fallback";
+    src: local("Times New Roman");
+  }
 
-    @font-face {
-        font-family: "Inter-Fallback";
-        src: local("Times New Roman");
-    }
-
-    img {
-        width: 100%;
-        display: block;
-    }
+  img {
+    width: 100%;
+    display: block;
+  }
 }
 
 @layer utilities {
-    .ligatures {
-        font-feature-settings: "dlig", "cv01" 2;
-    }
+  .ligatures {
+    font-feature-settings:
+      "dlig",
+      "cv01" 2;
+  }
 
-    .arrow-indent {
-        text-indent: 3.5rem;
-    }
+  .arrow-indent {
+    text-indent: 3.5rem;
+  }
 
-    .arrow-indent::before {
-        position: absolute;
-        content: "->";
-        left: -3.5rem;
-    }
+  .arrow-indent::before {
+    position: absolute;
+    content: "->";
+    left: -3.5rem;
+  }
 
-    .end-bullet::after {
-        margin-left: 0.5rem;
+  .end-bullet::after {
+    margin-left: 0.5rem;
 
-        /* circle */
-        content: "";
+    /* circle */
+    content: "";
 
-        /* square */
-        content: "";
-    }
+    /* square */
+    content: "";
+  }
 }
