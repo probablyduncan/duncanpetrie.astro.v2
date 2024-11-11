@@ -79,8 +79,7 @@
 @layer utilities {
   .ligatures {
     font-feature-settings:
-      "dlig",
-      "cv01" 2;
+      "dlig";
   }
 
   .arrow-indent {

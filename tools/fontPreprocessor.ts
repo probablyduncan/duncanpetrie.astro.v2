@@ -40,7 +40,7 @@ processFont("junicode.woff2", {
 });
 
 const interSettings = {
-    layoutFeatures: "ccmp locl mark mkmk liga salt aalt ss01 ss02 ss03 ss04 ss07 ss08 cv02 cv03 cv12 cv13 tnum zero calt dlig case kern",
+    layoutFeatures: "ccmp locl mark mkmk liga salt aalt ss01 ss02 ss03 ss04 ss07 ss08 cv02 cv03 cv12 cv13 tnum zero calt dlig case kern dlig",
     unicode: "U+0000-017F, U+2000-206F, U+20A0-20CF, U+2100-22FF, U+25A0-27FF, U+2900-2BFF, U+2C60-2C7F",
 }
 
