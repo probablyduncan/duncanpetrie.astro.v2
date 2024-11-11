@@ -9,13 +9,6 @@
     font-weight: 100, 900;
     font-display: swap;
     font-feature-settings:
-      "ss01",
-      /* disambiguation (mono I, tailed L, slashed zero) */ /* "ss02", */ 
-      "ss07",
-      "ss08",
-      "cv12",
-      "cv13",
-      /* monospace numbers */ /* "tnum", */ 
       "liga" 1,
       "calt" 1;
     src: url("/duncanpetrie.astro.v2/fonts/inter.woff2") format("woff2");
@@ -27,13 +20,6 @@
     font-weight: 100, 900;
     font-display: swap;
     font-feature-settings:
-      "ss01",
-      /* disambiguation (mono I, tailed L, slashed zero) */ /* "ss02", */ 
-      "ss07",
-      "ss08",
-      "cv12",
-      "cv13",
-      /* monospace numbers */ /* "tnum", */ 
       "liga" 1,
       "calt" 1;
     src: url("/duncanpetrie.astro.v2/fonts/inter-italic.woff2") format("woff2");
