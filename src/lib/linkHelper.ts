@@ -29,6 +29,7 @@ export const LINKS = {
     linkedin: "https://www.linkedin.com/in/probablyduncan/",
     github: "https://github.com/probablyduncan",
     wrapmap: "https://www.google.com/maps/d/viewer?mid=15A5_e_KS2Es4xs3ZhXmYR31dRmc0cpA",
+    mnhp: "https://www.falmouth.ac.uk/study/undergraduate/marine-natural-history-photography",
 } as const;
 
 

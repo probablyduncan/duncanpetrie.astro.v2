@@ -30,20 +30,7 @@
     font-style: normal;
     font-weight: 600;
     font-display: swap;
-    font-feature-settings:
-      "cv10" 2,
-      "cv10" 4,
-      "cv10" 2;
     src: url("/duncanpetrie.astro.v2/fonts/junicode.woff2") format("woff2");
-  }
-
-  @font-face {
-    font-family: "Arial-Inter";
-    ascent-override: 90.2%;
-    descent-override: 22.48%;
-    line-gap-override: 0%;
-    size-adjust: 107.4%;
-    src: local("Arial");
   }
 
   @font-face {

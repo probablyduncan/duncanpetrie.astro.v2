@@ -1,0 +1,165 @@
+---
+import BaseHead from "../components/baseHead.astro";
+import Navbar from "../components/layout_components/navbar.astro";
+import SmartImage from "../components/prose_components/smartImage.astro";
+import SmartLink from "../components/prose_components/smartLink.astro";
+import { PHOTO_NAMES } from "../data/photoTypes.generated";
+import AnnotatedLink from "../components/prose_components/annotatedLink.astro";
+import { LINKS } from "../lib/linkHelper";
+---
+
+<html lang="en">
+    <head>
+        <BaseHead />
+    </head>
+    <body class="flex flex-col items-center">
+        <div data-follow-cursor class="fixed z-0 top-0 left-0 w-auto h-auto inline-block text-5xl select-none pointer-events-none bg-green-50 font-serif" />
+        <Navbar />
+        <main class="pt-[4.5rem] sm:pt-[1.7rem] px-4 max-w-2xl w-full">
+            <header class="relative">
+                <div class="swiper">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <SmartImage src={PHOTO_NAMES[2]} caption="none" />
+                        </div>
+                        <div class="swiper-slide overflow-hidden">
+                            <!-- this is bad code I am just testing 5x4 ratio!! -->
+                            <SmartImage src={PHOTO_NAMES[1]} caption="none" style="width: 187.5%;" />
+                        </div>
+                        <div class="swiper-slide overflow-hidden">
+                            <SmartImage src={PHOTO_NAMES[4]} caption="none" style="width: 187.5%;" />
+                        </div>
+                        <div class="swiper-slide overflow-hidden">
+                            <SmartImage src={PHOTO_NAMES[9]} caption="none" style="width: 187.5%;" />
+                        </div>
+                    </div>
+                </div>
+                <h1 class="font-serif text-4xl ligatures mt-8">Duncan Petrie<sup><button data-focus="">†</button></sup></h1>
+                <p class="arrow-indent pt-4">(that’s me!) is a London-based photographer and writer from Milwaukee, Wisconsin. I explore nature in the human landscape, and what the world might look like when we are gone.</p>
+                <p class="pt-4">I graduated from <AnnotatedLink href="mnhp">Falmouth University</AnnotatedLink> in 2022 with a degree in Marine and Natural History Photography.</p>
+                <p class="pt-4">In my free time, I'm a full stack .net web developer. I built this website using <AnnotatedLink href="https://docs.astro.build/en/getting-started/" class="font-monoo">Astro</AnnotatedLink>, <AnnotatedLink href="https://swiperjs.com/swiper-api" class="font-monoo">SwiperJS</AnnotatedLink>, and <AnnotatedLink href="https://roughnotation.com/" class="font-monoo">Rough Notation</AnnotatedLink>. Check out the <AnnotatedLink href="https://github.com/probablyduncan/duncanpetrie.astro.v2">source</AnnotatedLink>.</p>
+                <p class="pt-4">Contact me at <AnnotatedLink href="mailto">duncanpetrie1@gmail.com</AnnotatedLink><br>or on Instagram @<AnnotatedLink href="instagram">probablyduncan</AnnotatedLink>.</p>
+                <div class="mt-48 flex justify-between border-b-2 border-black mb-4">
+                    <span class="italic">† This is my website</span>
+                    <span>
+                        <span class="text-[#00ffff]">●</span>
+                        <span class="text-[#ff00ff]">●</span>
+                        <span class="text-[#ffff00]">●</span>
+                        <span>●</span>
+                    </span>
+                </div>
+            </header>
+            <section class="relative">
+                <div class="swiper">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <SmartImage src={PHOTO_NAMES[6]} size="large" caption="none" />
+                        </div>
+                        <div class="swiper-slide">
+                            <SmartImage src={PHOTO_NAMES[8]} size="large" caption="none" />
+                        </div>
+                        <div class="swiper-slide">
+                            <SmartImage src={PHOTO_NAMES[10]} size="large" caption="none" />
+                        </div>
+                    </div>                    
+                </div>
+                <div class="font-semibold text-right text-sm mt-2">PHOTO ⇥ 2024</div>
+                <h1 class="font-serif text-4xl mt-8"><SmartLink>Palimpsest</SmartLink><sup> </sup></h1>
+                <p class="arrow-indent pt-4">In 1989, the political scientist Francis Fukuyama declared that humanity had reached the "End of History". The Cold War was over. Western liberal democracy had prevailed. He lamented the loss of ideological struggle, and the looming monotony of this post-historic era. But there is another kind of End to History...</p>
+                <div class="mt-48 flex justify-between border-b-2 border-black">
+                    <span class="italic"><span class="font-serif text-lg"></span>&nbsp;&nbsp;What will survive us?</span>
+                    <span>-&gt;</span>
+                </div>
+            </section>
+        </main>
+        <footer class="mt-0.5 mb-4 max-w-2xl w-full px-4">
+            <div class="border-t border-black relative">
+                <p class="pt-4">Well, this is it, kid. End of the line. Bottom of the webpage.</p>
+                <p class="pt-4">Things might be looking grim. But do not despair! This website has other pages to look at. You can survey your options <AnnotatedLink href={LINKS.index}>here</AnnotatedLink>.</p>
+                <p class="pt-4">Or, I suppose, you could go to another website.</p>
+                <p class="pt-4">Here are some of my favorites:</p>
+            </div>
+            <ul class="pt-4">
+                <li><SmartLink href="https://www.landfallnavigation.com/noaa-nautical-chart-14909-upper-green-bay-jackson-harbor-and-detroit-harbor-detroit-harbor-jackson-harbor-baileys-harbor.html">Map of Death's Door</SmartLink></li>
+                <li><SmartLink href="https://solar.lowtechmagazine.com/">LOW←TECH MAGAZINE</SmartLink></li>
+                <li><SmartLink href="https://motherfuckingwebsite.com/">Website Design Guidelines</SmartLink></li>
+                <li><SmartLink href="https://www.saulleiterfoundation.org/color">Saul Leiter</SmartLink></li>
+                <li><SmartLink href="https://www.oldbookillustrations.com/">Old Book Illustrations</SmartLink></li>
+                <li><SmartLink href="https://archive.org/details/rotatingfood2">Rotating Food</SmartLink></li>
+                <li><SmartLink href="https://rsms.me/inter/">Inter, This Font</SmartLink></li>
+                <li><SmartLink href="https://github.com/psb1558/Junicode-font">Junicode, <span class="font-serif">This Font</span></SmartLink></li>
+                <li><SmartLink href="https://en.wikipedia.org/wiki/Category:Obsolete_occupations">Obsolete Occupations</SmartLink></li>
+                <li><SmartLink href="wrapmap">Falafel Wraps</SmartLink></li>
+                <li><SmartLink href="https://commons.wikimedia.org/wiki/File:7-Eleven,_Orlando,_Florida,_August_1987.ogv">7-Eleven, Florida, 1987</SmartLink></li>
+                <li><SmartLink href="https://commons.wikimedia.org/wiki/File:24_man_in_een_telefooncel-4591445.ogv">24 man in een telefooncel</SmartLink></li>
+            </ul>
+        </footer>
+    </body>
+</html>
+<script>
+    import Swiper from "swiper";
+            // import { Pagination } from "swiper/modules";
+            import "swiper/css";
+            // import "swiper/css/pagination"
+
+            let swipeHintActive = true;
+            document.addEventListener("DOMContentLoaded", function () {
+                const swiper = new Swiper(".swiper", {
+                    initialSlide: 0,
+                    rewind: true,
+                    simulateTouch: true, // controls whether mouse can swipe
+                    // spaceBetween: 0,
+                    // modules: [Pagination],
+                    // pagination: {
+                    //     type: "bullets",
+                    //     dynamicBullets: true,
+                    //     el: ".swiper-pagination",
+                    // }
+                });
+            });
+    // const cursors = {
+    //     left: "☜",
+    //     right: "☞",
+    // } as const;
+
+    // const activeCursors = {
+    //     left: "☚",
+    //     right: "☛",
+    // } as const;
+
+    // let currentDir: keyof typeof cursors;
+    // document.addEventListener("DOMContentLoaded", () => {
+    //     const followCursor = document.querySelector("[data-follow-cursor]") as HTMLDivElement;
+    //     if (!followCursor) {
+    //         return;
+    //     }
+
+    //     document.addEventListener("mousemove", ({movementX: deltaX, movementY: deltaY, clientX: posX, clientY: posY}) => {
+
+    //         setCursor(deltaX);
+
+    //         if (deltaX > 0 || deltaY > 0) {
+    //             const pointAngle = Math.atan(deltaY / deltaX);
+    //             followCursor.style.transform = `rotate3d(${pointAngle}rad)`;
+
+    //         }
+
+    //         followCursor.style.left = `calc(${posX}px)`;
+    //         followCursor.style.top = `calc(${posY}px)`;
+    //     });
+
+    //     function setCursor(deltaX: number) {
+
+    //         if (deltaX === 0) {
+    //             return;
+    //         }
+
+    //         const newDir = deltaX > 0 ? "right" : "left";
+
+    //         if (currentDir !== newDir) {
+    //             followCursor.innerHTML = cursors[newDir];
+    //             currentDir = newDir;
+    //         }
+    //     }
+    // });
+</script>

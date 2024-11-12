@@ -5,7 +5,7 @@ export default {
 	theme: {
 		extend: {
 			fontFamily: {
-				'sans': ['Inter, Inter-Fallback', { fontFeatureSettings: '"cv11", "ss01"' }],
+				'sans': ['Inter, Inter-Fallback',],// { fontFeatureSettings: '"cv11", "ss01"' }],
 				'serif': ['Junicode, Junicode-Fallback'],
 				'mono': ['PT Mono, Consolas, monospace'],
 			}
