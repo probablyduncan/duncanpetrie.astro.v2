@@ -6,6 +6,7 @@ import { PHOTO_NAMES } from "../data/photoTypes.generated";
 import AnnotatedLink from "../components/prose_components/annotatedLink.astro";
 import { LINKS } from "../lib/linkHelper";
 import ProjectCard from "../components/layout_components/projectCard.astro";
+import Toplink from "../components/layout_components/toplink.astro";
 ---
 
 <html lang="en">
@@ -15,6 +16,7 @@ import ProjectCard from "../components/layout_components/projectCard.astro";
     <body class="flex flex-col items-center">
         <div data-follow-cursor class="fixed z-0 top-0 left-0 w-auto h-auto inline-block text-5xl select-none pointer-events-none bg-green-50 font-serif" />
         <Navbar />
+        <Toplink />
         <main class="pt-[4.5rem] sm:pt-[1.7rem] w-full flex flex-col gap-4">
 
             <!-- INTRO/ABOUT -->

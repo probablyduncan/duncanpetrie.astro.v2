@@ -2,7 +2,7 @@
 import { getCollection } from "astro:content";
 import Layout from "../components/layout_components/layout.astro";
 import TextContainer from "../components/prose_components/textContainer.astro";
-import Toplink from "../components/toplink.astro";
+import Toplink from "../components/layout_components/toplink.astro";
 import SmartImage from "../components/prose_components/smartImage.astro";
 import MdLink from "../components/prose_components/mdLink.astro";
 import MdImg from "../components/prose_components/mdImg.astro";
@@ -22,6 +22,7 @@ const { Content } = await props.render();
 ---
 
 <Layout>
+    <Toplink />
     <main class="px-4 w-full max-w-[856px] flex flex-col items-center mb-[50svh]">
         {
             data.cover && (
@@ -37,6 +38,6 @@ const { Content } = await props.render();
             <Content components={{ a: MdLink, img: MdImg }} />
         </TextContainer>
     </main>
-    <Toplink slot="bottomright">Top</Toplink>
+    <span slot="bottomright"></span>
     <span slot="bottomleft"></span>
 </Layout>

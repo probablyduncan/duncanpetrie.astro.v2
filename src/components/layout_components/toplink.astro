@@ -1,0 +1,53 @@
+---
+const hiddenClass = "translate-y-[calc(4rem_+_100vh-100svh)]"
+---
+
+<button
+    data-toplink
+    data-hidden={true}
+    class:list={[
+        "fixed top-[calc(100svh_-_4rem)] left-2 sm:left-4 z-10",
+        "w-10 h-10 bg-white border-2 border-black rounded-2xl",
+        "font-serif text-2xl",
+        "select-none",
+        "transform-gpu transition-transform hover:-translate-y-2",
+        "data-[hidden]:translate-y-[calc(4rem_+_100vh-100svh)]",
+    ]}
+>
+    𐍊
+</button>
+<script>
+    function toplinkInit() {
+        const toplinks = document.querySelectorAll("[data-toplink]");
+
+        toplinks.forEach((e) => {
+            e.addEventListener("click", () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: "smooth",
+                });
+            });
+        });
+
+        let scrolled = false;
+        const hiddenClass = "translate-y-16";
+        const hideThreshold = 10;
+
+        document.addEventListener("scroll", (e) => {
+            if (!scrolled && window.scrollY > hideThreshold) {
+                scrolled = true;
+                toplinks.forEach((e) => {
+                    delete (e as HTMLElement).dataset.hidden;
+                });
+            } else if (scrolled && window.scrollY <= hideThreshold) {
+                scrolled = false;
+                toplinks.forEach((e) => {
+                    (e as HTMLElement).dataset.hidden = "true";
+                });
+            }
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", toplinkInit);
+    document.addEventListener("astro:after-swap", toplinkInit);
+</script>

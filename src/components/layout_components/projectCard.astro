@@ -16,13 +16,13 @@ interface Props {
 }
 
 const {
+    href,
     titleLigatures = false,
     titleIconSpace = true,
-    href,
+    largeImage = false,
     photos = [],
     srcs = [],
     images = [],
-    largeImage = false,
 } = Astro.props;
 
 const allImages: Image[] = toSeveral(images)

@@ -9,6 +9,7 @@ import { PHOTO_NAMES, type PhotoName } from "../data/photoTypes.generated";
 import SmartImage from "../components/prose_components/smartImage.astro";
 import MdImg from "../components/prose_components/mdImg.astro";
 import MdLink from "../components/prose_components/mdLink.astro";
+import Toplink from "../components/layout_components/toplink.astro";
 
 export async function getStaticPaths() {
     const photoProjects = await getCollection("photo");
@@ -29,6 +30,7 @@ const firstPhotoName = PHOTO_NAMES.includes(data.cover as PhotoName)
 ---
 
 <Layout title={data.title} includeBottomNav={false}>
+    <Toplink />
     <main class="px-4 w-full max-w-[856px] flex flex-col items-center">
         {
             firstPhotoName && (
