@@ -67,11 +67,7 @@
 
   .end-bullet::after {
     margin-left: 0.5rem;
-
-    /* circle */
-    content: "";
-
-    /* square */
-    content: "";
+    font-feature-settings: "case";
+    content: "▪";
   }
 }

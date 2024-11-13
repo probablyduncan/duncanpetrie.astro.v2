@@ -1,49 +1,17 @@
 ---
-import astroConfig from "../../../astro.config.mjs";
-import { PHOTO_NAMES, type PhotoName } from "../../data/photoTypes.generated";
-import {
-    getImgSize,
-    getPhotoByName,
-    type ImageSize,
-} from "../../lib/photoHelper";
+import { resolveImage, type Image, } from "../../lib/photoHelper";
 
-interface Props {
-    src?: string;
-    alt?: string;
+interface Props extends Image {
     class?: string;
     style?: string;
-    size?: ImageSize;
     caption?: "left" | "right" | "center" | "none";
 }
 
-const { src, alt, class: classes, size = "medium", style, caption = "center" } = Astro.props;
+const { class: classes, style, caption = "center", ...image } = Astro.props;
 
-const type: "photo" | "image" | "none" = src
-    ? PHOTO_NAMES.includes(src as PhotoName)
-        ? "photo"
-        : "image"
-    : "none";
+const resolved = await resolveImage(image);
 
-const props: any = {};
-
-if (type == "photo") {
-    const photo = getPhotoByName(src as PhotoName);
-    props.ratio = photo.ratio;
-    props.src = photo.paths[size];
-    props.alt = alt ?? photo.joinedCaption;
-} else if (type == "image") {
-    const sizePromise = getImgSize(src);
-    props.src = src;
-
-    if (!src.startsWith(astroConfig.base)) {
-        props.src = astroConfig.base + props.src;
-    }
-
-    props.alt = alt;
-    props.ratio = (await sizePromise).ratio;
-}
-
-let captionClass;
+let captionClass: string;
 switch (caption) {
     case "none":
         captionClass = "hidden";
@@ -61,11 +29,16 @@ switch (caption) {
 ---
 
 {
-    type != "none" && (
+    resolved && (
         <figure class={classes} style={style}>
-            <img src={props.src} alt={props.alt} draggable="false" />
-            <figcaption class:list={["text-center font-semibold text-sm text-gray-500 mt-2", captionClass]}>
-                {props.alt}
+            <img draggable="false" src={resolved.src} alt={resolved.alt} class="select-none" style={resolved.style} />
+            <figcaption
+                class:list={[
+                    "text-center font-semibold text-sm text-gray-500 mt-2",
+                    captionClass,
+                ]}
+            >
+                {resolved.alt}
             </figcaption>
         </figure>
     )

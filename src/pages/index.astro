@@ -1,180 +1,203 @@
 ---
-import astroConfig from "../../astro.config.mjs";
-import Layout from "../components/layout_components/layout.astro";
+import BaseHead from "../components/baseHead.astro";
+import Navbar from "../components/layout_components/navbar.astro";
+import SmartImage from "../components/prose_components/smartImage.astro";
+import { PHOTO_NAMES } from "../data/photoTypes.generated";
 import AnnotatedLink from "../components/prose_components/annotatedLink.astro";
 import { LINKS } from "../lib/linkHelper";
-import { getPhotoByName as p, PhotoData } from "../lib/photoHelper";
-
-const flexCenter =
-    "flex w-full h-full items-center justify-center px-4 pt-14 mt-4 pb-16 sm:pt-4 sm:pb-4";
+import ProjectCard from "../components/layout_components/projectCard.astro";
 ---
 
-<Layout>
-    <div class="swiper w-full h-svh">
-        <div class="swiper-wrapper">
-            <div
-                class="swiper-slide"
-                data-caption={p("north-atlantic-pennance-point-2021-01-14")
-                    .joinedCaption}
-                data-from-link={astroConfig.base + LINKS.horizons}
-                data-from-text="Horizons"
-            >
-                <div class={flexCenter}>
-                    <img
-                        src={p("north-atlantic-pennance-point-2021-01-14").paths
-                            .large}
-                        alt={p("north-atlantic-pennance-point-2021-01-14")
-                            .joinedCaption}
-                        draggable="false"
-                        class="max-w-[600px] select-none cursor-crosshair border-4 border-[#e2e8f0]"
-                    />
-                </div>
-            </div>
-            <div
-                class="swiper-slide"
-                data-caption={p("forest-library-isle-of-wight-2024-04-26")
-                    .joinedCaption}
-                data-from-link={astroConfig.base + LINKS.palimpsest}
-                data-from-text="Palimpsest"
-            >
-                <div class={flexCenter}>
-                    <img
-                        src={p("forest-library-isle-of-wight-2024-04-26").paths
-                            .large}
-                        alt={p("forest-library-isle-of-wight-2024-04-26")
-                            .joinedCaption}
-                        draggable="false"
-                        class="max-w-[400px] select-none cursor-crosshair border-[3px] border-[#C8CDB9]"
-                    />
-                </div>
-            </div>
-            <div
-                class="swiper-slide"
-                data-caption={p(
-                    "cycling-gudmundsen-drive-door-county-2019-08-31"
-                ).joinedCaption}
-                data-from-link={astroConfig.base + LINKS.heartland}
-                data-from-text="Heartland"
-            >
-                <div class={flexCenter}>
-                    <img
-                        src={p(
-                            "cycling-gudmundsen-drive-door-county-2019-08-31"
-                        ).paths.large}
-                        alt={p(
-                            "cycling-gudmundsen-drive-door-county-2019-08-31"
-                        ).joinedCaption}
-                        draggable="false"
-                        class="max-w-[600px] select-none cursor-crosshair shadow-[4px_4px_0px_rgba(0,0,0,0.8)]"
-                    />
-                </div>
-            </div>
-            <div
-                class="swiper-slide"
-                data-caption={p("bear-witness-belsize-park-2024-05-17")
-                    .joinedCaption}
-                data-from-link={astroConfig.base + LINKS.palimpsest}
-                data-from-text="Palimpsest"
-            >
-                <div class={flexCenter + " gap-3 sm:gap-4"}>
-                    <img
-                        src={p("shed-train-window-weymouth-2024-09-03").paths
-                            .medium}
-                        alt={p("shed-train-window-weymouth-2024-09-03")
-                            .joinedCaption}
-                        draggable="false"
-                        class="max-w-[270px] w-[calc(50%-0.5rem)] select-none cursor-crosshair"
-                    />
-                    <img
-                        src={p("bear-witness-belsize-park-2024-05-17").paths
-                            .medium}
-                        alt={p("bear-witness-belsize-park-2024-05-17")
-                            .joinedCaption}
-                        draggable="false"
-                        class="max-w-[270px] w-[calc(50%-0.5rem)] select-none cursor-crosshair border-[3px] border-[#0A0907]"
-                    />
-                </div>
-            </div>
-            <div
-                class="swiper-slide"
-                data-caption={p("la-corbiere-st-brelade-jersey-2024-05-25")
-                    .joinedCaption}
-                data-from-link={astroConfig.base + LINKS.palimpsest}
-                data-from-text="Palimpsest"
-            >
-                <div class={flexCenter}>
-                    <img
-                        src={p("la-corbiere-st-brelade-jersey-2024-05-25").paths
-                            .large}
-                        alt={p("la-corbiere-st-brelade-jersey-2024-05-25")
-                            .joinedCaption}
-                        draggable="false"
-                        class="max-w-[600px] select-none cursor-crosshair shadow-[4px_4px_0_rgba(10,_114,_123,_0.09)]"
-                    />
-                </div>
-            </div>
-        </div>
-    </div>
-    <span slot="bottomleft" data-caption-container class="hidden sm:inline">
-        {p("north-atlantic-pennance-point-2021-01-14").joinedCaption}
-    </span>
-    <span slot="bottomright" class="hidden sm:inline sm:text-black">
-        <span>From:</span>
-        <AnnotatedLink
-            data-from-link-container
-            type="circle"
-            staticUnderline={true}>Horizons</AnnotatedLink
-        >
-    </span>
-    <script>
-        import Swiper from "swiper";
-        import {} from "swiper/modules";
-        import "swiper/css";
+<html lang="en">
+    <head>
+        <BaseHead />
+    </head>
+    <body class="flex flex-col items-center">
+        <div data-follow-cursor class="fixed z-0 top-0 left-0 w-auto h-auto inline-block text-5xl select-none pointer-events-none bg-green-50 font-serif" />
+        <Navbar />
+        <main class="pt-[4.5rem] sm:pt-[1.7rem] w-full flex flex-col gap-4">
 
-        document.addEventListener("DOMContentLoaded", function () {
-            const swiper = new Swiper(".swiper", {
-                on: {
-                    realIndexChange: (s) => {
-                        const data = (
-                            s.wrapperEl.children[s.realIndex] as HTMLElement
-                        ).dataset;
-                        const fromLink = document.querySelector(
-                            "[data-from-link-container]"
-                        );
-                        fromLink.innerHTML = data.fromText;
-                        fromLink["href"] = data.fromLink;
-                        document.querySelector(
-                            "[data-caption-container]"
-                        ).innerHTML = data.caption;
-                    },
-                },
-                modules: [],
-                // spaceBetween: 0,
-                // loop: true,
-                rewind: true,
-                simulateTouch: false, // controls whether mouse can swipe
-                breakpoints: {
-                    640: {
-                        simulateTouch: false, // only simulate touch on small screens
-                    },
-                },
-            });
-
-            swiper.el.querySelectorAll("img").forEach((e) =>
-                e.addEventListener("click", () => {
-                    if (window.innerWidth >= 640) {
-                        swiper.slideNext(0, true);
+            <!-- INTRO/ABOUT -->
+            <ProjectCard titleLigatures={true} titleIconSpace={false} largeImage={true} images={[
+                {
+                    photoName: "surrogate-sea-villajoyosa-2022-02-18",
+                    frame: {
+                        type: "shadow",
+                        color: "#742d2129",
+                        size: 4
                     }
-                })
-            );
+                },
+                {
+                    photoName: "north-atlantic-pennance-point-2021-01-14",
+                    frame: {
+                        type: "border",
+                        color: "#e2e8f0",
+                        size: 4
+                    }
+                },
+                {
+                    photoName: "la-corbiere-st-brelade-jersey-2024-05-25",
+                    frame: {
+                        type: "shadow",
+                        color: "rgba(10, 114, 123, 0.09)",
+                        size: 4
+                    }
+                },
+                {
+                    photoName: "cycling-gudmundsen-drive-door-county-2019-08-31",
+                },
+            ]}>
+                <span slot="title">Duncan Petrie</span>
+                <span slot="icon">*</span>
+                <p>
+                    (that’s me!) is a London-based photographer and writer from Milwaukee, Wisconsin. I explore nature in the human landscape, and what the world might look like when we are gone.
+                </p>
+                <p>
+                    I graduated from <AnnotatedLink href="mnhp">Falmouth University</AnnotatedLink> in 2022 with a degree in Marine and Natural History Photography.
+                </p>
+                <p>
+                    In my free time, I'm a full stack .net web developer. I built this website using <AnnotatedLink href="https://docs.astro.build/en/getting-started/">Astro</AnnotatedLink>. Check out the <AnnotatedLink href="https://github.com/probablyduncan/duncanpetrie.astro.v2">source</AnnotatedLink>.
+                </p>
+                <p>
+                    Contact me at <AnnotatedLink href="mailto">duncanpetrie1@gmail.com</AnnotatedLink><br>or on Instagram @<AnnotatedLink href="instagram">probablyduncan</AnnotatedLink>.
+                </p>
+                <span slot="bottomline">This is my website</span>
+                <span slot="bottomright">
+                    <span class="text-[#00ffff]">●</span>
+                    <span class="text-[#ff00ff]">●</span>
+                    <span class="text-[#ffff00]">●</span>
+                    <span>●</span>
+                </span>
+            </ProjectCard>
 
-            document.addEventListener("keydown", (e) => {
-                if (e.key === "ArrowLeft") {
-                    swiper.slidePrev(0, true);
-                } else if (e.key === "ArrowRight") {
-                    swiper.slideNext(0, true);
-                }
-            });
-        });
-    </script>
-</Layout>
+            <!-- PALIMPSEST -->
+            <ProjectCard href={LINKS.palimpsest} images={[
+                {
+                    photoName: "forest-library-isle-of-wight-2024-04-26",
+                    frame: {
+                        type: "border",
+                        size: 3,
+                        color: "#C8CDB9",
+                    }
+                },
+                {
+                    photoName: "shed-train-window-weymouth-2024-09-03",
+                },
+                {
+                    photoName: "bear-witness-belsize-park-2024-05-17",
+                    frame: {
+                        type: "border",
+                        size: 4,
+                        color: "#0A0907",
+                    }
+                },
+            ]}>
+                <span slot="title">Palimpsest</span>
+                <span slot="underimage">PHOTO ⇥ 2024</span>
+                <span slot="icon"></span>
+                <p>
+                    In 1989, the political scientist Francis Fukuyama declared that humanity had reached the "End of History". The Cold War was over. Western liberal democracy had prevailed. He lamented the loss of ideological struggle, and the looming monotony of this post-historic era. But there is another kind of End to History.
+                </p>
+                <p>
+                    Our ecosystems are rocketing towards collapse. Our forests burn. Our oceans acidify. Extinctions happen daily, and our blood fills with plastic. If we do not act fast, there will be no one left to record us. Our history books will be left incomplete. Bookended by wilderness, we will be overwritten, just as we sought to overwrite the world.
+                </p>
+                <span slot="bottomline">
+                    &nbsp;What will survive us?
+                </span>
+            </ProjectCard>
+
+            <!-- ON YEARNING -->
+            <ProjectCard href={LINKS.yearn} srcs={"/media/diss/1.jpg"}>
+                <span slot="title">On Yearning</span>
+                <span slot="icon">ᛦ</span>
+                <span slot="underimage">DISSERTATION ⇥ 2021</span>
+                <span slot="bottomline">Chasing the vastness</span>
+                <p>
+                    The wide blue sea spread before me, a quilt of the patterns of the wind. I was suddenly struck by profound desire. A desire for what, I was not sure.
+                </p>
+                <p>
+                    I was on the edge of the world, and I wanted to see beyond. It was a sort of nostalgia, but not for any real past. A nostalgia for the future, maybe, the future that can no longer be.
+                </p>
+                <p>
+                    I wrote my undergraduate dissertation about this feeling. If you're interested in the theories behind my photographic practice, check it out.
+                </p>
+            </ProjectCard>
+        </main>
+        <footer class="mt-0.5 mb-4 w-full px-4 flex flex-col items-center">
+            <div class="border-t border-black relative max-w-md">
+                <SmartImage photoName="parchment-paper-window-margate-2023-09-04" caption="none" class="pt-4" />
+                <p class="pt-4">
+                    Well, this is it, kid. End of the line. Bottom of the webpage.
+                </p>
+                <p class="pt-4">
+                    Things are looking grim. But do not despair! This website has <AnnotatedLink href={LINKS.index}>other pages</AnnotatedLink> to look at.
+                </p>
+                <p class="pt-4">
+                    Or, I suppose, you could go to another website. Here are some of my favorites:
+
+                </p>
+            </div>
+            <ul class="pt-4 [&_>li]:before:content-['->'] [&_>li]:before:pr-2 max-w-md w-full">
+                <li><AnnotatedLink href="https://solar.lowtechmagazine.com/">Low Tech Magazine</AnnotatedLink></li>
+                <li><AnnotatedLink href="https://archive.org/details/rotatingfood2">Rotating Food</AnnotatedLink></li>
+                <li><AnnotatedLink href="https://motherfuckingwebsite.com/">Website Design Guidelines</AnnotatedLink></li>
+                <li><AnnotatedLink href="https://en.wikipedia.org/wiki/Category:Obsolete_occupations">Obsolete Occupations</AnnotatedLink></li>
+                <li><AnnotatedLink href="https://www.saulleiterfoundation.org/color">Saul Leiter's website</AnnotatedLink></li>
+                <li><AnnotatedLink href="https://commons.wikimedia.org/wiki/File:24_man_in_een_telefooncel-4591445.ogv">24 man in een telefooncel</AnnotatedLink></li>
+                <li><AnnotatedLink href="https://www.oldbookillustrations.com/">Old Book Illustrations</AnnotatedLink></li>
+                <li><AnnotatedLink href="https://www.landfallnavigation.com/noaa-nautical-chart-14909-upper-green-bay-jackson-harbor-and-detroit-harbor-detroit-harbor-jackson-harbor-baileys-harbor.html">Map of Death's Door</AnnotatedLink></li>
+                <li><AnnotatedLink href="https://rsms.me/inter/">Inter, This Font</AnnotatedLink></li>
+                <li><AnnotatedLink href="https://github.com/psb1558/Junicode-font">Junicode, <span class="font-serif">This Font</span></AnnotatedLink></li>
+                <li><AnnotatedLink href="wrapmap">Falafel Wraps</AnnotatedLink></li>
+                <li><AnnotatedLink href="https://commons.wikimedia.org/wiki/File:7-Eleven,_Orlando,_Florida,_August_1987.ogv">7-Eleven, Florida, 1987</AnnotatedLink></li>
+            </ul>
+        </footer>
+    </body>
+</html>
+<script>
+    // const cursors = {
+    //     left: "☜",
+    //     right: "☞",
+    // } as const;
+
+    // const activeCursors = {
+    //     left: "☚",
+    //     right: "☛",
+    // } as const;
+
+    // let currentDir: keyof typeof cursors;
+    // document.addEventListener("DOMContentLoaded", () => {
+    //     const followCursor = document.querySelector("[data-follow-cursor]") as HTMLDivElement;
+    //     if (!followCursor) {
+    //         return;
+    //     }
+
+    //     document.addEventListener("mousemove", ({movementX: deltaX, movementY: deltaY, clientX: posX, clientY: posY}) => {
+
+    //         setCursor(deltaX);
+
+    //         if (deltaX > 0 || deltaY > 0) {
+    //             const pointAngle = Math.atan(deltaY / deltaX);
+    //             followCursor.style.transform = `rotate3d(${pointAngle}rad)`;
+
+    //         }
+
+    //         followCursor.style.left = `calc(${posX}px)`;
+    //         followCursor.style.top = `calc(${posY}px)`;
+    //     });
+
+    //     function setCursor(deltaX: number) {
+
+    //         if (deltaX === 0) {
+    //             return;
+    //         }
+
+    //         const newDir = deltaX > 0 ? "right" : "left";
+
+    //         if (currentDir !== newDir) {
+    //             followCursor.innerHTML = cursors[newDir];
+    //             currentDir = newDir;
+    //         }
+    //     }
+    // });
+</script>

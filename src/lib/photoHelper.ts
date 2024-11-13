@@ -30,7 +30,7 @@ import fs from 'fs';
 import path from 'path';
 import exifr from 'exifr'
 import sharp from 'sharp'
-import type { PhotoName, PhotoTag } from '../data/photoTypes.generated';
+import { PHOTO_NAMES, type PhotoName, type PhotoTag } from '../data/photoTypes.generated';
 import astroConfig from '../../astro.config.mjs';
 
 //#region PhotoData types
@@ -246,6 +246,7 @@ function readPhotoDataJSON(): PhotoDataJSONEntry[] {
 
 
 
+//#region img/photo helpers
 
 export async function getImgSize(src?: string): Promise<{ width: number; height: number; ratio: number; }> {
 
@@ -257,7 +258,7 @@ export async function getImgSize(src?: string): Promise<{ width: number; height:
 
     const fullPath = path.join(process.cwd(), 'public', src);
 
-    if (!fullPath) {
+    if (!fullPath || !fs.existsSync(fullPath)) {
         return nogood;
     }
 
@@ -275,7 +276,91 @@ export async function getImgSize(src?: string): Promise<{ width: number; height:
     }
 }
 
+export interface Image {
+    photoName?: PhotoName;
+    photoData?: PhotoData;
+    src?: string;
+    alt?: string;
+    style?: string;
+    ratio?: number;
+    frame?: ImageFrame;
+    size?: ImageSize
+}
 
+export interface ImageFrame {
+    type?: "border" | "shadow" | "none";
+    size?: number;   // px
+    color?: string;  // hex or rgba or whatever
+}
+
+const IMAGE_FRAME_DEFAULTS: ImageFrame = {
+    type: "none",
+    size: 2,
+    color: "black",
+} as const;
+
+export async function resolveImage(img: Image): Promise<Image> {
+
+    if (img.src) {
+
+        if (PHOTO_NAMES.includes(img.src as PhotoName)) {
+            img.photoName ??= img.src as PhotoName;
+            img.src = null;
+        }
+        else {
+            img.ratio ??= (await getImgSize(img.src)).ratio;
+        }
+    }
+
+    // try set photodata
+    if (img.photoName) {
+        img.photoData ??= getPhotoByName(img.photoName);
+    }
+
+    // now we can set from photodata
+    if (img.photoData) {
+        img.src ??= img.photoData.paths[img.size ?? "medium"];
+        img.ratio ??= img.photoData.ratio;
+        img.alt ??= img.photoData.joinedCaption;
+    }
+
+    // if no src, invalid image
+    if (!img.src) {
+        console.log(img);
+        throw "Image object does not contain valid src!"
+    }
+
+    // set image frame defaults
+    img.frame = Object.assign({...IMAGE_FRAME_DEFAULTS}, img.frame);
+
+    img.style = resolveImageStyle(img);
+
+    // temp fix for beta deployment
+    if (!img.src.includes(astroConfig.base)) {
+        img.src = path.join(astroConfig.base, img.src);
+    }
+
+    return img;
+}
+
+export function resolveImageStyle(img: Image): string {
+
+    let style: any = {};
+
+    switch (img.frame.type) {
+        case "border":
+            style.border = `${img.frame.size}px solid ${img.frame.color}`;
+            break;
+        case "shadow":
+            style["box-shadow"] = `${img.frame.size}px ${img.frame.size}px 0px ${img.frame.color ?? "black"}`;
+            style.width = `calc(100% - ${(img.frame.size)}px)`;
+            break;
+    }
+
+    return [...Object.keys(style).map(prop => `${prop}: ${style[prop]};`), img.style].join(" ");
+}
+
+//#endregion
 
 
 
