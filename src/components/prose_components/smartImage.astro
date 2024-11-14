@@ -6,9 +6,10 @@ interface Props extends Image {
     class?: string;
     style?: string;
     caption?: "left" | "right" | "center" | "none";
+    lazy?: boolean;
 }
 
-const { class: classes, style, caption = "center", ...image } = Astro.props;
+const { class: classes, style, caption = "center", lazy = true, ...image } = Astro.props;
 
 const resolved = await resolveImage(image);
 
@@ -41,7 +42,7 @@ switch (caption) {
                 ]}
                 style={resolved.style}
                 draggable="false"
-                loading="lazy"
+                loading={lazy ? "lazy" : "eager"}
             />
             <figcaption
                 class:list={[
