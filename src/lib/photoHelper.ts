@@ -32,6 +32,7 @@ import exifr from 'exifr'
 import sharp from 'sharp'
 import { PHOTO_NAMES, type PhotoName, type PhotoTag } from '../data/photoTypes.generated';
 import astroConfig from '../../astro.config.mjs';
+import { toSeveral, type SingleOrSeveral } from './singleOrSeveral';
 
 //#region PhotoData types
 
@@ -107,29 +108,26 @@ class PhotoDataJSONEntry implements IPhotoDataBase {
         this.ratio = sharpMetadata.width / sharpMetadata.height;
 
         // add explicit tags and additional tags
-        if (typeof exif.Keywords === typeof []) {
-            this.tags = exif.Keywords.map((tag: string) => tag.toLowerCase());
-        }
-        else if (typeof exif.Keywords === typeof '') {
-            this.tags = [exif.Keywords];
-        }
-        else {
-            this.tags = [];
-        }
-        PhotoDataJSONEntry.additionalTags.forEach(tag => this.addTagIfExists(exif[tag]));
+        this.tags = [];
+        this.addTagsIfExist(exif.Keywords);
+        this.addTagsIfExist(exif.XPKeywords);
+        this.addTagsIfExist(PhotoDataJSONEntry.additionalTags.map(t => exif[t]));
     }
 
     private static additionalTags: string[] = ['Sublocation', 'City', 'State', 'Country', 'Location'] as const;
-    private addTagIfExists(tag: string) {
 
-        if (!tag) {
-            return;
-        }
+    private addTagsIfExist(tags: SingleOrSeveral<string>) {
 
-        tag = tag.toLowerCase();
-        if (!this.tags.includes(tag as PhotoTag)) {
-            this.tags.push(tag as PhotoTag);
-        }
+        toSeveral(tags).forEach(tag => {
+            if (!tag) {
+                return;
+            }
+
+            tag = tag.toLowerCase();
+            if (!this.tags.includes(tag as PhotoTag)) {
+                this.tags.push(tag as PhotoTag);
+            }
+        })
     }
 }
 
@@ -336,7 +334,7 @@ export async function resolveImage(img: Image): Promise<Image> {
     img.style = resolveImageStyle(img);
 
     // temp fix for beta deployment
-    if (!img.src.includes(astroConfig.base)) {
+    if (!img.src.includes(astroConfig.base.replaceAll("\\", "").replaceAll("/", ""))) {
         img.src = path.join(astroConfig.base, img.src);
     }
 
@@ -354,6 +352,8 @@ export function resolveImageStyle(img: Image): string {
         case "shadow":
             style["box-shadow"] = `${img.frame.size}px ${img.frame.size}px 0px ${img.frame.color ?? "black"}`;
             style.width = `calc(100% - ${(img.frame.size)}px)`;
+            style["margin-bottom"] = `${img.frame.size}px`;
+            style["margin-right"] = `${img.frame.size}px`;
             break;
     }
 
@@ -394,6 +394,7 @@ export async function importPhotos(generateAll: boolean = false) {
     else if (generateAll) {
         // if dir exists and we're regenerating, first delete all generated images
         fs.rmSync(IMG_DEST_DIR, { recursive: true, force: true });
+        fs.mkdirSync(IMG_DEST_DIR);
     }
 
     log('');
@@ -409,11 +410,7 @@ export async function importPhotos(generateAll: boolean = false) {
         const exif = await exifr.parse(buffer, true);
         const metadata = await sharp(buffer).metadata();
 
-        if (!exif.Caption) {
-            errors.push("no caption: " + imgFileNames[i]);
-            break;
-        }
-        const name = safeFilename(exif.ImageDescription, exif.DateTimeOriginal);
+        const name = safeFilename(path.parse(imgFileNames[i]).name, exif.ImageDescription, exif.DateTimeOriginal);
 
         // iterate through sizes and determine what to generate
         let paths: Record<ImageSize, string> = {} as Record<ImageSize, string>;;
@@ -462,13 +459,13 @@ export async function importPhotos(generateAll: boolean = false) {
     log('');
     log(`✍   writing photo types to ${PHOTO_TYPES_PATH}`);
     const typeTS =
-        `export type PhotoName = "${allNamesForType.join('" | "')}";`
+        `export const PHOTO_NAMES = ["${allNamesForType.join('", "')}"] as const;`
         + '\n\n'
-        + `export const PhotoNameArr: string[] = ["${allNamesForType.join('", "')}"] as const;`
+        + `export type PhotoName = typeof PHOTO_NAMES[number];`
         + '\n\n'
-        + `export type PhotoTag = "${[...allTagsForType].join('" | "')}";`
+        + `export const PHOTO_TAGS = ["${[...allTagsForType].join('", "')}"] as const;`
         + '\n\n'
-        + `export const PhotoTagArr: string[] = ["${[...allTagsForType].join('", "')}"] as const;`;
+        + `export type PhotoTag = typeof PHOTO_TAGS[number];`;
 
     fs.writeFileSync(PHOTO_TYPES_PATH, typeTS);
     log('complete 📄');
@@ -484,8 +481,10 @@ export async function importPhotos(generateAll: boolean = false) {
 
     if (imagesToWrite.length > 0) {
 
-        log('');;
-        log(`📸  writing images to ${IMG_DEST_DIR}`)
+        log('');
+        log(`📸  writing images to ${IMG_DEST_DIR}`);
+        log('');
+
         let count = 0;
         imagesToWrite.forEach(async ([filepath, bufferPromise]) => {
             const start = performance.now();
@@ -498,29 +497,31 @@ export async function importPhotos(generateAll: boolean = false) {
     }
 }
 
-function safeFilename(caption: string, date: Date) {
+/**
+ * @returns an image filename like {date}-{caption}, or {date}-{filename} if no caption
+ */
+function safeFilename(filename: string, caption: string, date: Date) {
 
-    // if (!caption) {
-    //     caption = srcFilename;
-    // }
+    let safeFilename = filename;
 
-    // normalize the string
-    let normalized = caption.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    // if the image had a caption, we can turn that into the filename
+    if (caption) {
 
-    // remove non-alphanumeric characters (keeping spaces)
-    let alphanumericOnly = normalized.replace(/[^a-zA-Z0-9 ]/g, "");
-
-    // replace spaces with dashes and trim any extra spaces
-    let safeFilename = alphanumericOnly.trim().replace(/\s+/g, "-");
-
-    // Convert to lower case (optional)
-    safeFilename = safeFilename.toLowerCase();
-
-    if (date) {
-        safeFilename += "-" + date.toISOString().split('T')[0];
+        // normalize the string
+        let normalized = caption.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    
+        // remove non-alphanumeric characters (keeping spaces)
+        let alphanumericOnly = normalized.replace(/[^a-zA-Z0-9 ]/g, "");
+    
+        // replace spaces with dashes and trim any extra spaces
+        safeFilename = alphanumericOnly.trim().replace(/\s+/g, "-");
     }
 
-    return safeFilename;
+    if (date && date.getTime() !== 0) {
+        safeFilename = date.toISOString().split('T')[0] + "-" + safeFilename;
+    }
+
+    return safeFilename.toLowerCase();
 }
 
 //#endregion

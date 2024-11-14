@@ -24,12 +24,12 @@ const {
 } = Astro.props;
 const { Content } = await props.render();
 
-const photos = getPhotosByNamesAndTags(data);
+const photos = getPhotosByNamesAndTags(data).sort((a, b) => (b.rating + Math.random()) - (a.rating + Math.random()));
 const firstPhotoName = PHOTO_NAMES.includes(data.cover as PhotoName)
-    ? data.cover : photos.shift()?.name;
+    ? data.cover as PhotoName : photos.shift()?.name as PhotoName;
 ---
 
-<Layout title={data.title} includeBottomNav={false}>
+<Layout title={data.title} includeBottomNav={false} photoName={firstPhotoName}>
     <Toplink />
     <main class="px-4 w-full max-w-[856px] flex flex-col items-center">
         {
@@ -39,6 +39,7 @@ const firstPhotoName = PHOTO_NAMES.includes(data.cover as PhotoName)
                     alt={data.coverCaption}
                     class="relative w-full sm:mt-[1.7rem] mt-20"
                     caption="right"
+                    size="large"
                 />
             )
         }
@@ -55,7 +56,7 @@ const firstPhotoName = PHOTO_NAMES.includes(data.cover as PhotoName)
                             class="flex justify-center"
                             style={`margin: max(200px, calc(50svh - ${height / 2}px)) 0;`}
                         >
-                            <SmartImage src={p.name} class="relative max-w-full" style={`width: ${width}px;`} caption="right" />
+                            <SmartImage src={p.name} class="relative max-w-full" style={`width: ${width}px;`} caption="right" size="medium" />
                             {/* <figure
                                 class="relative max-w-full"
                                 style={`width: ${width}px;`}

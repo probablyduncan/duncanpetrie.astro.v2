@@ -51,8 +51,7 @@
 
 @layer utilities {
   .ligatures {
-    font-feature-settings:
-      "dlig";
+    font-feature-settings: "dlig";
   }
 
   .arrow-indent {
@@ -69,5 +68,9 @@
     margin-left: 0.5rem;
     font-feature-settings: "case";
     content: "▪";
+  }
+
+  .crisp {
+    image-rendering: crisp-edges;
   }
 }

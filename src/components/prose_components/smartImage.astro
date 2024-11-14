@@ -1,5 +1,6 @@
 ---
-import { resolveImage, type Image, } from "../../lib/photoHelper";
+import path from "path";
+import { resolveImage, type Image } from "../../lib/photoHelper";
 
 interface Props extends Image {
     class?: string;
@@ -31,10 +32,20 @@ switch (caption) {
 {
     resolved && (
         <figure class={classes} style={style}>
-            <img draggable="false" src={resolved.src} alt={resolved.alt} class="select-none" style={resolved.style} />
+            <img
+                src={resolved.src}
+                alt={resolved.alt}
+                class:list={[
+                    "select-none",
+                    { crisp: path.parse(resolved.src).ext !== ".webp" },
+                ]}
+                style={resolved.style}
+                draggable="false"
+                loading="lazy"
+            />
             <figcaption
                 class:list={[
-                    "text-center font-semibold text-sm text-gray-500 mt-2",
+                    "text-center font-md italic text-xs text-gray-600 mt-2",
                     captionClass,
                 ]}
             >

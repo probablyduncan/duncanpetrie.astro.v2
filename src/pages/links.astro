@@ -44,7 +44,7 @@ const INDEX_LINKS = {
 
 <Layout
     title="Work - Duncan Petrie"
-    photoName="parchment-paper-window-margate-2023-09-04"
+    photoName="2021-11-23-time-store-window-fowey"
 >
     <main class="flex flex-col sm:block sm:columns-2 w-full sm:w-auto pl-8 sm:pl-16 my-32">
         {
@@ -53,7 +53,7 @@ const INDEX_LINKS = {
                 const order = INDEX_LINKS[g][links.shift()];
                 return (
                     <div class="pb-4" style={`order: ${order};`}>
-                        <h2 class="font-serif font-bold text-xl">{g}</h2>
+                        <h2 class="font-serif font-bold text-xl ligatures">{g}</h2>
                         <ul>
                             {links.map((l) => (
                                 <li>

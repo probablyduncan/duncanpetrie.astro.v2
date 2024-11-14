@@ -5,8 +5,10 @@ import SmartLink from "../prose_components/smartLink.astro";
 
 
 ---
-<nav class="text-sm font-medium z-10 grid grid-cols-[1fr_auto_1fr] bg-white border-b-2 border-b-black fixed top-0 left-0 w-[calc(100%-2rem)] mx-4 py-4 sm:relative sm:border-none sm:bg-none sm:p-0">
-    <span class="top-4 left-4 sm:fixed text-left"><slot name="topleft"><AnnotatedLink type="circle" staticUnderline={false}>EMAIL</AnnotatedLink></slot></span>
-    <span class="top-4 sm:fixed sm:w-32 sm:left-[calc(50%-4rem)] text-center"><slot name="topmiddle"><SmartLink class="hover:opacity-80 focus-visible:opacity-80 transition-opacity" href={LINKS.home}>DUNCANPETRIE</SmartLink></slot></span>
-    <span class="top-4 right-4 sm:fixed text-right"><slot name="topright"><AnnotatedLink type="circle" staticUnderline={false}>INDEX</AnnotatedLink></slot></span>
+<nav class="text-sm font-medium z-10 bg-white fixed top-0 left-0 w-full sm:relative sm:bg-none">
+    <div class="grid grid-cols-[1fr_auto_1fr] mx-4 py-4 sm:p-0 border-b-2 border-b-black sm:border-none">
+        <span class="top-4 left-4 sm:fixed text-left"><slot name="topleft"><AnnotatedLink type="circle" staticUnderline={false}>EMAIL</AnnotatedLink></slot></span>
+        <span class="top-4 sm:fixed sm:w-32 sm:left-[calc(50%-4rem)] text-center"><slot name="topmiddle"><SmartLink class="hover:opacity-80 focus-visible:opacity-80 transition-opacity" href={LINKS.home}>DUNCANPETRIE</SmartLink></slot></span>
+        <span class="top-4 right-4 sm:fixed text-right"><slot name="topright"><AnnotatedLink type="circle" staticUnderline={false}>INDEX</AnnotatedLink></slot></span>
+    </div>
 </nav>

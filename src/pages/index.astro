@@ -22,7 +22,7 @@ import Toplink from "../components/layout_components/toplink.astro";
             <!-- INTRO/ABOUT -->
             <ProjectCard titleLigatures={true} titleIconSpace={false} largeImage={true} images={[
                 {
-                    photoName: "surrogate-sea-villajoyosa-2022-02-18",
+                    photoName: "2022-02-18-surrogate-sea-villajoyosa",
                     frame: {
                         type: "shadow",
                         color: "#742d2129",
@@ -30,7 +30,7 @@ import Toplink from "../components/layout_components/toplink.astro";
                     }
                 },
                 {
-                    photoName: "north-atlantic-pennance-point-2021-01-14",
+                    photoName: "2021-01-14-north-atlantic-pennance-point",
                     frame: {
                         type: "border",
                         color: "#e2e8f0",
@@ -38,7 +38,7 @@ import Toplink from "../components/layout_components/toplink.astro";
                     }
                 },
                 {
-                    photoName: "la-corbiere-st-brelade-jersey-2024-05-25",
+                    photoName: "2024-05-25-la-corbiere-st-brelade-jersey",
                     frame: {
                         type: "shadow",
                         color: "rgba(10, 114, 123, 0.09)",
@@ -46,8 +46,11 @@ import Toplink from "../components/layout_components/toplink.astro";
                     }
                 },
                 {
-                    photoName: "cycling-gudmundsen-drive-door-county-2019-08-31",
+                    photoName: "2019-08-31-cycling-gudmundsen-drive-door-county",
                 },
+                {
+                    photoName: "film-pigeon-1",
+                }
             ]}>
                 <span slot="title">Duncan Petrie</span>
                 <span slot="icon">*</span>
@@ -75,7 +78,7 @@ import Toplink from "../components/layout_components/toplink.astro";
             <!-- PALIMPSEST -->
             <ProjectCard href={LINKS.palimpsest} images={[
                 {
-                    photoName: "forest-library-isle-of-wight-2024-04-26",
+                    photoName: "2024-04-26-forest-library-isle-of-wight",
                     frame: {
                         type: "border",
                         size: 3,
@@ -83,14 +86,35 @@ import Toplink from "../components/layout_components/toplink.astro";
                     }
                 },
                 {
-                    photoName: "shed-train-window-weymouth-2024-09-03",
-                },
-                {
-                    photoName: "bear-witness-belsize-park-2024-05-17",
+                    photoName: "2024-05-17-bear-witness-belsize-park",
                     frame: {
                         type: "border",
                         size: 4,
                         color: "#0A0907",
+                    }
+                },
+                {
+                    photoName: "2024-04-26-treasure-isle-of-wight",
+                    frame: {
+                        type: "shadow",
+                        color: "#020f03",
+                        size: 4
+                    }
+                },
+                {
+                    photoName: "2024-10-26-tailor-petofi-sandor-street-budapest",
+                    frame: {
+                        type: "border",
+                        color: "#2939256e",
+                        size: 3
+                    }
+                },
+                {
+                    photoName: "2024-03-16-longing-hampton-court-palace",
+                    frame: {
+                        type: "shadow",
+                        color: "#00000014",
+                        size: 4
                     }
                 },
             ]}>
@@ -109,7 +133,7 @@ import Toplink from "../components/layout_components/toplink.astro";
             </ProjectCard>
 
             <!-- ON YEARNING -->
-            <ProjectCard href={LINKS.yearn} srcs={"/media/diss/1.jpg"}>
+            <ProjectCard href={LINKS.yearn} photos={["2021-06-20-yearning-door", "2021-10-09-catclaws-pennance-point", "2020-12-02-last-light-over-the-roseland"]}>
                 <span slot="title">On Yearning</span>
                 <span slot="icon">ᛦ</span>
                 <span slot="underimage">DISSERTATION ⇥ 2021</span>
@@ -124,10 +148,24 @@ import Toplink from "../components/layout_components/toplink.astro";
                     I wrote my undergraduate dissertation about this feeling. If you're interested in the theories behind my photographic practice, check it out.
                 </p>
             </ProjectCard>
+
+            <!-- LINGERMYTH -->
+            <ProjectCard href={LINKS.yearn} titleIconSpace={false} photos={[ "2024-05-30-lingermyth-p3233", "2024-05-30-lingermyth-front-back-covers", "2024-05-30-lingermyth-p45", "2024-05-30-lingermyth-p5052", "2024-05-30-lingermyth-p23" ]}>
+                <span slot="title">Lingermyth</span>
+                <span slot="icon"></span>
+                <span slot="underimage">PHOTOBOOK ⇥ 2022</span>
+                <span slot="bottomline">Echoes of old in the cracks of the new</span>
+                <p>
+                    Gradually, we grew out of our past, explained away halos and beasts and cities of clouds. History, after all, is written by those that live in the present.
+                </p>
+                <p>
+                    Lingermyth is an artist book of 50 images created as a final degree project for Marine & Natural History Photography at Falmouth University.
+                </p>
+            </ProjectCard>
         </main>
         <footer class="mt-0.5 mb-4 w-full px-4 flex flex-col items-center">
             <div class="border-t border-black relative max-w-md">
-                <SmartImage photoName="parchment-paper-window-margate-2023-09-04" caption="none" class="pt-4" />
+                <!-- <SmartImage photoName="2023-09-04-parchment-paper-window-margate" caption="none" class="pt-4" /> -->
                 <p class="pt-4">
                     Well, this is it, kid. End of the line. Bottom of the webpage.
                 </p>
