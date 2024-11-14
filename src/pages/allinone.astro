@@ -1,11 +1,9 @@
 ---
-import Layout from "../components/layout_components/layout.astro";
 import { getPhotoByName as p } from "../lib/photoHelper";
 import { Content } from "../content/snippets/about.mdx";
 import AnnotatedLink from "../components/prose_components/annotatedLink.astro";
 import { LINKS } from "../lib/linkHelper";
 import astroConfig from "../../astro.config.mjs";
-import type { PhotoName } from "../data/photoTypes.generated";
 import SmartLink from "../components/prose_components/smartLink.astro";
 import "../styles/global.css";
 
@@ -45,7 +43,7 @@ const INDEX_LINKS = {
 const title = "Duncan Petrie";
 const description =
     "Duncan Petrie is a London-based photographer and writer from Milwaukee, Wisconsin. He explores nature in the human landscape, and what the world might look like when we are gone.";
-const metaImgPath = p("la-corbiere-st-brelade-jersey-2024-05-25").paths.medium;
+const metaImgPath = p("2024-05-25-la-corbiere-st-brelade-jersey").paths.medium;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
 
@@ -105,7 +103,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
                     >
                         <div class="w-[512px] max-w-[min(100%,calc(80svh-2.7rem))]">
                             <img
-                                src={p("melted-moon-falmouth-bay-2021-10-15")
+                                src={p("2021-10-15-melted-moon-falmouth-bay")
                                     .paths.large}
                             />
                         </div>
@@ -145,40 +143,10 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     </body>
     <script>
         import Swiper from "swiper";
-        import {} from "swiper/modules";
         import "swiper/css";
 
         document.addEventListener("DOMContentLoaded", function () {
-            const swiper = new Swiper(".swiper", {
-                on: {
-                    realIndexChange: (s) => {
-                        // const data = (s.wrapperEl.children[s.realIndex] as HTMLElement).dataset;
-                        // const fromLink = document.querySelector("[data-from-link-container]");
-                        // fromLink.innerHTML = data.fromText;
-                        // fromLink["href"] = data.fromLink;
-                        // document.querySelector("[data-caption-container]").innerHTML = data.caption;
-                    },
-                },
-                // loop: true,
-                // rewind: true,
-                // simulateTouch: false, // controls whether mouse can swipe
-                // spaceBetween: 0,
-                modules: [],
-            });
-
-            // swiper.el.querySelectorAll("img").forEach((e) =>
-            //     e.addEventListener("click", () => {
-            //         swiper.slideNext(0, true);
-            //     })
-            // );
-
-            // document.addEventListener("keydown", (e) => {
-            //     if (e.key === "ArrowLeft") {
-            //         swiper.slidePrev(0, true);
-            //     } else if (e.key === "ArrowRight") {
-            //         swiper.slideNext(0, true);
-            //     }
-            // });
+            new Swiper(".swiper");
         });
     </script>
 </html>

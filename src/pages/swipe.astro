@@ -1,13 +1,8 @@
 ---
 import BaseHead from "../components/baseHead.astro";
-import Layout from "../components/layout_components/layout.astro";
 import AnnotatedLink from "../components/prose_components/annotatedLink.astro";
-import SmartImage from "../components/prose_components/smartImage.astro";
 import { getPhotoByName as p } from "../lib/photoHelper";
-import { Content } from "../content/snippets/about.mdx";
 import { LINKS } from "../lib/linkHelper";
-
-p("north-atlantic-pennance-point-2021-01-14");
 ---
 
 <html lang="en">
@@ -46,7 +41,7 @@ p("north-atlantic-pennance-point-2021-01-14");
             <div class="swiper-wrapper">
                 <div
                     class="swiper-slide"
-                    data-caption={p("north-atlantic-pennance-point-2021-01-14")
+                    data-caption={p("2021-01-14-north-atlantic-pennance-point")
                         .joinedCaption}
                     data-from-text="Horizons"
                     data-from-href={LINKS.horizons}
@@ -56,10 +51,9 @@ p("north-atlantic-pennance-point-2021-01-14");
                     >
                         <img
                             draggable="false"
-                            src={p("north-atlantic-pennance-point-2021-01-14")
-                                .paths.medium}
+                            src={p("2021-01-14-north-atlantic-pennance-point").paths.medium}
                             class="w-full select-none cursor-crosshair border-4 border-[#e2e8f0]"
-                            style={`max-width: min(600px, calc((100svh - 8rem) * ${p("north-atlantic-pennance-point-2021-01-14").ratio}));`}
+                            style={`max-width: min(600px, calc((100svh - 8rem) * ${p("2021-01-14-north-atlantic-pennance-point").ratio}));`}
                         />
                         <figcaption class="hidden font-semibold text-sm p-1">
                             North Atlantic, from Pennance Point. 2021.
@@ -68,7 +62,7 @@ p("north-atlantic-pennance-point-2021-01-14");
                 </div>
                 <div
                     class="swiper-slide"
-                    data-caption={p("forest-library-isle-of-wight-2024-04-26")
+                    data-caption={p("2024-04-26-forest-library-isle-of-wight")
                         .joinedCaption}
                     data-from-text="Palimpsest"
                     data-from-href={LINKS.palimpsest}
@@ -79,11 +73,9 @@ p("north-atlantic-pennance-point-2021-01-14");
                         <figure>
                             <img
                                 draggable="false"
-                                src={p(
-                                    "forest-library-isle-of-wight-2024-04-26"
-                                ).paths.medium}
+                                src={p("2024-04-26-forest-library-isle-of-wight").paths.medium}
                                 class="w-full select-none cursor-crosshair border-[3px] border-[#C8CDB9]"
-                                style={`max-width: min(400px, calc((100svh - 8rem) * ${p("forest-library-isle-of-wight-2024-04-26").ratio}));`}
+                                style={`max-width: min(400px, calc((100svh - 8rem) * ${p("2024-04-26-forest-library-isle-of-wight").ratio}));`}
                             />
                             <figcaption
                                 class="hidden font-semibold text-sm p-1"
@@ -95,7 +87,7 @@ p("north-atlantic-pennance-point-2021-01-14");
                 </div>
                 <div
                     class="swiper-slide"
-                    data-caption={p("bear-witness-belsize-park-2024-05-17")
+                    data-caption={p("2024-05-17-bear-witness-belsize-park")
                         .joinedCaption}
                     data-from-text="Palimpsest"
                     data-from-href={LINKS.palimpsest}
@@ -104,17 +96,17 @@ p("north-atlantic-pennance-point-2021-01-14");
                         class="flex items-center justify-center w-full h-full px-4 gap-3 sm:gap-4"
                     >
                         <img
-                            src={p("shed-train-window-weymouth-2024-09-03")
+                            src={p("2024-09-03-shed-train-window-weymouth")
                                 .paths.medium}
-                            alt={p("shed-train-window-weymouth-2024-09-03")
+                            alt={p("2024-09-03-shed-train-window-weymouth")
                                 .joinedCaption}
                             draggable="false"
                             class="max-w-[280px] w-[calc(50%-0.5rem)] select-none cursor-crosshair"
                         />
                         <img
-                            src={p("bear-witness-belsize-park-2024-05-17").paths
+                            src={p("2024-05-17-bear-witness-belsize-park").paths
                                 .medium}
-                            alt={p("bear-witness-belsize-park-2024-05-17")
+                            alt={p("2024-05-17-bear-witness-belsize-park")
                                 .joinedCaption}
                             draggable="false"
                             class="max-w-[282px] w-[calc(50%-0.5rem)] select-none cursor-crosshair border-[3px] border-[#0A0907]"
@@ -126,7 +118,7 @@ p("north-atlantic-pennance-point-2021-01-14");
                 </div>
                 <div
                     class="swiper-slide"
-                    data-caption={p("hell-awaits-falmouth-2021-10-30")
+                    data-caption={p("2021-10-30-hell-awaits-falmouth")
                         .joinedCaption}
                     data-from-text="Lingermyth"
                     data-from-href={LINKS.lingermyth}
@@ -137,8 +129,8 @@ p("north-atlantic-pennance-point-2021-01-14");
                         <figure>
                             <img
                                 draggable="false"
-                                style={`max-width: min(560px, calc((100svh - 12rem) * ${p("hell-awaits-falmouth-2021-10-30").ratio}));`}
-                                src={p("hell-awaits-falmouth-2021-10-30").paths
+                                style={`max-width: min(560px, calc((100svh - 12rem) * ${p("2021-10-30-hell-awaits-falmouth").ratio}));`}
+                                src={p("2021-10-30-hell-awaits-falmouth").paths
                                     .medium}
                                 class="select-none cursor-crosshair border-[3px] border-[#C8CDB9]"
                             />

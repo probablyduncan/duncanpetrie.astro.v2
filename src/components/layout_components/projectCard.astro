@@ -98,6 +98,8 @@ const widestRatio = allImages.reduce(
     import "swiper/css";
 
     document.addEventListener("DOMContentLoaded", function () {
-        const swiper = new Swiper(".swiper");
+        new Swiper(".swiper", {
+            grabCursor: true,
+        });
     });
 </script>

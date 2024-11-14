@@ -1,4 +1,3 @@
-import { execSync } from "child_process";
 import path from "path";
 import { cmd } from "../src/lib/cmdHelper";
 

@@ -41,13 +41,12 @@ const photos = getPhotosByTags("site-all");
         </main>
     </body><script>
         import Swiper from "swiper";
-        import {} from "swiper/modules";
         import "swiper/css";
 
         document.addEventListener("DOMContentLoaded", function () {
             const swiper = new Swiper(".swiper", {
                 on: {
-                    realIndexChange: (s) => {},
+                    realIndexChange: () => {},
                 },
                 modules: [],
                 // spaceBetween: 0,
