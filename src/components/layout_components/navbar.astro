@@ -14,23 +14,27 @@ import AnnotatedLink from "../prose_components/annotatedLink.astro";
     </div>
 </nav> -->
 <nav data-bottom-bar class:list={[
-    "fixed sm:bottom-4 bottom-0 z-10", 
-    "px-4 sm:px-6 py-4 sm:rounded-full border-t-[3px] sm:border-[3px] border-black bg-white", 
-    "max-w-full sm:w-[31rem] w-[28rem]",
-    "flex justify-between",
+    "fixed sm:bottom-4 bottom-0 z-10 px-4 sm:px-0",
+    "sm:w-auto w-full bg-white sm:rounded-full",
     "text-md font-semibold",
+    "flex justify-center",
     "data-[hidden]:translate-y-20 transition-transform",
 ]}>
-    <slot name="bottomleft">
-        <AnnotatedLink href={LINKS.home} staticUnderline={false} title="https://duncanpetrie.com">
-            DUNCANPETRIE.COM&nbsp;&nbsp;/&nbsp;&nbsp;
-        </AnnotatedLink>
-    </slot>
-    <slot name="bottomright">
-        <AnnotatedLink href={LINKS.index} staticUnderline={false} title="All Works">
-            INDEX
-        </AnnotatedLink>
-    </slot>
+    <div class:list={[
+        "flex justify-between sm:w-[31rem] w-[28rem] sm:max-w-full max-w-full",
+        "sm:px-6 px-1 py-4 sm:rounded-full border-t-[3px] sm:border-[3px] border-black bg-white",
+    ]}>
+        <slot name="bottomleft">
+            <AnnotatedLink href={LINKS.home} staticUnderline={false} title="https://duncanpetrie.com">
+                DUNCANPETRIE.COM&nbsp;&nbsp;/&nbsp;&nbsp;
+            </AnnotatedLink>
+        </slot>
+        <slot name="bottomright">
+            <AnnotatedLink href={LINKS.index} staticUnderline={false} title="All Works">
+                INDEX
+            </AnnotatedLink>
+        </slot>
+    </div>
 </nav>
 <script>
     function bottomBarInit() {
