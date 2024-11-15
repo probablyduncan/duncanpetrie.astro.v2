@@ -32,7 +32,7 @@
         let scrolled = false;
         const hideThreshold = 10;
 
-        document.addEventListener("scroll", (e) => {
+        document.addEventListener("scroll", () => {
             if (!scrolled && window.scrollY > hideThreshold) {
                 scrolled = true;
                 toplinks.forEach((e) => {

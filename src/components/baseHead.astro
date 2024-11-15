@@ -1,23 +1,22 @@
 ---
 import "../styles/global.css";
 import astroConfig from "../../astro.config.mjs";
-import type { PhotoName } from "../data/photoTypes.generated";
-import { getPhotoByName } from "../lib/photoHelper";
+import { resolveImage } from "../lib/photoHelper";
 
 interface Props {
     title?: string;
-    photoName?: PhotoName;
+    cover?: string;
 }
 
 const {
     title = "Duncan Petrie",
-    photoName = "2024-05-25-la-corbiere-st-brelade-jersey",
+    cover = "2024-05-13-high-castle-london",
 } = Astro.props;
 
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const description =
     "Duncan Petrie is a London-based photographer and writer from Milwaukee, Wisconsin. He explores nature in the human landscape, and what the world might look like when we are gone.";
-const imgPath = getPhotoByName(photoName).paths.medium;
-const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const coverImage = await resolveImage({ src: cover });
 ---
 
 <meta charset="utf-8" />
@@ -53,13 +52,13 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 <meta property="og:url" content={Astro.url} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
-<meta property="og:image" content={new URL(imgPath, Astro.url)} />
+<meta property="og:image" content={new URL(coverImage.src, Astro.url)} />
 
 <!-- Twitter -->
 <meta property="twitter:card" content="summary_large_image" />
 <meta property="twitter:url" content={Astro.url} />
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
-<meta property="twitter:image" content={new URL(imgPath, Astro.url)} />
+<meta property="twitter:image" content={new URL(coverImage.src, Astro.url)} />
 
 <!-- <ViewTransitions /> -->

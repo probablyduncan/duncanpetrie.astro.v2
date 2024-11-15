@@ -9,14 +9,14 @@ import BaseHead from "../baseHead.astro";
 
 interface Props {
     title?: string;
-    photoName?: PhotoName;
+    cover?: PhotoName;
     includeBottomNav?: boolean;
     includeTopNav?: boolean;
 }
 
 const {
     title,
-    photoName,
+    cover,
     includeBottomNav = true,
     includeTopNav = true,
 } = Astro.props;
@@ -24,7 +24,7 @@ const {
 
 <html lang="en">
     <head>
-        <BaseHead title={title} photoName={photoName} />
+        <BaseHead title={title} cover={cover} />
         
     </head>
     <body class="bg-white text-black dark:bg-black dark:text-white min-h-svh min-w-full flex flex-col justify-center items-center p-0">

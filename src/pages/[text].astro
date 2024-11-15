@@ -1,11 +1,12 @@
 ---
 import { getCollection } from "astro:content";
-import Layout from "../components/layout_components/layout.astro";
 import TextContainer from "../components/prose_components/textContainer.astro";
 import Toplink from "../components/layout_components/toplink.astro";
 import SmartImage from "../components/prose_components/smartImage.astro";
 import MdLink from "../components/prose_components/mdLink.astro";
 import MdImg from "../components/prose_components/mdImg.astro";
+import BaseHead from "../components/baseHead.astro";
+import Navbar from "../components/layout_components/navbar.astro";
 
 export async function getStaticPaths() {
     const textProjects = await getCollection("text");
@@ -20,24 +21,26 @@ const {
 } = Astro.props;
 const { Content } = await props.render();
 ---
-
-<Layout>
-    <Toplink />
-    <main class="px-4 w-full max-w-[856px] flex flex-col items-center mb-[50svh]">
-        {
-            data.cover && (
-                <SmartImage
-                    src={data.cover}
-                    alt={data.coverCaption}
-                    class="relative w-full sm:mt-[1.7rem] mt-20"
-                    caption="right"
-                />
-            )
-        }
-        <TextContainer {...data} columns={0} class="max-w-[600px] sm:mt-[20svh] mt-20">
-            <Content components={{ a: MdLink, img: MdImg }} />
-        </TextContainer>
-    </main>
-    <span slot="bottomright"></span>
-    <span slot="bottomleft"></span>
-</Layout>
+<html lang="en">
+    <head>
+        <BaseHead title={data.title} cover={data.cover} />
+    </head>
+    <body class="flex flex-col items-center">
+        <Navbar righttext={props.slug.replaceAll("-", " ").toUpperCase()} />
+        <main class="px-4 w-full max-w-[856px] flex flex-col items-center mb-[50svh]">
+            {
+                data.cover && (
+                    <SmartImage
+                        src={data.cover}
+                        alt={data.coverCaption}
+                        class="relative w-full sm:mt-[1.7rem] mt-20"
+                        caption="right"
+                    />
+                )
+            }
+            <TextContainer {...data} columns={0} class="max-w-[600px] sm:mt-[20svh] mt-20">
+                <Content components={{ a: MdLink, img: MdImg }} />
+            </TextContainer>
+        </main>
+    </body>
+</html>

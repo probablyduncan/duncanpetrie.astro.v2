@@ -1,9 +1,9 @@
 ---
 import BaseHead from "../components/baseHead.astro";
 import Navbar from "../components/layout_components/navbar.astro";
-import AnnotatedLink from "../components/prose_components/annotatedLink.astro";
 import { LINKS } from "../lib/linkHelper";
 import ProjectCard from "../components/layout_components/projectCard.astro";
+import MdLink from "../components/prose_components/mdLink.astro";
 ---
 
 <html lang="en">
@@ -73,13 +73,13 @@ import ProjectCard from "../components/layout_components/projectCard.astro";
                     (that’s me!) is a London-based photographer and writer from Milwaukee, Wisconsin. I explore nature in the human landscape, and what the world might look like when we are gone.
                 </p>
                 <p>
-                    I graduated from <AnnotatedLink href="mnhp">Falmouth University</AnnotatedLink> in 2022 with a degree in Marine and Natural History Photography.
+                    I graduated from <MdLink href="mnhp">Falmouth University</MdLink> in 2022 with a degree in Marine and Natural History Photography.
                 </p>
                 <p>
-                    In my free time, I'm a full stack web developer. I built this website using <AnnotatedLink href="https://docs.astro.build/en/getting-started/">Astro</AnnotatedLink>. Check out the <AnnotatedLink href="https://github.com/probablyduncan/duncanpetrie.astro.v2">source</AnnotatedLink>.
+                    In my free time, I'm a full stack web developer. I built this website using <MdLink href="https://docs.astro.build/en/getting-started/">Astro</MdLink>. Check out the <MdLink href="https://github.com/probablyduncan/duncanpetrie.astro.v2">source</MdLink>.
                 </p>
                 <p>
-                    Contact me at <AnnotatedLink href="mailto">duncanpetrie1@gmail.com</AnnotatedLink><br>or on Instagram @<AnnotatedLink href="instagram">probablyduncan</AnnotatedLink>.
+                    Contact me at <MdLink href="mailto">duncanpetrie1@gmail.com</MdLink><br>or on Instagram @<MdLink href="instagram">probablyduncan</MdLink>.
                 </p>
                 <span slot="bottomline">This is my website</span>
                 <span slot="bottomright">
@@ -185,7 +185,7 @@ import ProjectCard from "../components/layout_components/projectCard.astro";
                     Well, this is it, kid. End of the line. Bottom of the webpage.
                 </p>
                 <p class="pt-4">
-                    Things are looking grim. But do not despair! This website has <AnnotatedLink href={LINKS.index}>other pages</AnnotatedLink> to look at.
+                    Things are looking grim. But do not despair! This website has <MdLink href={LINKS.index}>other pages</MdLink> to look at.
                 </p>
                 <p class="pt-4">
                     Or, I suppose, you could go to another website. Here are some of my favorites:
@@ -193,18 +193,18 @@ import ProjectCard from "../components/layout_components/projectCard.astro";
                 </p>
             </div>
             <ul class="pt-4 [&_>li]:before:content-['->'] [&_>li]:before:pr-2 max-w-md w-full">
-                <li><AnnotatedLink href="https://solar.lowtechmagazine.com/">Low Tech Magazine</AnnotatedLink></li>
-                <li><AnnotatedLink href="https://archive.org/details/rotatingfood2">Rotating Food</AnnotatedLink></li>
-                <li><AnnotatedLink href="https://motherfuckingwebsite.com/">Website Design Guidelines</AnnotatedLink></li>
-                <li><AnnotatedLink href="https://en.wikipedia.org/wiki/Category:Obsolete_occupations">Obsolete Occupations</AnnotatedLink></li>
-                <li><AnnotatedLink href="https://www.saulleiterfoundation.org/color">Saul Leiter's website</AnnotatedLink></li>
-                <li><AnnotatedLink href="https://commons.wikimedia.org/wiki/File:24_man_in_een_telefooncel-4591445.ogv">24 man in een telefooncel</AnnotatedLink></li>
-                <li><AnnotatedLink href="https://www.oldbookillustrations.com/">Old Book Illustrations</AnnotatedLink></li>
-                <li><AnnotatedLink href="https://www.landfallnavigation.com/noaa-nautical-chart-14909-upper-green-bay-jackson-harbor-and-detroit-harbor-detroit-harbor-jackson-harbor-baileys-harbor.html">Map of Death's Door</AnnotatedLink></li>
-                <li><AnnotatedLink href="https://rsms.me/inter/">Inter, This Font</AnnotatedLink></li>
-                <li><AnnotatedLink href="https://github.com/psb1558/Junicode-font">Junicode, <span class="font-serif">This Font</span></AnnotatedLink></li>
-                <li><AnnotatedLink href="wrapmap">Falafel Wraps</AnnotatedLink></li>
-                <li><AnnotatedLink href="https://commons.wikimedia.org/wiki/File:7-Eleven,_Orlando,_Florida,_August_1987.ogv">7-Eleven, Florida, 1987</AnnotatedLink></li>
+                <li><MdLink href="https://solar.lowtechmagazine.com/">Low Tech Magazine</MdLink></li>
+                <li><MdLink href="https://archive.org/details/rotatingfood2">Rotating Food</MdLink></li>
+                <li><MdLink href="https://motherfuckingwebsite.com/">Website Design Guidelines</MdLink></li>
+                <li><MdLink href="https://en.wikipedia.org/wiki/Category:Obsolete_occupations">Obsolete Occupations</MdLink></li>
+                <li><MdLink href="https://www.saulleiterfoundation.org/color">Saul Leiter's website</MdLink></li>
+                <li><MdLink href="https://commons.wikimedia.org/wiki/File:24_man_in_een_telefooncel-4591445.ogv">24 man in een telefooncel</MdLink></li>
+                <li><MdLink href="https://www.oldbookillustrations.com/">Old Book Illustrations</MdLink></li>
+                <li><MdLink href="https://www.landfallnavigation.com/noaa-nautical-chart-14909-upper-green-bay-jackson-harbor-and-detroit-harbor-detroit-harbor-jackson-harbor-baileys-harbor.html">Map of Death's Door</MdLink></li>
+                <li><MdLink href="https://rsms.me/inter/">Inter, This Font</MdLink></li>
+                <li><MdLink href="https://github.com/psb1558/Junicode-font">Junicode, <span class="font-serif">This Font</span></MdLink></li>
+                <li><MdLink href="wrapmap">Falafel Wraps</MdLink></li>
+                <li><MdLink href="https://commons.wikimedia.org/wiki/File:7-Eleven,_Orlando,_Florida,_August_1987.ogv">7-Eleven, Florida, 1987</MdLink></li>
             </ul>
         </footer>
     </body>

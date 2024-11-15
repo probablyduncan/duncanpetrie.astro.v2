@@ -2,8 +2,15 @@
 import { LINKS } from "../../lib/linkHelper";
 import AnnotatedLink from "../prose_components/annotatedLink.astro";
 
+interface Props {
+    righttext?: string;
+    rightlink?: string;
+}
+
+const { righttext = "INDEX", rightlink = LINKS.index } = Astro.props;
 
 ---
+
 <!-- <nav class:list={[
     "px-4 pt-4 w-full flex justify-center",
     "text-md font-semibold"
@@ -13,25 +20,38 @@ import AnnotatedLink from "../prose_components/annotatedLink.astro";
         <slot name="topright"><AnnotatedLink staticUnderline={false} type="circle">INSTAGRAM</AnnotatedLink></slot>
     </div>
 </nav> -->
-<nav data-bottom-bar class:list={[
-    "fixed sm:bottom-4 bottom-0 z-10 px-4 sm:px-0",
-    "sm:w-auto w-full bg-white sm:rounded-full",
-    "text-md font-semibold",
-    "flex justify-center",
-    "data-[hidden]:translate-y-20 transition-transform",
-]}>
-    <div class:list={[
-        "flex justify-between sm:w-[31rem] w-[28rem] sm:max-w-full max-w-full",
-        "sm:px-6 px-1 py-4 sm:rounded-full border-t-[3px] sm:border-[3px] border-black bg-white",
-    ]}>
-        <slot name="bottomleft">
-            <AnnotatedLink href={LINKS.home} staticUnderline={false} title="https://duncanpetrie.com">
+<nav
+    data-bottom-bar
+    class:list={[
+        "fixed sm:bottom-4 bottom-0 z-10 px-4 sm:px-0",
+        "sm:w-auto w-full bg-white sm:rounded-full",
+        "text-md font-semibold",
+        "flex justify-center",
+        "data-[hidden]:translate-y-20 transition-transform",
+    ]}
+>
+    <div
+        class:list={[
+            "flex justify-between sm:w-[31rem] w-[28rem] sm:max-w-full max-w-full",
+            "sm:px-6 px-1 py-4 sm:rounded-full border-t-[3px] sm:border-[3px] border-black bg-white",
+        ]}
+    >
+        <slot name="left">
+            <AnnotatedLink
+                href={LINKS.home}
+                staticUnderline={false}
+                title="https://duncanpetrie.com"
+            >
                 DUNCANPETRIE.COM&nbsp;&nbsp;/&nbsp;&nbsp;
             </AnnotatedLink>
         </slot>
-        <slot name="bottomright">
-            <AnnotatedLink href={LINKS.index} staticUnderline={false} title="All Works">
-                INDEX
+        <slot name="right">
+            <AnnotatedLink
+                href={rightlink}
+                staticUnderline={false}
+                title="All works."
+            >
+                {righttext}
             </AnnotatedLink>
         </slot>
     </div>
@@ -47,20 +67,30 @@ import AnnotatedLink from "../prose_components/annotatedLink.astro";
         const threshold = 20;
 
         document.addEventListener("scroll", () => {
-
             const curr = window.scrollY;
             const delta = curr - prev;
             prev = curr;
 
-            console.log(window.scrollY, "/", document.body.scrollHeight - window.innerHeight)
+            console.log(
+                window.scrollY,
+                "/",
+                document.body.scrollHeight - window.innerHeight
+            );
 
-            if ((delta > threshold) && showing) {
+            if (delta > threshold && showing) {
                 showing = false;
                 bottomBars.forEach((e) => {
                     (e as HTMLElement).dataset.hidden = "true";
                 });
-            }
-            else if ((delta < -threshold || curr >= (document.body.scrollHeight - window.innerHeight) - threshold || curr <= threshold) && !showing) {
+            } else if (
+                (delta < -threshold ||
+                    curr >=
+                        document.body.scrollHeight -
+                            window.innerHeight -
+                            threshold ||
+                    curr <= threshold) &&
+                !showing
+            ) {
                 showing = true;
                 bottomBars.forEach((e) => {
                     delete (e as HTMLElement).dataset.hidden;

@@ -1,7 +1,6 @@
 ---
 import { getCollection } from "astro:content";
 import { getPhotosByNamesAndTags } from "../lib/photoHelper";
-import Layout from "../components/layout_components/layout.astro";
 import AnnotatedLink from "../components/prose_components/annotatedLink.astro";
 import TextContainer from "../components/prose_components/textContainer.astro";
 import { LINKS } from "../lib/linkHelper";
@@ -10,6 +9,8 @@ import SmartImage from "../components/prose_components/smartImage.astro";
 import MdImg from "../components/prose_components/mdImg.astro";
 import MdLink from "../components/prose_components/mdLink.astro";
 import Toplink from "../components/layout_components/toplink.astro";
+import Navbar from "../components/layout_components/navbar.astro";
+import BaseHead from "../components/baseHead.astro";
 
 export async function getStaticPaths() {
     const photoProjects = await getCollection("photo");
@@ -28,58 +29,62 @@ const photos = getPhotosByNamesAndTags(data).sort((a, b) => (b.rating + Math.ran
 const firstPhotoName = PHOTO_NAMES.includes(data.cover as PhotoName)
     ? data.cover as PhotoName : photos.shift()?.name as PhotoName;
 ---
-
-<Layout title={data.title} includeBottomNav={false} photoName={firstPhotoName}>
-    <Toplink />
-    <main class="px-4 w-full max-w-[856px] flex flex-col items-center">
-        {
-            firstPhotoName && (
-                <SmartImage
-                    src={firstPhotoName}
-                    alt={data.coverCaption}
-                    class="relative w-full sm:mt-[1.7rem] mt-20"
-                    caption="right"
-                    size="large"
-                />
-            )
-        }
-        <TextContainer {...data} class="sm:mt-[20svh] mt-20 max-w-[600px]">
-            <Content components={{ a: MdLink, img: MdImg }} />
-        </TextContainer>
-        <div class="w-full mt-[50vh]">
+<html lang="en">
+    <head>
+        <BaseHead title={data.title} cover={firstPhotoName} />
+    </head>
+    <body class="flex flex-col justify-center items-center">
+        <Navbar righttext={props.slug.replaceAll("-", " ").toUpperCase()} />
+        <main class="px-4 w-full max-w-[856px] flex flex-col items-center">
             {
-                photos.map((p) => {
-                    const width = (768 * Math.sqrt(p.ratio)) / Math.sqrt(3 / 2);
-                    const height = width / p.ratio;
-                    return (
-                        <div
-                            class="flex justify-center"
-                            style={`margin: max(200px, calc(50svh - ${height / 2}px)) 0;`}
-                        >
-                            <SmartImage src={p.name} class="relative max-w-full" style={`width: ${width}px;`} caption="right" size="medium" />
-                            {/* <figure
-                                class="relative max-w-full"
-                                style={`width: ${width}px;`}
-                            >
-                                <img src={p.paths.medium} />
-                                <figcaption class="font-semibold text-sm">
-                                    {p.joinedCaption}
-                                </figcaption>
-                            </figure> */}
-                        </div>
-                    );
-                })
+                firstPhotoName && (
+                    <SmartImage
+                        src={firstPhotoName}
+                        alt={data.coverCaption}
+                        class="relative w-full mt-4 sm:mt-8"
+                        caption="right"
+                        size="large"
+                    />
+                )
             }
-        </div>
-    </main>
-    <footer class="mb-[50svh] mt-[20vh]">
-        <span>More</span>
-        <AnnotatedLink
-            type="underline"
-            staticUnderline={false}
-            href={LINKS.index}
-            class:list={"hover:mx-1"}>photography</AnnotatedLink
-        >
-        <span>-&gt;</span>
-    </footer>
-</Layout>
+            <TextContainer {...data} class="sm:mt-[20svh] mt-20 max-w-[600px]">
+                <Content components={{ a: MdLink, img: MdImg }} />
+            </TextContainer>
+            <div class="w-full mt-[50vh]">
+                {
+                    photos.map((p) => {
+                        const width = (768 * Math.sqrt(p.ratio)) / Math.sqrt(3 / 2);
+                        const height = width / p.ratio;
+                        return (
+                            <div
+                                class="flex justify-center"
+                                style={`margin: max(200px, calc(50svh - ${height / 2}px)) 0;`}
+                            >
+                                <SmartImage src={p.name} class="relative max-w-full" style={`width: ${width}px;`} caption="right" size="medium" />
+                                {/* <figure
+                                    class="relative max-w-full"
+                                    style={`width: ${width}px;`}
+                                >
+                                    <img src={p.paths.medium} />
+                                    <figcaption class="font-semibold text-sm">
+                                        {p.joinedCaption}
+                                    </figcaption>
+                                </figure> */}
+                            </div>
+                        );
+                    })
+                }
+            </div>
+        </main>
+        <footer class="mb-[50svh] mt-[20vh]">
+            <span>More</span>
+            <AnnotatedLink
+                type="underline"
+                staticUnderline={false}
+                href={LINKS.index}
+                class:list={"hover:mx-1"}>photography</AnnotatedLink
+            >
+            <span>-&gt;</span>
+        </footer>
+    </body>
+</html>
