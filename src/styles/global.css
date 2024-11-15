@@ -43,6 +43,10 @@
     src: local("Times New Roman");
   }
 
+  body {
+    font-synthesis: none;
+  }
+
   img {
     width: 100%;
     display: block;
