@@ -1,11 +1,9 @@
 ---
 import BaseHead from "../components/baseHead.astro";
 import Navbar from "../components/layout_components/navbar.astro";
-import SmartImage from "../components/prose_components/smartImage.astro";
 import AnnotatedLink from "../components/prose_components/annotatedLink.astro";
 import { LINKS } from "../lib/linkHelper";
 import ProjectCard from "../components/layout_components/projectCard.astro";
-import Toplink from "../components/layout_components/toplink.astro";
 ---
 
 <html lang="en">
@@ -13,18 +11,18 @@ import Toplink from "../components/layout_components/toplink.astro";
         <BaseHead />
     </head>
     <body class="flex flex-col items-center">
-        <div data-follow-cursor class="fixed z-0 top-0 left-0 w-auto h-auto inline-block text-5xl select-none pointer-events-none bg-green-50 font-serif" />
         <Navbar />
-        <Toplink />
-        <main class="pt-[4.5rem] sm:pt-[1.7rem] w-full flex flex-col gap-4">
+        <div data-follow-cursor class="fixed z-0 top-0 left-0 w-auto h-auto inline-block text-5xl select-none pointer-events-none bg-green-50 font-serif" />
+        <!-- <Toplink /> -->
+        <main class="w-full flex flex-col gap-5 pt-4 sm:pt-8">
 
             <!-- INTRO/ABOUT -->
             <ProjectCard titleLigatures={true} titleIconSpace={false} largeImage={true} images={[
                 {
-                    photoName: "2022-02-18-surrogate-sea-villajoyosa",
+                    photoName: "2024-05-13-high-castle-london",
                     frame: {
                         type: "shadow",
-                        color: "#742d2129",
+                        color: "#72a5f236",
                         size: 4
                     }
                 },
@@ -37,19 +35,37 @@ import Toplink from "../components/layout_components/toplink.astro";
                     }
                 },
                 {
-                    photoName: "2024-05-25-la-corbiere-st-brelade-jersey",
+                    photoName: "film-pigeon-8",
                     frame: {
-                        type: "shadow",
-                        color: "rgba(10, 114, 123, 0.09)",
-                        size: 4
+                        type: "border",
+                        color: "#0000000a",
+                        size: 3,
                     }
                 },
                 {
                     photoName: "2019-08-31-cycling-gudmundsen-drive-door-county",
+                    frame: {
+                        type: "shadow",
+                        color: "#5762512e",
+                        size: 4,
+                    }
                 },
                 {
-                    photoName: "film-pigeon-1",
-                }
+                    photoName: "2022-02-18-surrogate-sea-villajoyosa",
+                    frame: {
+                        type: "shadow",
+                        color: "#742d2129",
+                        size: 4
+                    }
+                },
+                {
+                    photoName: "2021-11-02-jubilee-pool-penzance",
+                    frame: {
+                        type: "border",
+                        color: "#742d2129",
+                        size: 4
+                    }
+                },
             ]}>
                 <span slot="title">Duncan Petrie</span>
                 <span slot="icon">*</span>
@@ -162,7 +178,7 @@ import Toplink from "../components/layout_components/toplink.astro";
                 </p>
             </ProjectCard>
         </main>
-        <footer class="mt-0.5 mb-4 w-full px-4 flex flex-col items-center">
+        <footer class="mt-0.5 mb-96 w-full px-4 flex flex-col items-center">
             <div class="border-t border-black relative max-w-md">
                 <!-- <SmartImage photoName="2023-09-04-parchment-paper-window-margate" caption="none" class="pt-4" /> -->
                 <p class="pt-4">
