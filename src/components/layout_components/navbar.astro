@@ -11,15 +11,6 @@ const { righttext = "INDEX", rightlink = LINKS.index } = Astro.props;
 
 ---
 
-<!-- <nav class:list={[
-    "px-4 pt-4 w-full flex justify-center",
-    "text-md font-semibold"
-]}>
-    <div class="w-full max-w-md flex justify-between">
-        <slot name="topleft"><AnnotatedLink href="mailto" staticUnderline={false} type="circle">EMAIL ME</AnnotatedLink></slot>
-        <slot name="topright"><AnnotatedLink staticUnderline={false} type="circle">INSTAGRAM</AnnotatedLink></slot>
-    </div>
-</nav> -->
 <nav
     data-bottom-bar
     class:list={[
@@ -70,12 +61,6 @@ const { righttext = "INDEX", rightlink = LINKS.index } = Astro.props;
             const curr = window.scrollY;
             const delta = curr - prev;
             prev = curr;
-
-            console.log(
-                window.scrollY,
-                "/",
-                document.body.scrollHeight - window.innerHeight
-            );
 
             if (delta > threshold && showing) {
                 showing = false;
