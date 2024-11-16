@@ -104,29 +104,14 @@ const widestRatio = allImages.reduce(
     import Swiper from "swiper";
     import "swiper/css";
     import { shuffleRef } from "../../lib/shuffle"
-
-        
-
+    
     document.addEventListener("DOMContentLoaded", function () {
 
         document.querySelectorAll(".swiper.shuffle").forEach((e) => {
-
-            /*
-                export function shuffle<T>(arr: T[]): T[] {
-                    return arr.map(e => ({ value: e, sort: Math.random() }))
-                        .sort((i, j) => i.sort - j.sort)
-                        .map(({ value: e }) => e);
-                }
-            */
-
             const slideContainer = e.children[0];
             const slides = Array.from(slideContainer.children);
             shuffleRef(slides);
             slideContainer.replaceChildren(...slides);
-
-            // requestAnimationFrame(() => {
-            //     (e as HTMLElement).style.opacity = '1';
-            // });
         });
 
         new Swiper(".swiper", {
