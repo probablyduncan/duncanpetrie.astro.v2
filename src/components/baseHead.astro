@@ -62,3 +62,7 @@ const coverImage = await resolveImage({ src: cover });
 <meta property="twitter:image" content={new URL(coverImage.src, Astro.url)} />
 
 <!-- <ViewTransitions /> -->
+
+<link rel="preload" href={astroConfig.base + "/fonts/inter.woff2"} as="font" type="font/woff2" crossorigin>
+<link rel="preload" href={astroConfig.base + "/fonts/inter-italic.woff2"} as="font" type="font/woff2" crossorigin>
+<link rel="preload" href={astroConfig.base + "/fonts/junicode.woff2"} as="font" type="font/woff2" crossorigin>
