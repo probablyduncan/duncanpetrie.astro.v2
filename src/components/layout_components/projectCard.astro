@@ -10,6 +10,7 @@ interface Props {
     titleLigatures?: boolean;
     titleIconSpace?: boolean;
     largeImage?: boolean;
+    smallTitle?: boolean;
     shuffle?: boolean;
     images?: SingleOrSeveral<Image>;
     photos?: SingleOrSeveral<PhotoName>;
@@ -19,8 +20,9 @@ interface Props {
 const {
     href,
     titleLigatures = false,
-    titleIconSpace = true,
+    titleIconSpace = false,
     largeImage = false,
+    smallTitle = false,
     shuffle = false,
     photos = [],
     srcs = [],
@@ -34,11 +36,6 @@ const resolvedSrcs = Promise.all(toSeveral(srcs).map(async src => await resolveI
 const allImages: Image[] = (await resolvedImages)
     .concat(await resolvedPhotos)
     .concat(await resolvedSrcs);
-
-const widestRatio = allImages.reduce(
-    (prev, { ratio }) => Math.max(prev, ratio),
-    0
-);
 
 const guid = Math.random() * 1000;
 ---
@@ -54,7 +51,7 @@ const guid = Math.random() * 1000;
                 allImages.map((image) => (
                     <div class="swiper-slide">
                         <div class="flex justify-center px-4">
-                            <div class={largeImage ? "max-w-xl" : "max-w-md"}>
+                            <div class:list={[largeImage ? "max-w-xl" : "max-w-md", "w-full"]}>
                                 <SmartImage {...image} caption="none" lazy={false} />
                             </div>
                         </div>
@@ -70,7 +67,8 @@ const guid = Math.random() * 1000;
             </div>
             <h1
                 class:list={[
-                    "font-serif text-5xl mt-8",
+                    "font-serif mt-8",
+                    smallTitle ? "sm:text-4xl text-3xl" : "text-5xl",
                     { ligatures: titleLigatures },
                 ]}
             >
@@ -130,7 +128,7 @@ const guid = Math.random() * 1000;
                 const target = document.querySelector(`:not(button)[data-icon="${guid}"]`) as HTMLElement;
                 
                 window.scrollTo({
-                    top: target.offsetTop + (target.offsetParent as HTMLElement).offsetTop - window.innerHeight/2,
+                    top: target.offsetTop + (target.offsetParent as HTMLElement).offsetTop - (window.innerHeight*3/4),
                     behavior: "smooth",
                 });
 

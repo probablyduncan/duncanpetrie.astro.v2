@@ -4,12 +4,13 @@ import { resolveImage, type Image } from "../../lib/photoHelper";
 
 interface Props extends Image {
     class?: string;
-    style?: string;
+    figStyle?: string;
     caption?: "left" | "right" | "center" | "none";
     lazy?: boolean;
 }
 
-const { class: classes, style, caption = "center", lazy = true, ...image } = Astro.props;
+const { class: classes, figStyle, caption = "center", lazy = true, ...image } = Astro.props;
+
 
 const resolved = await resolveImage(image);
 
@@ -32,7 +33,7 @@ switch (caption) {
 
 {
     resolved && (
-        <figure class={classes} style={style}>
+        <figure class={classes} style={figStyle}>
             <img
                 src={resolved.src}
                 alt={resolved.alt}
