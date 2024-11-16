@@ -17,12 +17,12 @@ import MdLink from "../components/prose_components/mdLink.astro";
         <main class="w-full flex flex-col gap-5 pt-4 sm:pt-8">
 
             <!-- INTRO/ABOUT -->
-            <ProjectCard titleLigatures={true} titleIconSpace={false} largeImage={true} images={[
+            <ProjectCard titleLigatures={true} titleIconSpace={false} largeImage={true} shuffle={true} images={[
                 {
                     photoName: "2024-05-13-high-castle-london",
                     frame: {
                         type: "shadow",
-                        color: "#72a5f236",
+                        color: "black",
                         size: 4
                     }
                 },
@@ -48,14 +48,6 @@ import MdLink from "../components/prose_components/mdLink.astro";
                         type: "shadow",
                         color: "#5762512e",
                         size: 4,
-                    }
-                },
-                {
-                    photoName: "2022-02-18-surrogate-sea-villajoyosa",
-                    frame: {
-                        type: "shadow",
-                        color: "#742d2129",
-                        size: 4
                     }
                 },
                 {
@@ -91,7 +83,7 @@ import MdLink from "../components/prose_components/mdLink.astro";
             </ProjectCard>
 
             <!-- PALIMPSEST -->
-            <ProjectCard href={LINKS.palimpsest} images={[
+            <ProjectCard href={LINKS.palimpsest} shuffle={true} images={[
                 {
                     photoName: "2024-04-26-forest-library-isle-of-wight",
                     frame: {

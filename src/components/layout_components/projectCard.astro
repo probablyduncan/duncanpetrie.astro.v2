@@ -10,6 +10,7 @@ interface Props {
     titleLigatures?: boolean;
     titleIconSpace?: boolean;
     largeImage?: boolean;
+    shuffle?: boolean;
     images?: SingleOrSeveral<Image>;
     photos?: SingleOrSeveral<PhotoName>;
     srcs?: SingleOrSeveral<string>;
@@ -20,6 +21,7 @@ const {
     titleLigatures = false,
     titleIconSpace = true,
     largeImage = false,
+    shuffle = false,
     photos = [],
     srcs = [],
     images = [],
@@ -39,8 +41,12 @@ const widestRatio = allImages.reduce(
 );
 ---
 
-<section class="">
-    <div class="swiper">
+<section>
+    <div class:list={{ 
+        swiper: true,
+        "opacity-0 transition-opacity": true,
+        shuffle,
+    }}>
         <div class="swiper-wrapper">
             {
                 allImages.map((image) => (
@@ -60,21 +66,21 @@ const widestRatio = allImages.reduce(
             }
         </div>
     </div>
-    <div class="flex flex-col items-center px-4">
+    <div class="flex flex-col items-center px-5">
         <div class="max-w-md">
-            <div class="font-medium text-right text-xs m-1">
+            <div class="font-medium text-right text-xs mt-1">
                 <slot name="underimage" />
             </div>
             <h1
                 class:list={[
-                    "font-serif text-5xl mt-8 pl-1",
+                    "font-serif text-5xl mt-8",
                     { ligatures: titleLigatures },
                 ]}
             >
                 {href ? (<SmartLink href={href}><slot name="title" /></SmartLink>) : (<slot name="title" />)}<sup>{titleIconSpace ? " " : ""}<slot name="icon" /></sup>
             </h1>
             <div
-                class="relative [&_>*]:pt-4 [&_>p:first-of-type]:arrow-indent hyphens-none pl-1 pr-4"
+                class="relative [&_>*]:pt-4 [&_>p:first-of-type]:arrow-indent hyphens-none pr-4"
             >
                 <slot />
             </div>
@@ -97,11 +103,42 @@ const widestRatio = allImages.reduce(
 <script>
     import Swiper from "swiper";
     import "swiper/css";
+    import { shuffleRef } from "../../lib/shuffle"
+
+        
 
     document.addEventListener("DOMContentLoaded", function () {
+
+        document.querySelectorAll(".swiper.shuffle").forEach((e) => {
+
+            /*
+                export function shuffle<T>(arr: T[]): T[] {
+                    return arr.map(e => ({ value: e, sort: Math.random() }))
+                        .sort((i, j) => i.sort - j.sort)
+                        .map(({ value: e }) => e);
+                }
+            */
+
+            const slideContainer = e.children[0];
+            const slides = Array.from(slideContainer.children);
+            shuffleRef(slides);
+            slideContainer.replaceChildren(...slides);
+
+            // requestAnimationFrame(() => {
+            //     (e as HTMLElement).style.opacity = '1';
+            // });
+        });
+
         new Swiper(".swiper", {
             grabCursor: true,
             loop: true,
+            on: {
+                init: (s) => {
+                    requestAnimationFrame(() => {
+                        s.el.style.opacity = "1";
+                    })
+                }
+            }
         });
     });
 </script>

@@ -357,6 +357,10 @@ export function resolveImageStyle(img: Image): string {
             break;
     }
 
+    if (img.ratio) {
+        style["aspect-ratio"] = img.ratio;
+    }
+
     return [...Object.keys(style).map(prop => `${prop}: ${style[prop]};`), img.style].join(" ");
 }
 
