@@ -6,11 +6,16 @@ interface Props {
     title?: string;
     newTab?: boolean;
     class?: string;
+    noTab?: boolean;
 }
 
-const { href, title, newTab, class: classes, ...passthrough } = Astro.props;
+const { href, title, newTab, class: classes, noTab = false, ...passthrough } = Astro.props;
 const innerHtml = await Astro.slots.render("default");
 const resolved = resolveLink({ href, innerHtml, title, forceNewTab: newTab });
+
+if (noTab) {
+    passthrough["tabindex"] = "-1";
+}
 ---
 
-<a {...resolved} {...passthrough} class={classes}><slot /></a>
+{resolved.href ? <a {...resolved} {...passthrough} class={classes}><slot /></a> : <span {...resolved} {...passthrough} class={classes}><slot /></span>}

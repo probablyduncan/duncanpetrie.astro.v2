@@ -104,19 +104,38 @@ export function stripHtmlTags(html: string) {
         return "";
     }
 
-    let text = html;
-    while (text.includes("<") || text.includes(">")) {
-        const leftIndex = text.indexOf("<");
-        const rightIndex = text.indexOf(">");
+    // ok new strategy
+    // we find the first closing bracket and get the opening bracket that's closest to it
+    // if none then 
 
-        if (leftIndex === -1) {
-            text = text.substring(rightIndex + 1);
-        } else if (rightIndex === -1) {
-            text = text.substring(0, leftIndex);
-        } else {
-            text = text.substring(0, leftIndex) + text.substring(rightIndex + 1);
+    let result = "";
+    let cursor = 0;
+    while (true) {
+
+        // go through string and find the next <tag> tag. There could also be rogue < or > in there
+
+        let nextOpening = html.indexOf("<", cursor);
+        let nextClosing = html.indexOf(">", cursor);
+
+        // if no more complete tags, we are done
+        if (nextOpening === -1 || nextClosing === -1) {
+            result += html.substring(cursor);
+            break;
         }
+
+        if (nextOpening < nextClosing) {
+            // proper tag order, we just have to make sure there's not a closer "<" to the nearest ">"
+            nextOpening = html.lastIndexOf("<", nextClosing);
+        }
+        else {
+            // this means there's a ">" tag we need to skip
+            nextClosing = html.indexOf(">", nextOpening);
+        }
+
+        result += html.substring(cursor, nextOpening) + html.substring(nextClosing + 1);
+        cursor = nextClosing + 1;
+
     }
 
-    return text;
+    return result;
 }

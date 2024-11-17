@@ -13,10 +13,9 @@ import MdLink from "../components/prose_components/mdLink.astro";
     <body class="flex flex-col items-center">
         <Navbar />
         <div data-follow-cursor class="fixed z-0 top-0 left-0 w-auto h-auto inline-block text-5xl select-none pointer-events-none bg-green-50 font-serif" />
-        <main class="w-full flex flex-col gap-5 pt-4 sm:pt-8">
+        <main class="w-full flex flex-col gap-5 pt-8">
 
-            <!-- INTRO/ABOUT -->
-            <ProjectCard titleLigatures={true} largeImage={true} shuffle={true} images={[
+            <ProjectCard title="Duncan Petrie" icon="*" titleLigatures={true} largeImage={true} shuffle={true} images={[
                 {
                     photoName: "2024-05-13-high-castle-london",
                     frame: {
@@ -58,8 +57,6 @@ import MdLink from "../components/prose_components/mdLink.astro";
                     }
                 },
             ]}>
-                <span slot="title">Duncan Petrie</span>
-                <span slot="icon">*</span>
                 <p>
                     (that’s me!) is a London-based photographer and writer from Milwaukee, Wisconsin. I explore nature in the human landscape, and what the world might look like when we are gone.
                 </p>
@@ -81,8 +78,7 @@ import MdLink from "../components/prose_components/mdLink.astro";
                 </span>
             </ProjectCard>
 
-            <!-- PALIMPSEST -->
-            <ProjectCard href={LINKS.palimpsest} titleIconSpace={true} images={[
+            <ProjectCard title="Palimpsest" icon="" href={LINKS.palimpsest} titleIconSpace={true} images={[
                 {
                     photoName: "2024-04-26-treasure-isle-of-wight",
                     frame: {
@@ -116,9 +112,7 @@ import MdLink from "../components/prose_components/mdLink.astro";
                     }
                 },
             ]}>
-                <span slot="title">Palimpsest</span>
                 <span slot="underimage">PHOTO ⇥ 2024</span>
-                <span slot="icon"></span>
                 <p>
                     In 1989, the political scientist Francis Fukuyama declared that humanity had reached the "End of History". The Cold War was over. Western liberal democracy had prevailed. He lamented the loss of ideological struggle, and the looming monotony of this post-historic era. But there is another kind of End to History.
                 </p>
@@ -130,8 +124,7 @@ import MdLink from "../components/prose_components/mdLink.astro";
                 </span>
             </ProjectCard>
 
-            <!-- PIGEON -->
-            <ProjectCard href={LINKS.pigeon} titleIconSpace={true} smallTitle={true} images={[
+            <ProjectCard title="To Pigeon-Fill the Sky" icon="Ϡ" href={LINKS.pigeon} titleIconSpace={true} bottomIconSpace={true} smallTitle={true} images={[
                 {
                     photoName: "film-pigeon-1",
                     frame: { type: "border", size: 3, color: "#0000000a" },
@@ -144,8 +137,6 @@ import MdLink from "../components/prose_components/mdLink.astro";
                     frame: { type: "shadow", size: 4, color: "#241e20" },
                 },
             ]}>
-                <span slot="title">To Pigeon-Fill the Sky</span>
-                <span slot="icon">Ϡ</span>
                 <span slot="underimage">PHOTOBOOK ⇥ 2024</span>
                 <span slot="bottomline">I'm old enough to remember...</span>
                 <p>
@@ -156,10 +147,7 @@ import MdLink from "../components/prose_components/mdLink.astro";
                 </p>
             </ProjectCard>
 
-            <!-- LINGERMYTH -->
-            <ProjectCard href={LINKS.yearn} shuffle={true} photos={[ "2024-05-30-lingermyth-p3233", "2024-05-30-lingermyth-front-back-covers", "2024-05-30-lingermyth-p45", "2024-05-30-lingermyth-p5052", "2024-05-30-lingermyth-p23" ]}>
-                <span slot="title">Lingermyth</span>
-                <span slot="icon"></span>
+            <ProjectCard title="Lingermyth" icon="" href={LINKS.lingermyth} shuffle={true} photos={[ "2024-05-30-lingermyth-p3233", "2024-05-30-lingermyth-front-back-covers", "2024-05-30-lingermyth-p45", "2024-05-30-lingermyth-p5052", "2024-05-30-lingermyth-p23" ]}>
                 <span slot="underimage">PHOTOBOOK ⇥ 2022</span>
                 <span slot="bottomline">Echoes of old in the cracks of the new</span>
                 <p>
@@ -170,10 +158,7 @@ import MdLink from "../components/prose_components/mdLink.astro";
                 </p>
             </ProjectCard>
 
-            <!-- ON YEARNING -->
-            <ProjectCard href={LINKS.yearn} titleIconSpace={true} photos={["2021-06-20-yearning-door", "2021-10-09-catclaws-pennance-point", "2020-12-02-last-light-over-the-roseland"]}>
-                <span slot="title">On Yearning</span>
-                <span slot="icon">ᛦ</span>
+            <ProjectCard title="On Yearning" icon="ᛦ" href={LINKS.yearn} titleIconSpace={true} photos={["2021-06-20-yearning-door", "2021-10-09-catclaws-pennance-point", "2020-12-02-last-light-over-the-roseland"]}>
                 <span slot="underimage">DISSERTATION ⇥ 2021</span>
                 <span slot="bottomline">Traversing the Untraversable</span>
                 <p>
@@ -187,10 +172,7 @@ import MdLink from "../components/prose_components/mdLink.astro";
                 </p>
             </ProjectCard>
 
-            <!-- WIKI -->
-            <ProjectCard href={LINKS.wiki} smallTitle={false} images={{src: "/media/wiki.gif", frame: { type: "shadow", size: 4 }}}>
-                <span slot="title">Wikimedia</span>
-                <span slot="icon">❀</span>
+            <ProjectCard title="Wikimedia" icon="❀" href={LINKS.wiki} smallTitle={false} images={{src: "/media/wiki.gif", frame: { type: "shadow", size: 4 }}}>
                 <span slot="underimage">SHORT FILM ⇥ 2021</span>
                 <span slot="bottomline">24 Dutch children in a phone booth?</span>
                 <p>
@@ -201,8 +183,7 @@ import MdLink from "../components/prose_components/mdLink.astro";
                 </p>
             </ProjectCard>
 
-            <!-- HORIZONS -->
-            <ProjectCard href={LINKS.horizons} titleIconSpace={true} images={[
+            <ProjectCard title="Old Horizons" icon="∆" href={LINKS.horizons} titleIconSpace={true} images={[
                 {
                     photoName: "2020-07-02-daybreak-door", 
                     frame: { type: "shadow", size: 4, color: "#bed7f23b" }
@@ -216,8 +197,6 @@ import MdLink from "../components/prose_components/mdLink.astro";
                     frame: { type: "border", size: 4 }
                 },
             ]}>
-                <span slot="title">Old Horizons</span>
-                <span slot="icon">∆</span>
                 <span slot="underimage">PHOTOGRAPHY ⇥ 2021</span>
                 <span slot="bottomline">Distilling the vastness...</span>
                 <p>
@@ -228,8 +207,7 @@ import MdLink from "../components/prose_components/mdLink.astro";
                 </p>
             </ProjectCard>
 
-            <!-- HEARTLAND -->
-            <ProjectCard href={LINKS.heartland} titleIconSpace={true} images={[
+            <ProjectCard title="Heartland" icon="⸙" href={LINKS.heartland} titleIconSpace={true} images={[
                 {
                     photoName: "2018-10-21-tall-corn-chimney-swifts-wisconsin", 
                     frame: { type: "shadow", size: 4, color: "#2e1804" }
@@ -243,8 +221,6 @@ import MdLink from "../components/prose_components/mdLink.astro";
                     frame: { type: "shadow", size: 4 }
                 },
             ]}>
-                <span slot="title">Heartland</span>
-                <span slot="icon">⸙</span>
                 <span slot="underimage">PHOTOGRAPHY ⇥ 2020</span>
                 <span slot="bottomline">New beauty, old Wisconsin</span>
                 <p>
