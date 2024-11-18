@@ -9,7 +9,7 @@ import { getEntry } from "astro:content";
 import MdLink from "../prose_components/mdLink.astro";
 
 interface Props {
-    key: ContentEntryMap["snippets"][keyof ContentEntryMap["homepage"]]["slug"];
+    key: ContentEntryMap["homepage"][keyof ContentEntryMap["homepage"]]["slug"];
     largeImage?: boolean;
     shuffle?: boolean;
     images?: SingleOrSeveral<Image>;
