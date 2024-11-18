@@ -15,7 +15,7 @@ import MdLink from "../components/prose_components/mdLink.astro";
         <div data-follow-cursor class="fixed z-0 top-0 left-0 w-auto h-auto inline-block text-5xl select-none pointer-events-none bg-green-50 font-serif" />
         <main class="w-full flex flex-col gap-5 pt-8">
 
-            <ProjectCard title="Duncan Petrie" icon="*" titleLigatures={true} largeImage={true} shuffle={true} images={[
+            <ProjectCard key="about" largeImage={true} shuffle={true} images={[
                 {
                     photoName: "2024-05-13-high-castle-london",
                     frame: {
@@ -57,19 +57,6 @@ import MdLink from "../components/prose_components/mdLink.astro";
                     }
                 },
             ]}>
-                <p>
-                    (that’s me!) is a London-based photographer and writer from Milwaukee, Wisconsin. I explore nature in the human landscape, and what the world might look like when we are gone.
-                </p>
-                <p>
-                    I graduated from <MdLink href="mnhp">Falmouth University</MdLink> in 2022 with a degree in Marine and Natural History Photography.
-                </p>
-                <p>
-                    In my free time, I'm a full stack web developer. I built this website using <MdLink href="https://docs.astro.build/en/getting-started/">Astro</MdLink>. Check out the <MdLink href="https://github.com/probablyduncan/duncanpetrie.astro.v2">source</MdLink>.
-                </p>
-                <p>
-                    Contact me at <MdLink href="mailto">duncanpetrie1@gmail.com</MdLink><br>or on Instagram @<MdLink href="instagram">probablyduncan</MdLink>.
-                </p>
-                <span slot="bottomline">This is my website</span>
                 <span slot="bottomright">
                     <span class="text-[#00ffff]">●</span>
                     <span class="text-[#ff00ff]">●</span>
@@ -78,7 +65,7 @@ import MdLink from "../components/prose_components/mdLink.astro";
                 </span>
             </ProjectCard>
 
-            <ProjectCard title="Palimpsest" icon="" href={LINKS.palimpsest} titleIconSpace={true} images={[
+            <ProjectCard key="palimpsest" images={[
                 {
                     photoName: "2024-04-26-treasure-isle-of-wight",
                     frame: {
@@ -111,20 +98,9 @@ import MdLink from "../components/prose_components/mdLink.astro";
                         size: 3
                     }
                 },
-            ]}>
-                <span slot="underimage">PHOTO ⇥ 2024</span>
-                <p>
-                    In 1989, the political scientist Francis Fukuyama declared that humanity had reached the "End of History". The Cold War was over. Western liberal democracy had prevailed. He lamented the loss of ideological struggle, and the looming monotony of this post-historic era. But there is another kind of End to History.
-                </p>
-                <p>
-                    Our ecosystems are rocketing towards collapse. Our forests burn. Our oceans acidify. Extinctions happen daily, and our blood fills with plastic. If we do not act fast, there will be no one left to record us. Our history books will be left incomplete. Bookended by wilderness, we will be overwritten, just as we sought to overwrite the world.
-                </p>
-                <span slot="bottomline">
-                    &nbsp;What will survive us?
-                </span>
-            </ProjectCard>
+            ]} />
 
-            <ProjectCard title="To Pigeon-Fill the Sky" icon="Ϡ" href={LINKS.pigeon} titleIconSpace={true} bottomIconSpace={true} smallTitle={true} images={[
+            <ProjectCard key="pigeon" images={[
                 {
                     photoName: "film-pigeon-1",
                     frame: { type: "border", size: 3, color: "#0000000a" },
@@ -136,54 +112,15 @@ import MdLink from "../components/prose_components/mdLink.astro";
                     photoName: "pigeon-psd-32",
                     frame: { type: "shadow", size: 4, color: "#241e20" },
                 },
-            ]}>
-                <span slot="underimage">PHOTOBOOK ⇥ 2024</span>
-                <span slot="bottomline">I'm old enough to remember...</span>
-                <p>
-                    Returning to photography after a year-long hiatus, I struggled to match the quality of my old work. My new images were weak. They lacked dynamism, punctum, decisive moments. No birds filled their skies. 
-                </p>
-                <p>
-                    I had spent a year remembering the best of my old images, rose-tinted, and had forgotten the patience and persistence that was required to make them. I had forgotten that good art takes hard work.
-                </p>
-            </ProjectCard>
+            ]} />
 
-            <ProjectCard title="Lingermyth" icon="" href={LINKS.lingermyth} shuffle={true} photos={[ "2024-05-30-lingermyth-p3233", "2024-05-30-lingermyth-front-back-covers", "2024-05-30-lingermyth-p45", "2024-05-30-lingermyth-p5052", "2024-05-30-lingermyth-p23" ]}>
-                <span slot="underimage">PHOTOBOOK ⇥ 2022</span>
-                <span slot="bottomline">Echoes of old in the cracks of the new</span>
-                <p>
-                    Gradually, we grew out of our past, explained away halos and beasts and cities of clouds. History, after all, is written by those that live in the present.
-                </p>
-                <p>
-                    Lingermyth is an artist book of 50 images created as a final degree project for Marine & Natural History Photography at Falmouth University.
-                </p>
-            </ProjectCard>
+            <ProjectCard key="lingermyth" shuffle={true} photos={[ "2024-05-30-lingermyth-p3233", "2024-05-30-lingermyth-front-back-covers", "2024-05-30-lingermyth-p45", "2024-05-30-lingermyth-p5052", "2024-05-30-lingermyth-p23" ]} />
 
-            <ProjectCard title="On Yearning" icon="ᛦ" href={LINKS.yearn} titleIconSpace={true} photos={["2021-06-20-yearning-door", "2021-10-09-catclaws-pennance-point", "2020-12-02-last-light-over-the-roseland"]}>
-                <span slot="underimage">DISSERTATION ⇥ 2021</span>
-                <span slot="bottomline">Traversing the Untraversable</span>
-                <p>
-                    The wide blue sea spread before me, a quilt of the patterns of the wind. I was suddenly struck by profound desire. A desire for what, I was not sure.
-                </p>
-                <p>
-                    I was on the edge of the world, and I wanted to see beyond. It was a sort of nostalgia, but not for any real past. A nostalgia for the future, maybe, the future that can no longer be.
-                </p>
-                <p>
-                    I wrote my undergraduate dissertation about this feeling. If you're interested in the theories behind my photographic practice, check it out.
-                </p>
-            </ProjectCard>
+            <ProjectCard key="on-yearning" photos={["2021-06-20-yearning-door", "2021-10-09-catclaws-pennance-point", "2020-12-02-last-light-over-the-roseland"]} />
 
-            <ProjectCard title="Wikimedia" icon="❀" href={LINKS.wiki} smallTitle={false} images={{src: "/media/wiki.gif", frame: { type: "shadow", size: 4 }}}>
-                <span slot="underimage">SHORT FILM ⇥ 2021</span>
-                <span slot="bottomline">24 Dutch children in a phone booth?</span>
-                <p>
-                    The full breadth of humanity, every hope and every sorrow, every song and every sigh, is on <MdLink href="https://commons.wikimedia.org/wiki/Main_Page">Wikimedia Commons</MdLink>, an open file repository maintained by the Wikimedia Foundation.
-                </p>
-                <p>
-                    In Spring of 2021, I created this film, for free, using 144 of those files.
-                </p>
-            </ProjectCard>
+            <ProjectCard key="wiki" images={{src: "/media/wiki.gif", frame: { type: "shadow", size: 4 }}} />
 
-            <ProjectCard title="Old Horizons" icon="∆" href={LINKS.horizons} titleIconSpace={true} images={[
+            <ProjectCard key="horizons" images={[
                 {
                     photoName: "2020-07-02-daybreak-door", 
                     frame: { type: "shadow", size: 4, color: "#bed7f23b" }
@@ -196,18 +133,9 @@ import MdLink from "../components/prose_components/mdLink.astro";
                     photoName: "2021-03-28-moonglow-lake-michigan", 
                     frame: { type: "border", size: 4 }
                 },
-            ]}>
-                <span slot="underimage">PHOTOGRAPHY ⇥ 2021</span>
-                <span slot="bottomline">Distilling the vastness...</span>
-                <p>
-                    For years I struggled to photograph water; my photos were much too busy, seeing everything while capturing nothing.
-                </p>
-                <p>
-                    Now, I distill the water into its simplest form, making abstract what is too big to capture conventionally.
-                </p>
-            </ProjectCard>
+            ]} />
 
-            <ProjectCard title="Heartland" icon="⸙" href={LINKS.heartland} titleIconSpace={true} images={[
+            <ProjectCard key="heartland" images={[
                 {
                     photoName: "2018-10-21-tall-corn-chimney-swifts-wisconsin", 
                     frame: { type: "shadow", size: 4, color: "#2e1804" }
@@ -220,23 +148,11 @@ import MdLink from "../components/prose_components/mdLink.astro";
                     photoName: "2020-04-30-last-call-wisconsin", 
                     frame: { type: "shadow", size: 4 }
                 },
-            ]}>
-                <span slot="underimage">PHOTOGRAPHY ⇥ 2020</span>
-                <span slot="bottomline">New beauty, old Wisconsin</span>
-                <p>
-                    I grew up in boring old Wisconsin, and I spent the first 18 years of my life waiting to get out.
-                </p>
-                <p>
-                    My dreams were too big for cows and cornfields. I was ready&mdash;had been for years&mdash;to escape, to see the ends of the earth through the end of a lens. I wanted mountains, icebergs, jungles. Pulled towards extremes, I never saw this lumpy wheat-swamp as a destination.
-                </p>
-                <p>
-                    I think I do now.
-                </p>
-            </ProjectCard>
+            ]} />
+
         </main>
         <footer class="mt-0.5 mb-96 w-full px-4 flex flex-col items-center">
             <div class="border-t border-black relative max-w-md">
-                <!-- <SmartImage photoName="2023-09-04-parchment-paper-window-margate" caption="none" class="pt-4" /> -->
                 <p class="pt-4">
                     Well, this is it, kid. End of the line. Bottom of the webpage.
                 </p>

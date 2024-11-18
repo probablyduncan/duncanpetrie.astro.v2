@@ -40,4 +40,17 @@ const text = defineCollection({
     })
 })
 
-export const collections = { photo, text };
+const homepage = defineCollection({
+    type: 'content',
+    schema: z.object({
+        title: z.string(),
+        icon: z.string(),
+        href: z.string().or(z.boolean()).optional(),
+        bottomLine: z.string().optional(),
+        smallTitle: z.boolean().default(false),
+        titleLigatures: z.boolean().default(false),
+        iconSpace: z.enum(["title", "bottom", "both"]).optional(),
+    })
+});
+
+export const collections = { photo, text, homepage };
