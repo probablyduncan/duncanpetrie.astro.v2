@@ -46,9 +46,11 @@ const INDEX_LINKS = {
         <BaseHead title="Work" cover="2021-11-23-time-store-window-fowey" />
     </head>
     <body class="flex flex-col justify-center items-center w-full min-h-svh">
-        <AnnotatedLink href={LINKS.home} type="circle" staticUnderline={false} class="text-sm sm:fixed top-4 left-4 w-full px-8 mt-8 sm:m-0 sm:p-0 sm:w-auto">
-            &lt;- Home
-        </AnnotatedLink>
+        <div class="text-sm sm:fixed top-4 left-4 w-full px-8 mt-8 sm:m-0 sm:p-0 sm:w-auto">
+            <AnnotatedLink href={LINKS.home} type="circle" staticUnderline={false}>
+                &lt;- Home
+            </AnnotatedLink>
+        </div>
         <main class="flex flex-col sm:block sm:columns-2 w-full sm:w-auto pt-8 pb-24 pl-8">
             {
                 Object.keys(INDEX_LINKS).map((g) => {

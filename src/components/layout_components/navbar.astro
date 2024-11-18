@@ -28,13 +28,16 @@ const { righttext = "INDEX", rightlink = LINKS.index } = Astro.props;
         ]}
     >
         <slot name="left">
-            <AnnotatedLink
-                href={LINKS.home}
-                staticUnderline={false}
-                title="https://duncanpetrie.com"
-            >
-                DUNCANPETRIE.COM&nbsp;&nbsp;/&nbsp;&nbsp;
-            </AnnotatedLink>
+            <span>
+                <AnnotatedLink
+                    href={LINKS.home}
+                    staticUnderline={false}
+                    title="https://duncanpetrie.com"
+                >
+                    DUNCANPETRIE.COM
+                </AnnotatedLink>
+                &nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;
+            </span>
         </slot>
         <slot name="right">
             <AnnotatedLink
