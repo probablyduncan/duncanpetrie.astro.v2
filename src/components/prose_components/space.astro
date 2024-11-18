@@ -1,0 +1,11 @@
+---
+interface Props {
+    lines?: number;
+}
+
+const { lines = 2 } = Astro.props;
+
+---
+<p>
+    {Array(lines).fill(0).map(() => <br/>)}
+</p>
