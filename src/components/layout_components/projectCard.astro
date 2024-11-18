@@ -84,7 +84,7 @@ const bottomIconSpace = props.data.iconSpace === "both" || props.data.iconSpace 
             </div>
             <h1
                 class:list={[
-                    "font-serif mt-8",
+                    "font-serif mt-8 px-2",
                     props.data.smallTitle ? "sm:text-4xl text-3xl" : "text-5xl",
                     { ligatures: props.data.titleLigatures },
                 ]}
@@ -92,7 +92,7 @@ const bottomIconSpace = props.data.iconSpace === "both" || props.data.iconSpace 
                 {props.data.href ? (<a {...resolvedLink} class="hover:underline focus:outline-black">{props.data.title}</a>) : (<>{props.data.title}</>)}<sup>{titleIconSpace  ? " " : ""}<button tabindex="-1" class="transition-transform hover:rotate-12" data-icon={guid}>{props.data.icon}</button></sup>
             </h1>
             <div
-                class="relative [&_>*]:pt-4 [&_>p:first-of-type]:arrow-indent hyphens-none pr-4"
+                class="relative [&_>*]:pt-4 [&_>p:first-of-type]:arrow-indent hyphens-none pl-2 pr-4"
             >
                 <Content components={{ a: MdLink }} />
             </div>

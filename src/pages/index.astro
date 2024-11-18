@@ -116,11 +116,11 @@ import MdLink from "../components/prose_components/mdLink.astro";
 
             <ProjectCard key="lingermyth" shuffle={true} photos={[ "2024-05-30-lingermyth-p3233", "2024-05-30-lingermyth-front-back-covers", "2024-05-30-lingermyth-p45", "2024-05-30-lingermyth-p5052", "2024-05-30-lingermyth-p23" ]} />
 
-            <ProjectCard key="on-yearning" photos={["2021-06-20-yearning-door", "2021-10-09-catclaws-pennance-point", "2020-12-02-last-light-over-the-roseland"]} />
+            <ProjectCard key="on-yearning" photos={"2021-06-20-yearning-door"} />
 
             <ProjectCard key="wiki" images={{src: "/media/wiki.gif", frame: { type: "shadow", size: 4 }}} />
 
-            <ProjectCard key="horizons" images={[
+            <ProjectCard key="horizons" shuffle={true} images={[
                 {
                     photoName: "2020-07-02-daybreak-door", 
                     frame: { type: "shadow", size: 4, color: "#bed7f23b" }
@@ -135,7 +135,7 @@ import MdLink from "../components/prose_components/mdLink.astro";
                 },
             ]} />
 
-            <ProjectCard key="heartland" images={[
+            <!-- <ProjectCard key="heartland" images={[
                 {
                     photoName: "2018-10-21-tall-corn-chimney-swifts-wisconsin", 
                     frame: { type: "shadow", size: 4, color: "#2e1804" }
@@ -148,7 +148,7 @@ import MdLink from "../components/prose_components/mdLink.astro";
                     photoName: "2020-04-30-last-call-wisconsin", 
                     frame: { type: "shadow", size: 4 }
                 },
-            ]} />
+            ]} /> -->
 
         </main>
         <footer class="mt-0.5 mb-96 w-full px-4 flex flex-col items-center">

@@ -1,11 +1,11 @@
 ---
-import Layout from "../components/layout_components/layout.astro";
+import BaseHead from "../components/baseHead.astro";
 import AnnotatedLink from "../components/prose_components/annotatedLink.astro";
 import { LINKS } from "../lib/linkHelper";
 
 const INDEX_LINKS = {
     Photo: {
-        "order": 1,
+        order: 1,
         "Palimpsest": LINKS.palimpsest,
         "To Pigeon-Fill the Sky": LINKS.pigeon,
         "Lingermyth": LINKS.lingermyth,
@@ -41,38 +41,40 @@ const INDEX_LINKS = {
     },
 } as const;
 ---
-
-<Layout
-    title="Work - Duncan Petrie"
-    cover="2021-11-23-time-store-window-fowey"
->
-    <main class="flex flex-col sm:block sm:columns-2 w-full sm:w-auto pl-8 sm:pl-16 my-32">
-        {
-            Object.keys(INDEX_LINKS).map((g) => {
-                const links = Object.keys(INDEX_LINKS[g]);
-                const order = INDEX_LINKS[g][links.shift()];
-                return (
-                    <div class="pb-4" style={`order: ${order};`}>
-                        <h2 class="font-serif font-bold text-xl ligatures">{g}</h2>
-                        <ul>
-                            {links.map((l) => (
-                                <li>
-                                    <AnnotatedLink
-                                        type="circle"
-                                        staticUnderline={false}
-                                        href={INDEX_LINKS[g][l]}
-                                        class:list={"text-sm"}
-                                    >
-                                        {l}
-                                    </AnnotatedLink>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                );
-            })
-        }
-    </main>
-    <span slot="bottomleft"></span>
-    <span slot="bottomright"></span>
-</Layout>
+<html lang="en">
+    <head>
+        <BaseHead title="Work" cover="2021-11-23-time-store-window-fowey" />
+    </head>
+    <body class="flex flex-col justify-center items-center w-full min-h-svh">
+        <AnnotatedLink href={LINKS.home} type="circle" staticUnderline={false} class="text-sm fixed top-4 left-4">
+            &lt;- Home
+        </AnnotatedLink>
+        <main class="flex flex-col sm:block sm:columns-2 w-full sm:w-auto pt-8 pb-24 pl-8">
+            {
+                Object.keys(INDEX_LINKS).map((g) => {
+                    const links = Object.keys(INDEX_LINKS[g]);
+                    const order = INDEX_LINKS[g][links.shift()];
+                    return (
+                        <div class="pb-4" style={`order: ${order};`}>
+                            <h2 class="font-serif font-bold text-xl ligatures">{g}</h2>
+                            <ul>
+                                {links.map((l) => (
+                                    <li>
+                                        <AnnotatedLink
+                                            type="circle"
+                                            staticUnderline={false}
+                                            href={INDEX_LINKS[g][l]}
+                                            class:list={"text-sm"}
+                                        >
+                                            {l}
+                                        </AnnotatedLink>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    );
+                })
+            }
+        </main>
+    </body>
+</html>
