@@ -8,7 +8,6 @@ import { PHOTO_NAMES, type PhotoName } from "../data/photoTypes.generated";
 import SmartImage from "../components/prose_components/smartImage.astro";
 import MdImg from "../components/prose_components/mdImg.astro";
 import MdLink from "../components/prose_components/mdLink.astro";
-import Toplink from "../components/layout_components/toplink.astro";
 import Navbar from "../components/layout_components/navbar.astro";
 import BaseHead from "../components/baseHead.astro";
 
@@ -26,8 +25,25 @@ const {
 const { Content } = await props.render();
 
 const photos = getPhotosByNamesAndTags(data).sort((a, b) => (b.rating + Math.random()) - (a.rating + Math.random()));
-const firstPhotoName = PHOTO_NAMES.includes(data.cover as PhotoName)
-    ? data.cover as PhotoName : photos.shift()?.name as PhotoName;
+
+// three cases:
+// cover is not photoname, in which case we use first image in photos 
+// cover is in photos, in which case we remove it from there
+// cover is not in photos, in which case we just use it
+
+let firstPhotoName = data.cover;
+if (!PHOTO_NAMES.includes(data.cover as PhotoName)) {
+    // if cover is not valid photo, just use first one
+    firstPhotoName = photos.shift()?.name as PhotoName;
+}
+else {
+    // if photo is valid, and in photos, remove it so it doesn't show up twice
+    const coverIndex = photos.findIndex(p => p.name === firstPhotoName);
+    if (coverIndex !== -1) {
+        photos.splice(coverIndex, 1);
+    }
+}
+
 ---
 <html lang="en">
     <head>
@@ -47,10 +63,11 @@ const firstPhotoName = PHOTO_NAMES.includes(data.cover as PhotoName)
                     />
                 )
             }
+            <!-- <div class="text-right text-gray-600 sm:mt-[12svh] mt-12">ↆ <button data-skip class="hover:underline italic">Skip to images</button> ↆ</div> -->
             <TextContainer {...data} class="sm:mt-[20svh] mt-20 max-w-[600px]">
                 <Content components={{ a: MdLink, img: MdImg }} />
             </TextContainer>
-            <div class="w-full mt-[50vh]">
+            <div data-images class="w-full mt-[50vh]">
                 {
                     photos.map((p) => {
                         const width = (768 * Math.sqrt(p.ratio)) / Math.sqrt(3 / 2);
@@ -87,4 +104,15 @@ const firstPhotoName = PHOTO_NAMES.includes(data.cover as PhotoName)
             <span>-&gt;</span>
         </footer>
     </body>
+    <!-- <script>
+        function initSkipToImages() {
+            document.querySelector("[data-skip]").addEventListener("click", () => window.scrollTo({
+                top: (document.querySelector("[data-images]") as HTMLElement).offsetTop,
+                behavior: "smooth",
+            }));
+        }
+
+        document.addEventListener("DOMContentLoaded", initSkipToImages);
+        document.addEventListener("astro:after-swap", initSkipToImages);
+    </script> -->
 </html>
