@@ -1,0 +1,177 @@
+---
+interface Props {
+    icon: string;
+    bottomline: string;
+    iconGap?: boolean;
+    linkProps?: any;
+}
+
+const { icon, bottomline, iconGap = false, linkProps = {} } = Astro.props;
+---
+
+<a
+    {...linkProps}
+    data-bottom-line-link
+    class:list={[
+        "flex justify-between items-end",
+        "mt-36 pt-1 pb-0.5",
+        "border-b-[3px] border-black",
+    ]}
+>
+    <span>
+        <span class:list={["font-serif text-lg", iconGap ? "pr-1" : "pr-0"]}>
+            {icon}
+        </span>
+        <span data-bottom-line class="italic leading-8">
+            {bottomline.split("").map((char) => <span class="data-[active]:font-serif data-[active]:font-bold] data-[active]:text-xl">{char}</span>)}
+        </span>
+    </span>
+    <slot name="bottomright">
+        <span class="text-xl leading-8 data-[active]:leading-6 data-[active]:text-lg data-[active]:font-serif" data-bottom-arrow data-inactive-content="->" data-active-content="☛">-&gt;</span>
+    </slot>
+</a>
+<script>
+
+    interface AnimationState {
+        link: HTMLElement,
+        arrow: HTMLElement,
+        letters: HTMLElement[],
+        on: boolean,    // true if animating forward, false if backward
+        index: number,  // next index to be active - 0 means none active, letters.length means arrow next
+        lastUpdateTimestamp: number,    // last timestamp when action was taken
+        bounce: boolean,    // should animate backwards when fully active
+    }
+
+    const letterTimeout = 10;
+    const arrowTimeout = 100;
+    const toAnimate: AnimationState[] = []
+
+    document.querySelectorAll("a[data-bottom-line-link]").forEach(e => {
+
+        const state: AnimationState = {
+            link: e as HTMLElement,
+            arrow: e.querySelector("[data-bottom-arrow]") as HTMLElement,
+            letters: Array.from(e.querySelector("[data-bottom-line]").children) as HTMLElement[],
+            on: false,
+            index: 0,
+            lastUpdateTimestamp: 0,
+            bounce: false,
+        };
+
+        toAnimate.push(state);
+
+        e.addEventListener("mouseenter", () => {
+            state.on = true;
+            state.bounce = false;
+        });
+
+        e.addEventListener("mouseleave", () => {
+            state.on = false;
+        });
+
+        e.addEventListener("click", () => {
+            state.on = true;
+            state.bounce = true;
+        });
+    });
+
+    function animate(timeStamp: number) {
+
+        toAnimate.forEach(state => {
+
+            // at the end and still on
+            if (state.on === true && state.index > state.letters.length) {
+
+                if (state.bounce === false) {
+                    return;
+                }
+
+                if (timeStamp - state.lastUpdateTimestamp < arrowTimeout * 4) {
+                    return;
+                }
+
+                state.on = false;
+            }
+
+            // we need to animate the next letter
+            else if (state.on === true && state.index < state.letters.length) {
+
+                if (timeStamp - state.lastUpdateTimestamp < letterTimeout) {
+                    return;
+                }
+
+                updateLetter(state.letters[state.index], true);
+                state.index ++;
+                state.lastUpdateTimestamp = timeStamp;
+            }
+
+            // we need to animate the arrow
+            else if (state.on === true && state.index === state.letters.length) {
+                
+                if (timeStamp - state.lastUpdateTimestamp < arrowTimeout) {
+                    return;
+                }
+
+                updateArrow(state.arrow, true);
+                state.index ++;
+                state.lastUpdateTimestamp = timeStamp;
+            }
+
+            // at the start and not on
+            else if (state.on === false && state.index === 0) {
+                return;
+            }
+
+            // animate backwards the next letter
+            else if (state.on === false && state.index <= state.letters.length) {
+
+                if (timeStamp - state.lastUpdateTimestamp < letterTimeout) {
+                    return;
+                }
+
+                state.index --;
+                updateLetter(state.letters[state.index], false);
+                state.lastUpdateTimestamp = timeStamp;
+            }
+
+            // animate arrow backward
+            else if (state.on === false && state.index > state.letters.length) {
+
+                if (timeStamp - state.lastUpdateTimestamp < arrowTimeout) {
+                    return;
+                }
+
+                state.index --;
+                updateArrow(state.arrow, false);
+                state.lastUpdateTimestamp = timeStamp;
+            }
+        });
+
+        requestAnimationFrame(animate);
+    }
+
+    function updateLetter(letter: HTMLElement, active: boolean) {
+        if (active) {
+            letter.dataset.active = "true";
+        }
+        else {
+            delete letter.dataset.active;
+        }
+    }
+
+    function updateArrow(arrow: HTMLElement, active: boolean) {
+
+        if (active) {
+            arrow.dataset.active = "true";
+            arrow.innerHTML = arrow.dataset.activeContent;
+        }
+        else {
+            delete arrow.dataset.active;
+            arrow.innerHTML = arrow.dataset.inactiveContent;
+        }
+
+    }
+
+    document.addEventListener("DOMContentLoaded", () => requestAnimationFrame(animate));
+    document.addEventListener("astro:after-swap", () => requestAnimationFrame(animate));
+</script>

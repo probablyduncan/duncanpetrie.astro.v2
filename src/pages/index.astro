@@ -4,6 +4,7 @@ import Navbar from "../components/layout_components/navbar.astro";
 import { LINKS } from "../lib/linkHelper";
 import ProjectCard from "../components/layout_components/projectCard.astro";
 import MdLink from "../components/prose_components/mdLink.astro";
+import Pointer from "../components/pointer.astro";
 ---
 
 <html lang="en">
@@ -12,7 +13,7 @@ import MdLink from "../components/prose_components/mdLink.astro";
     </head>
     <body class="flex flex-col items-center">
         <Navbar />
-        <div data-follow-cursor class="fixed z-0 top-0 left-0 w-auto h-auto inline-block text-5xl select-none pointer-events-none bg-green-50 font-serif" />
+        <Pointer />
         <main class="w-full flex flex-col gap-5 pt-8">
 
             <ProjectCard key="about" largeImage={true} shuffle={true} images={[
@@ -181,50 +182,3 @@ import MdLink from "../components/prose_components/mdLink.astro";
         </footer>
     </body>
 </html>
-<script>
-    // const cursors = {
-    //     left: "☜",
-    //     right: "☞",
-    // } as const;
-
-    // const activeCursors = {
-    //     left: "☚",
-    //     right: "☛",
-    // } as const;
-
-    // let currentDir: keyof typeof cursors;
-    // document.addEventListener("DOMContentLoaded", () => {
-    //     const followCursor = document.querySelector("[data-follow-cursor]") as HTMLDivElement;
-    //     if (!followCursor) {
-    //         return;
-    //     }
-
-    //     document.addEventListener("mousemove", ({movementX: deltaX, movementY: deltaY, clientX: posX, clientY: posY}) => {
-
-    //         setCursor(deltaX);
-
-    //         if (deltaX > 0 || deltaY > 0) {
-    //             const pointAngle = Math.atan(deltaY / deltaX);
-    //             followCursor.style.transform = `rotate3d(${pointAngle}rad)`;
-
-    //         }
-
-    //         followCursor.style.left = `calc(${posX}px)`;
-    //         followCursor.style.top = `calc(${posY}px)`;
-    //     });
-
-    //     function setCursor(deltaX: number) {
-
-    //         if (deltaX === 0) {
-    //             return;
-    //         }
-
-    //         const newDir = deltaX > 0 ? "right" : "left";
-
-    //         if (currentDir !== newDir) {
-    //             followCursor.innerHTML = cursors[newDir];
-    //             currentDir = newDir;
-    //         }
-    //     }
-    // });
-</script>

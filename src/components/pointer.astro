@@ -1,0 +1,55 @@
+---
+
+---
+
+<div
+    data-follow-cursor
+    class="fixed z-0 top-0 left-0 w-auto h-auto inline-block text-5xl select-none pointer-events-none bg-green-50 font-serif"
+></div>
+<script>
+    // const cursors = {
+    //     left: "☜",
+    //     right: "☞",
+    // } as const;
+
+    // const activeCursors = {
+    //     left: "☚",
+    //     right: "☛",
+    // } as const;
+
+    // let currentDir: keyof typeof cursors;
+    // document.addEventListener("DOMContentLoaded", () => {
+    //     const followCursor = document.querySelector("[data-follow-cursor]") as HTMLDivElement;
+    //     if (!followCursor) {
+    //         return;
+    //     }
+
+    //     document.addEventListener("mousemove", ({movementX: deltaX, movementY: deltaY, clientX: posX, clientY: posY}) => {
+
+    //         setCursor(deltaX);
+
+    //         if (deltaX > 0 || deltaY > 0) {
+    //             const pointAngle = Math.atan(deltaY / deltaX);
+    //             followCursor.style.transform = `rotate3d(${pointAngle}rad)`;
+
+    //         }
+
+    //         followCursor.style.left = `calc(${posX}px)`;
+    //         followCursor.style.top = `calc(${posY}px)`;
+    //     });
+
+    //     function setCursor(deltaX: number) {
+
+    //         if (deltaX === 0) {
+    //             return;
+    //         }
+
+    //         const newDir = deltaX > 0 ? "right" : "left";
+
+    //         if (currentDir !== newDir) {
+    //             followCursor.innerHTML = cursors[newDir];
+    //             currentDir = newDir;
+    //         }
+    //     }
+    // });
+</script>

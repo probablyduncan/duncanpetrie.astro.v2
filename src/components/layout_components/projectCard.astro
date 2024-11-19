@@ -7,6 +7,7 @@ import { resolveLink } from "../../lib/linkHelper";
 import type { ContentEntryMap } from "astro:content";
 import { getEntry } from "astro:content";
 import MdLink from "../prose_components/mdLink.astro";
+import ProjectCardBoxLink from "./projectCardBoxLink.astro";
 
 interface Props {
     key: ContentEntryMap["homepage"][keyof ContentEntryMap["homepage"]]["slug"];
@@ -96,27 +97,7 @@ const bottomIconSpace = props.data.iconSpace === "both" || props.data.iconSpace 
             >
                 <Content components={{ a: MdLink }} />
             </div>
-            <div class:list={{"bg-black text-white invert": !!props.data.href}}>
-                <a {...resolvedLink} tabindex="-1" data-icon={guid} class:list={{
-                    "relative flex justify-between items-end mt-36 pt-1 px-1 pb-0.5 border-b-[3px]": true,
-                    "text-black border-black": !props.data.href,
-                    "text-white border-white": !!props.data.href,
-                    "after:absolute after:top-0 after:right-0 after:bottom-0 after:left-0": !!props.data.href,
-                    "after:origin-left after:scale-x-0 after:transition-transform": !!props.data.href,
-                    "after:bg-white after:mix-blend-difference after:content-['']": !!props.data.href,
-                    "focus:outline-none focus:after:transform-none hover:after:transform-none data-[focusing]:after:transform-none": !!props.data.href,
-                }}>
-                    <slot name="bottomleft">
-                        <span class="italic">
-                            <span class:list={{"font-serif text-lg": true, "pr-1": bottomIconSpace}}>{props.data.icon}</span>
-                            <span>{props.data.bottomLine}</span>
-                        </span>
-                    </slot>
-                    <slot name="bottomright">
-                        <span class="text-xl">-&gt;</span>
-                    </slot>
-                </a>
-            </div>
+            <ProjectCardBoxLink linkProps={resolvedLink} icon={props.data.icon} iconGap={bottomIconSpace} bottomline={props.data.bottomLine} />
         </div>
     </div>
 </section>
@@ -136,7 +117,6 @@ const bottomIconSpace = props.data.iconSpace === "both" || props.data.iconSpace 
 
         new Swiper(".swiper", {
             grabCursor: true,
-            // loop: true,
             on: {
                 init: (s) => {
                     requestAnimationFrame(() => {
