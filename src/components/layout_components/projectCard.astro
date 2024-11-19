@@ -90,24 +90,56 @@ const bottomIconSpace = props.data.iconSpace === "both" || props.data.iconSpace 
                     { ligatures: props.data.titleLigatures },
                 ]}
             >
-                {props.data.href ? (<a {...resolvedLink} class="hover:underline focus:outline-black">{props.data.title}</a>) : (<>{props.data.title}</>)}<sup>{titleIconSpace  ? " " : ""}<button tabindex="-1" class="transition-transform hover:rotate-12" data-icon={guid}>{props.data.icon}</button></sup>
+                {props.data.href ? (<a {...resolvedLink} tabindex="-1" data-title={guid} class="hover:underline focus:outline-black">{props.data.title}</a>) : (<>{props.data.title}</>)}<sup>{titleIconSpace  ? " " : ""}<button tabindex="-1" class="transition-transform hover:rotate-12" data-icon={guid}>{props.data.icon}</button></sup>
             </h1>
             <div
                 class="relative [&_>*]:pt-3 [&_>p:first-of-type]:arrow-indent hyphens-none mx-2"
             >
                 <Content components={{ a: MdLink }} />
             </div>
-            <ProjectCardBoxLink linkProps={resolvedLink} icon={props.data.icon} iconGap={bottomIconSpace} bottomline={props.data.bottomLine} />
+            <a
+                {...resolvedLink}
+                data-bottom-line-link={guid}
+                class:list={[
+                    "flex justify-between items-end",
+                    "mt-36 pt-1 pb-0.5",
+                    "border-b-[3px] border-black",
+                    "focus:outline-dashed outline-offset-4 outline-black",
+                ]}
+            >
+                <span>
+                    <span class:list={["font-serif text-lg select-none", bottomIconSpace ? "pr-1" : "pr-0"]}>
+                        {props.data.icon}
+                    </span>
+                    <span data-bottom-line class="italic leading-8 select-none">
+                        {props.data.bottomLine.split("").map((char) => <span class="data-[active]:font-serif data-[active]:font-bold] data-[active]:text-xl">{char}</span>)}
+                    </span>
+                </span>
+                <slot name="bottomright">
+                    <span class="text-xl leading-8 data-[active]:leading-6 data-[active]:text-lg data-[active]:font-serif select-none" data-bottom-arrow data-inactive-content="->" data-active-content="☛">-&gt;</span>
+                </slot>
+            </a>
         </div>
     </div>
 </section>
 <script>
+    function initProjectCards() {
+
+        initSwiper();
+        initBottomLinks();
+        requestAnimationFrame(animateBottomLinks);
+    }
+
+    document.addEventListener("DOMContentLoaded", initProjectCards);
+    document.addEventListener("astro:after-swap", initProjectCards);
+
+    //#region swiper
+
     import Swiper from "swiper";
     import "swiper/css";
     import { shuffleRef } from "../../lib/shuffle"
 
-    document.addEventListener("DOMContentLoaded", function () {
-
+    function initSwiper() {
         document.querySelectorAll(".swiper.shuffle").forEach((e) => {
             const slideContainer = e.children[0];
             const slides = Array.from(slideContainer.children);
@@ -125,28 +157,206 @@ const bottomIconSpace = props.data.iconSpace === "both" || props.data.iconSpace 
                 }
             }
         });
+    }
+
+    //#endregion
+    //#region bottom link animation
+
+    interface AnimationState {
+        link: HTMLElement,
+        arrow: HTMLElement,
+        letters: HTMLElement[],
+        on: boolean,    // true if animating forward, false if backward
+        index: number,  // next index to be active - 0 means none active, letters.length means arrow next
+        lastUpdateTimestamp: number,    // last timestamp when action was taken
+        bounce: boolean,    // should animate backwards when fully active
+    }
+
+    const letterTimeout = 10;
+    const arrowTimeout = 100;
+    const toAnimate: AnimationState[] = []
+    const bottomLinkBounce = new Event("bottomLinkBounce");
+    const bottomLinkOn = new Event("bottomLinkOn");
+    const bottomLinkOff = new Event("bottomLinkOff");
+
+    function initBottomLinks() {
+
+        document.querySelectorAll("a[data-bottom-line-link]").forEach(e => {
+
+            const link = e as HTMLElement;
+
+            const state: AnimationState = {
+                link,
+                arrow: e.querySelector("[data-bottom-arrow]") as HTMLElement,
+                letters: Array.from(e.querySelector("[data-bottom-line]").children) as HTMLElement[],
+                on: false,
+                index: 0,
+                lastUpdateTimestamp: 0,
+                bounce: false,
+            };
+
+            toAnimate.push(state);
+
+            e.addEventListener("bottomLinkOn", () => {
+                state.on = true;
+                state.bounce = false;
+            })
+
+            e.addEventListener("bottomLinkBounce", () => {
+                state.on = true;
+                state.bounce = true;
+            })
+
+            e.addEventListener("bottomLinkOff", () => {
+                state.on = false;
+            })
+
+            e.addEventListener("mouseenter", () => link.dispatchEvent(bottomLinkOn));
+            e.addEventListener("mouseleave", () => link.dispatchEvent(bottomLinkOff));
+            e.addEventListener("focus", () => link.dispatchEvent(bottomLinkOn));
+            e.addEventListener("blur", () => link.dispatchEvent(bottomLinkOff));
+        });
 
         document.querySelectorAll("button[data-icon]").forEach(e => {
+            
             const button = (e as HTMLButtonElement);
             const guid = button.dataset.icon;
+
+            const bottomLink = document.querySelector(`[data-bottom-line-link="${guid}"]`) as HTMLElement;
+            if (!bottomLink) {
+                return;
+            }
+
             button.addEventListener("click", () => {
-                const target = document.querySelector(`:not(button)[data-icon="${guid}"]`) as HTMLElement;
-                
+
                 window.scrollTo({
-                    top: target.offsetTop + (target.offsetParent as HTMLElement).offsetTop - (window.innerHeight*3/4),
+                    top: bottomLink.offsetTop + (bottomLink.offsetParent as HTMLElement).offsetTop - (window.innerHeight * 1/2),
                     behavior: "smooth",
-                });
+                })
 
-                setTimeout(() => {
-
-                    target.dataset.focusing = "true";
-
-                    setTimeout(() => {
-                        delete target.dataset.focusing;
-                    }, 800);
-
-                }, 200);
+                setTimeout(() => bottomLink.dispatchEvent(bottomLinkBounce), 200);
             })
         });
-    });
+
+        document.querySelectorAll("a[data-title]").forEach(e => {
+            const title = (e as HTMLAnchorElement);
+            const guid = title.dataset.title;
+            
+            const bottomLink = document.querySelector(`[data-bottom-line-link="${guid}"]`) as HTMLElement;
+            if (!bottomLink) {
+                return;
+            }
+
+            title.addEventListener("mouseenter", () => bottomLink.dispatchEvent(bottomLinkOn));
+            title.addEventListener("mouseleave", () => bottomLink.dispatchEvent(bottomLinkOff));
+        });
+    }
+
+    function animateBottomLinks(timeStamp: number) {
+
+        toAnimate.forEach(state => {
+
+            // at the end and still on
+            if (state.on === true && state.index > state.letters.length) {
+
+                if (state.bounce === false) {
+                    return;
+                }
+
+                if (timeStamp - state.lastUpdateTimestamp < arrowTimeout * 4) {
+                    return;
+                }
+
+                state.on = false;
+            }
+
+            // we need to animate the next letter
+            else if (state.on === true && state.index < state.letters.length) {
+
+                if (timeStamp - state.lastUpdateTimestamp < letterTimeout) {
+                    return;
+                }
+
+                updateLetter(state.letters[state.index], true);
+                state.index ++;
+                state.lastUpdateTimestamp = timeStamp;
+            }
+
+            // we need to animate the arrow
+            else if (state.on === true && state.index === state.letters.length) {
+                
+                if (timeStamp - state.lastUpdateTimestamp < arrowTimeout) {
+                    return;
+                }
+
+                updateArrow(state.arrow, true);
+                state.index ++;
+                state.lastUpdateTimestamp = timeStamp;
+            }
+
+            // at the start and not on
+            else if (state.on === false && state.index === 0) {
+                return;
+            }
+
+            // animate backwards the next letter
+            else if (state.on === false && state.index <= state.letters.length) {
+
+                if (timeStamp - state.lastUpdateTimestamp < letterTimeout) {
+                    return;
+                }
+
+                state.index --;
+                updateLetter(state.letters[state.index], false);
+                state.lastUpdateTimestamp = timeStamp;
+            }
+
+            // animate arrow backward
+            else if (state.on === false && state.index > state.letters.length) {
+
+                if (timeStamp - state.lastUpdateTimestamp < arrowTimeout) {
+                    return;
+                }
+
+                state.index --;
+                updateArrow(state.arrow, false);
+                state.lastUpdateTimestamp = timeStamp;
+            }
+        });
+
+        requestAnimationFrame(animateBottomLinks);
+    }
+
+    function updateLetter(letter: HTMLElement, active: boolean) {
+
+        if (!letter) {
+            return;
+        }
+
+        if (active) {
+            letter.dataset.active = "true";
+        }
+        else {
+            delete letter.dataset.active;
+        }
+    }
+
+    function updateArrow(arrow: HTMLElement, active: boolean) {
+
+        if (!arrow) {
+            return;
+        }
+
+        if (active) {
+            arrow.dataset.active = "true";
+            arrow.innerHTML = arrow.dataset.activeContent;
+        }
+        else {
+            delete arrow.dataset.active;
+            arrow.innerHTML = arrow.dataset.inactiveContent;
+        }
+
+    }
+
+    //#endregion
 </script>
