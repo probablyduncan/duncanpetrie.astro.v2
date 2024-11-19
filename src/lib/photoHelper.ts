@@ -348,12 +348,14 @@ export function resolveImageStyle(img: Image): string {
     switch (img.frame.type) {
         case "border":
             style.border = `${img.frame.size}px solid ${img.frame.color}`;
+            style["background-color"] = img.frame.color;
             break;
         case "shadow":
-            style["box-shadow"] = `${img.frame.size}px ${img.frame.size}px 0px ${img.frame.color ?? "black"}`;
+            style["box-shadow"] = `${img.frame.size}px ${img.frame.size}px 0px ${img.frame.color}`;
             style.width = `calc(100% - ${(img.frame.size)}px)`;
             style["margin-bottom"] = `${img.frame.size}px`;
             style["margin-right"] = `${img.frame.size}px`;
+            style["background-color"] = img.frame.color;
             break;
     }
 
