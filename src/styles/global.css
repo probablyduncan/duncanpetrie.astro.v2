@@ -11,7 +11,7 @@
     font-feature-settings:
       "liga" 1,
       "calt" 1;
-    src: url("/duncanpetrie.astro.v2/fonts/inter.woff2") format("woff2");
+    src: url("/fonts/inter.woff2") format("woff2");
   }
 
   @font-face {
@@ -22,7 +22,7 @@
     font-feature-settings:
       "liga" 1,
       "calt" 1;
-    src: url("/duncanpetrie.astro.v2/fonts/inter-italic.woff2") format("woff2");
+    src: url("/fonts/inter-italic.woff2") format("woff2");
   }
 
   @font-face {
@@ -30,7 +30,7 @@
     font-style: normal;
     font-weight: 600;
     font-display: swap;
-    src: url("/duncanpetrie.astro.v2/fonts/junicode.woff2") format("woff2");
+    src: url("/fonts/junicode.woff2") format("woff2");
   }
 
   @font-face {

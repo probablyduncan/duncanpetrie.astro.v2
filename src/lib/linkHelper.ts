@@ -1,5 +1,4 @@
 import { marked } from "marked";
-import astroConfig from "../../astro.config.mjs";
 
 export const LINKS = {
     home: "/",
@@ -85,10 +84,6 @@ export function resolveLink({ href, title, innerHtml, forceNewTab }: {
     // (like "[writing]()", not like "[google.com]()")
     if (!isExternalLink && !href.startsWith("/")) {
         href = "/" + href;
-    }
-
-    if (!isExternalLink && !href.includes(astroConfig.base)) {
-        href = astroConfig.base + href;
     }
 
     return {

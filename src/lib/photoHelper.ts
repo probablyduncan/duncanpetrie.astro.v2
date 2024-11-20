@@ -31,7 +31,6 @@ import path from 'path';
 import exifr from 'exifr'
 import sharp from 'sharp'
 import { PHOTO_NAMES, type PhotoName, type PhotoTag } from '../data/photoTypes.generated';
-import astroConfig from '../../astro.config.mjs';
 import { toSeveral, type SingleOrSeveral } from './singleOrSeveral';
 
 //#region PhotoData types
@@ -221,9 +220,9 @@ function getAllPhotoData(): PhotoData[] {
     if (!_photoData) {
         _photoData = readPhotoDataJSON().map((data: PhotoDataJSONEntry) => new PhotoData(data));
         _photoData.forEach(p => {
-            p.paths.small = astroConfig.base + p.paths.small;
-            p.paths.medium = astroConfig.base + p.paths.medium;
-            p.paths.large = astroConfig.base + p.paths.large;
+            p.paths.small = p.paths.small;
+            p.paths.medium = p.paths.medium;
+            p.paths.large = p.paths.large;
         });
     }
 
@@ -332,11 +331,6 @@ export async function resolveImage(img: Image): Promise<Image> {
     img.frame = Object.assign({...IMAGE_FRAME_DEFAULTS}, img.frame);
 
     img.style = resolveImageStyle(img);
-
-    // temp fix for beta deployment
-    if (!img.src.includes(astroConfig.base.replaceAll("\\", "").replaceAll("/", ""))) {
-        img.src = path.join(astroConfig.base, img.src);
-    }
 
     return img;
 }

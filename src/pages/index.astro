@@ -108,6 +108,7 @@ import Pointer from "../components/pointer.astro";
                 },
                 {
                     photoName: "2024-07-30-20240730-dsc_0145",
+                    frame: { type: "border", size: 4, color: "#b8d8f600" }
                 },
                 {
                     photoName: "pigeon-psd-32",
@@ -117,7 +118,7 @@ import Pointer from "../components/pointer.astro";
 
             <ProjectCard key="lingermyth" shuffle={true} photos={[ "2024-05-30-lingermyth-p3233", "2024-05-30-lingermyth-front-back-covers", "2024-05-30-lingermyth-p45", "2024-05-30-lingermyth-p5052", "2024-05-30-lingermyth-p23" ]} />
 
-            <ProjectCard key="on-yearning" photos={"2021-06-20-yearning-door"} />
+            <ProjectCard key="on-yearning" images={{photoName: "2021-06-20-yearning-door", frame: { type: "shadow", size: 4 }}} />
 
             <ProjectCard key="wiki" images={{src: "/media/wiki.gif", frame: { type: "shadow", size: 4 }}} />
 
