@@ -12,6 +12,7 @@ interface Props {
     key: ContentEntryMap["homepage"][keyof ContentEntryMap["homepage"]]["slug"];
     largeImage?: boolean;
     shuffle?: boolean;
+    lazy?: boolean;
     images?: SingleOrSeveral<Image>;
     photos?: SingleOrSeveral<PhotoName>;
     srcs?: SingleOrSeveral<string>;
@@ -21,6 +22,7 @@ const {
     key,
     largeImage = false,
     shuffle = false,
+    lazy = true,
     photos = [],
     srcs = [],
     images = [],
@@ -69,7 +71,7 @@ const bottomIconSpace = props.data.iconSpace === "both" || props.data.iconSpace 
                     <div class="swiper-slide">
                         <div class="flex justify-center px-4">
                             <div class:list={[largeImage ? "max-w-xl" : "max-w-md", "w-full"]}>
-                                <SmartImage {...image} caption="none" lazy={true} />
+                                <SmartImage {...image} caption="none" lazy={lazy} />
                             </div>
                         </div>
                     </div>
