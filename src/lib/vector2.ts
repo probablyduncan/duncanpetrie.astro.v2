@@ -56,8 +56,16 @@ export default class Vec2 {
         return new Vec2(Math.abs(this.x), Math.abs(this.y));
     }
 
-    public negate(): Vec2 {
+    negate(): Vec2 {
         return new Vec2(-this.x, -this.y);
+    }
+
+    magnitude(): number {
+        return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2));
+    }
+
+    normalized(): Vec2 {
+        return this.divide(this.magnitude());
     }
 
     private handleScalar(s: Vec2 | number): Vec2 {
@@ -120,4 +128,8 @@ export default class Vec2 {
      * (num, num2 ?? num)
      */
     static From = (num: number, num2?: number) => new Vec2(num, num2 ?? num);
+
+    clone(): Vec2 {
+        return new Vec2(this.x, this.y);
+    }
 }

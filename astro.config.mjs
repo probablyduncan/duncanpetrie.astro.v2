@@ -9,5 +9,8 @@ export default defineConfig({
   site: 'https://duncanpetrie.com/',
   prefetch: {
     prefetchAll: true
-  }
+  },
+  experimental: {
+    contentIntellisense: true,
+  },
 });

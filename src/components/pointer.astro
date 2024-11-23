@@ -6,25 +6,26 @@
 // SO YOU CAN SORT OF SLINGSHOT IT ACROSS THE SCREEN?
 
 // ALSO MAYBE ROTATION BOUNDS?
-// SO CAN"T BE FULLY VERTICAL? 
+// SO CAN"T BE FULLY VERTICAL?
 ---
 
 <div
     data-pointer
     class:list={[
-        "absolute -z-10 top-0 left-0",
+        "absolute -z-10 top-0 left-0 pt-6",
         "select-none pointer-events-none",
         "hidden sm:flex items-center justify-center w-auto h-auto transform-gpu",
-        "text-5xl font-serif text-center",
+        "text-5xl font-serif text-center leading-none",
         "transition-opacity opacity-0",
-    ]}>☞</div
->
+    ]}></div>
+<!-- <div class="fixed top-4 left-4 right-4 bottom-4 bg-green-400 -z-30 select-none pointer-events-none"></div> -->
 <script>
+    import { lerp } from "../lib/mathHelper";
     import Vec2 from "../lib/vector2";
 
     (() => {
         const cursors = {
-            standard: {
+            normal: {
                 left: "☜",
                 right: "☞",
             },
@@ -32,51 +33,59 @@
                 left: "☚",
                 right: "☛",
             },
-        };
+        } as const;
 
         document.addEventListener("DOMContentLoaded", initPointer);
         document.addEventListener("astro:after-swap", initPointer);
 
-        let state: {
-            lastUpdate: number;
-            rotation: number;
-            type: keyof typeof cursors;
-            direction: keyof (typeof cursors)[keyof typeof cursors];
-            updateIcon: boolean;
-            targetPos: Vec2;
+        type cursor = (typeof cursors)[keyof typeof cursors][keyof (typeof cursors)[keyof typeof cursors]];
+
+        interface PointerState {
             pos: Vec2;
-            prevScroll: number;
-            pointer: HTMLElement;
-        } = {
-            lastUpdate: 0,
-            rotation: 0,
-            type: "standard",
-            direction: "right",
-            updateIcon: true,
-            targetPos: Vec2.Zero,
+            targetPos: Vec2;
+            icon: {
+                state: keyof typeof cursors;
+                dir: keyof (typeof cursors)[keyof typeof cursors];
+                update: boolean;
+            };
+            lastSide: "left" | "right";
+            lastUpdate: number;
+        }
+
+        const POINTER_SPEED = 0.1;
+        const MOVE_THRESHOLD = 2;
+
+        let pointer: HTMLElement;
+        let prevScroll: number;
+
+        const state: PointerState = {
             pos: Vec2.Zero,
-            prevScroll: window.scrollY,
-            pointer: null,
+            targetPos: Vec2.Zero,
+            icon: {
+                state: "normal",
+                dir: "right",
+                update: true,
+            },
+            lastSide: "left",
+            lastUpdate: 0,
         };
 
         function initPointer() {
-            state.pointer = document.querySelector(
-                "[data-pointer]"
-            ) as HTMLElement;
+            pointer = document.querySelector("[data-pointer]") as HTMLElement;
 
-            if (!state.pointer) {
+            if (!pointer) {
                 return;
             }
+
+            prevScroll = window.scrollY;
 
             document.addEventListener("mousemove", moveHandler);
             document.addEventListener("mousedown", downHandler);
             document.addEventListener("mouseup", upHandler);
             document.addEventListener("scroll", scrollHandler);
-            
+
             document.documentElement.addEventListener("mouseleave", fadeOut);
             document.documentElement.addEventListener("mouseenter", fadeIn);
-
-            fadeIn();
 
             requestAnimationFrame(animate);
         }
@@ -92,7 +101,6 @@
         }
 
         function moveHandler(e: MouseEvent) {
-
             const isMouseButtonDown = e.buttons & (1 << 0);
 
             if (isMouseButtonDown) {
@@ -105,92 +113,121 @@
         }
 
         function scrollHandler() {
-            state.targetPos = state.targetPos.add(
-                Vec2.From(0, window.scrollY - state.prevScroll)
-            );
-            state.prevScroll = window.scrollY;
+            state.targetPos = state.targetPos.add(Vec2.From(0, window.scrollY - prevScroll));
+            prevScroll = window.scrollY;
         }
 
         function activate() {
-            if (state.type !== "active") {
-                state.type = "active";
-                state.updateIcon = true;
-            }
+            updateIcon("state", "active");
         }
 
         function deactivate() {
-            if (state.type !== "standard") {
-                state.type = "standard";
-                state.updateIcon = true;
-            }
+            updateIcon("state", "normal");
         }
 
         function fadeOut() {
-            state.pointer.style.opacity = "0";
+            pointer.style.opacity = "0";
         }
 
         function fadeIn() {
-            state.pointer.style.opacity = "1";
+            pointer.style.opacity = "1";
+        }
+
+        function getCenterBound(side: "left" | "right", includePadding = false) {
+            const factor = side === "left" ? -1 : 1;
+            const padding = includePadding ? (64 * factor) : 0
+            const extraWidth = includePadding && side === "left" ? -pointer.clientWidth : 0
+
+            const bound = (window.innerWidth + 28 * 16 * factor) / 2 + padding + extraWidth;
+            return bound;
         }
 
         function updatePos({ clientX, clientY }) {
             state.targetPos = Vec2.From(
-                clientX - state.pointer.clientWidth / 2,
-                clientY - state.pointer.clientHeight / 2 + state.prevScroll
+                clientX - pointer.clientWidth / 2,
+                clientY - pointer.clientHeight / 2 + prevScroll
             );
+
+            // TODO: THIS LINE IS HOW WE STAY A BIT AWAY FROM THE CURSOR
+            // DOESN'T QUITE WORK BC OF ROTATION, MAYBE WE NEED TO STORE mousePos, targetPos, and pos to split up behavior
+            state.targetPos = state.targetPos.subtract(state.targetPos.subtract(state.pos).normalized().multiply(64));
+
+            if (clientX < getCenterBound("left")) {
+                state.lastSide = "left";
+            } else if (clientX > getCenterBound("right")) {
+                state.lastSide = "right";
+            }
+
+            fadeIn();
         }
 
-        const lerp = 0.1; //0.9;
-        const threshold = 2;
-        function animate(timestamp: number) {
-            // TODO: use this
-            const delta = timestamp - state.lastUpdate;
-
-            const dir: Vec2 = state.targetPos.subtract(state.pos);
-
-            // update left/right
-            if (dir.x > threshold && state.direction !== "right") {
-                state.direction = "right";
-                state.updateIcon = true;
-            } else if (dir.x < -threshold && state.direction !== "left") {
-                state.direction = "left";
-                state.updateIcon = true;
+        function updateIcon<T extends Exclude<keyof typeof state.icon, "update">>(
+            key: T,
+            value: (typeof state.icon)[T]
+        ): void {
+            if (state.icon[key] === value) {
+                return;
             }
 
-            // update rotation
-            if (Math.abs(dir.x) > threshold || Math.abs(dir.y) > threshold) {
-                state.rotation = Math.atan2(dir.y, dir.x);
-                if (state.direction == "left") {
-                    state.rotation += Math.PI;
+            state.icon[key] = value as any;
+            state.icon.update = true;
+        }
+
+        function animate(timeStamp: number) {
+            //
+
+            if (state.icon.state === "normal") {
+                let clampedTarget = state.targetPos.clone().clamp(Vec2.From(0, window.scrollY).add(16), Vec2.From(window.innerWidth, window.innerHeight + window.scrollY).subtract(Vec2.From(pointer.clientWidth, pointer.clientHeight)).subtract(16));
+
+                // apply middle bounds
+                if (clampedTarget.x < getCenterBound(state.lastSide === "left" ? "right" : "left", false)) {
+                    // if left of center, keep left of middle bound
+                    clampedTarget.x = Math.min(clampedTarget.x, getCenterBound("left", true));
+                } else {
+                    // if right of center, keep right of middle bound
+                    clampedTarget.x = Math.max(clampedTarget.x, getCenterBound("right", true));
                 }
+
+                state.pos = Vec2.From(POINTER_SPEED).lerp(state.pos, clampedTarget);
             }
 
-            // update rotation
-            state.pointer.style.setProperty(
-                "--tw-rotate",
-                state.rotation + "rad"
-            );
+            // represents vector between current position and target position, i.e. direction/distance remaining to target
+            const movement: Vec2 = state.targetPos.subtract(state.pos);
 
-            // update new position
-            state.pos = Vec2.From(lerp).lerp(state.pos, state.targetPos);
-
-            state.pointer.style.setProperty(
-                "--tw-translate-x",
-                state.pos.x + "px"
-            );
-
-            state.pointer.style.setProperty(
-                "--tw-translate-y",
-                state.pos.y + "px"
-            );
-
-            // update icon if necessary
-            if (state.updateIcon) {
-                state.pointer.innerHTML = cursors[state.type][state.direction];
+            // update left/right icon
+            if (movement.x > MOVE_THRESHOLD) {
+                updateIcon("dir", "right");
+            } else if (movement.x < -MOVE_THRESHOLD) {
+                updateIcon("dir", "left");
             }
 
-            // update delta
-            state.lastUpdate = timestamp;
+            // update pointer transform
+            const rotation = Math.atan2(movement.y, movement.x) + (state.icon.dir == "left" ? Math.PI : 0);
+            pointer.style.setProperty("--tw-rotate", rotation + "rad");
+
+            pointer.style.setProperty("--tw-translate-x", state.pos.x + "px");
+            pointer.style.setProperty("--tw-translate-y", state.pos.y + "px");
+
+            pointer.style.setProperty("--tw-scale-x", "1");
+            pointer.style.setProperty("--tw-scale-y", "1");
+
+            // update pointer html
+            if (state.icon.update) {
+                state.icon.update = false;
+                pointer.innerHTML = cursors[state.icon.state][state.icon.dir];
+            }
+
+            if (state.icon.state === "active") {
+                // if active, we want to scale up
+                const distance =
+                    movement.divide(Vec2.From(window.innerWidth, window.innerHeight)).magnitude() / Math.SQRT2;
+                const scale = lerp(1, 2, Math.pow(distance, 2), true).toString();
+
+                pointer.style.setProperty("--tw-scale-x", scale);
+                pointer.style.setProperty("--tw-scale-y", scale);
+            }
+
+            state.lastUpdate = timeStamp;
 
             requestAnimationFrame(animate);
         }
