@@ -1,55 +1,198 @@
 ---
+// NEXT STEP IS TO GIVE IT BOUNDS
+// SO GIVE IT PAGE BORDERS, KEEP IT AWAY FROM CONTENT, KEEP IT AWAY FROM MOUSE, ETC
 
+// WHAT IF IT CAN"T MOVE WHEN MOUSE IS DOWN
+// SO YOU CAN SORT OF SLINGSHOT IT ACROSS THE SCREEN?
+
+// ALSO MAYBE ROTATION BOUNDS?
+// SO CAN"T BE FULLY VERTICAL? 
 ---
 
 <div
-    data-follow-cursor
-    class="fixed z-0 top-0 left-0 w-auto h-auto inline-block text-5xl select-none pointer-events-none bg-green-50 font-serif"
-></div>
+    data-pointer
+    class:list={[
+        "absolute -z-10 top-0 left-0",
+        "select-none pointer-events-none",
+        "hidden sm:flex items-center justify-center w-auto h-auto transform-gpu",
+        "text-5xl font-serif text-center",
+        "transition-opacity opacity-0",
+    ]}>☞</div
+>
 <script>
-    // const cursors = {
-    //     left: "☜",
-    //     right: "☞",
-    // } as const;
+    import Vec2 from "../lib/vector2";
 
-    // const activeCursors = {
-    //     left: "☚",
-    //     right: "☛",
-    // } as const;
+    (() => {
+        const cursors = {
+            standard: {
+                left: "☜",
+                right: "☞",
+            },
+            active: {
+                left: "☚",
+                right: "☛",
+            },
+        };
 
-    // let currentDir: keyof typeof cursors;
-    // document.addEventListener("DOMContentLoaded", () => {
-    //     const followCursor = document.querySelector("[data-follow-cursor]") as HTMLDivElement;
-    //     if (!followCursor) {
-    //         return;
-    //     }
+        document.addEventListener("DOMContentLoaded", initPointer);
+        document.addEventListener("astro:after-swap", initPointer);
 
-    //     document.addEventListener("mousemove", ({movementX: deltaX, movementY: deltaY, clientX: posX, clientY: posY}) => {
+        let state: {
+            lastUpdate: number;
+            rotation: number;
+            type: keyof typeof cursors;
+            direction: keyof (typeof cursors)[keyof typeof cursors];
+            updateIcon: boolean;
+            targetPos: Vec2;
+            pos: Vec2;
+            prevScroll: number;
+            pointer: HTMLElement;
+        } = {
+            lastUpdate: 0,
+            rotation: 0,
+            type: "standard",
+            direction: "right",
+            updateIcon: true,
+            targetPos: Vec2.Zero,
+            pos: Vec2.Zero,
+            prevScroll: window.scrollY,
+            pointer: null,
+        };
 
-    //         setCursor(deltaX);
+        function initPointer() {
+            state.pointer = document.querySelector(
+                "[data-pointer]"
+            ) as HTMLElement;
 
-    //         if (deltaX > 0 || deltaY > 0) {
-    //             const pointAngle = Math.atan(deltaY / deltaX);
-    //             followCursor.style.transform = `rotate3d(${pointAngle}rad)`;
+            if (!state.pointer) {
+                return;
+            }
 
-    //         }
+            document.addEventListener("mousemove", moveHandler);
+            document.addEventListener("mousedown", downHandler);
+            document.addEventListener("mouseup", upHandler);
+            document.addEventListener("scroll", scrollHandler);
+            
+            document.documentElement.addEventListener("mouseleave", fadeOut);
+            document.documentElement.addEventListener("mouseenter", fadeIn);
 
-    //         followCursor.style.left = `calc(${posX}px)`;
-    //         followCursor.style.top = `calc(${posY}px)`;
-    //     });
+            fadeIn();
 
-    //     function setCursor(deltaX: number) {
+            requestAnimationFrame(animate);
+        }
 
-    //         if (deltaX === 0) {
-    //             return;
-    //         }
+        function downHandler(e: MouseEvent) {
+            activate();
+            updatePos(e);
+        }
 
-    //         const newDir = deltaX > 0 ? "right" : "left";
+        function upHandler(e: MouseEvent) {
+            deactivate();
+            updatePos(e);
+        }
 
-    //         if (currentDir !== newDir) {
-    //             followCursor.innerHTML = cursors[newDir];
-    //             currentDir = newDir;
-    //         }
-    //     }
-    // });
+        function moveHandler(e: MouseEvent) {
+
+            const isMouseButtonDown = e.buttons & (1 << 0);
+
+            if (isMouseButtonDown) {
+                activate();
+            } else {
+                deactivate();
+            }
+
+            updatePos(e);
+        }
+
+        function scrollHandler() {
+            state.targetPos = state.targetPos.add(
+                Vec2.From(0, window.scrollY - state.prevScroll)
+            );
+            state.prevScroll = window.scrollY;
+        }
+
+        function activate() {
+            if (state.type !== "active") {
+                state.type = "active";
+                state.updateIcon = true;
+            }
+        }
+
+        function deactivate() {
+            if (state.type !== "standard") {
+                state.type = "standard";
+                state.updateIcon = true;
+            }
+        }
+
+        function fadeOut() {
+            state.pointer.style.opacity = "0";
+        }
+
+        function fadeIn() {
+            state.pointer.style.opacity = "1";
+        }
+
+        function updatePos({ clientX, clientY }) {
+            state.targetPos = Vec2.From(
+                clientX - state.pointer.clientWidth / 2,
+                clientY - state.pointer.clientHeight / 2 + state.prevScroll
+            );
+        }
+
+        const lerp = 0.1; //0.9;
+        const threshold = 2;
+        function animate(timestamp: number) {
+            // TODO: use this
+            const delta = timestamp - state.lastUpdate;
+
+            const dir: Vec2 = state.targetPos.subtract(state.pos);
+
+            // update left/right
+            if (dir.x > threshold && state.direction !== "right") {
+                state.direction = "right";
+                state.updateIcon = true;
+            } else if (dir.x < -threshold && state.direction !== "left") {
+                state.direction = "left";
+                state.updateIcon = true;
+            }
+
+            // update rotation
+            if (Math.abs(dir.x) > threshold || Math.abs(dir.y) > threshold) {
+                state.rotation = Math.atan2(dir.y, dir.x);
+                if (state.direction == "left") {
+                    state.rotation += Math.PI;
+                }
+            }
+
+            // update rotation
+            state.pointer.style.setProperty(
+                "--tw-rotate",
+                state.rotation + "rad"
+            );
+
+            // update new position
+            state.pos = Vec2.From(lerp).lerp(state.pos, state.targetPos);
+
+            state.pointer.style.setProperty(
+                "--tw-translate-x",
+                state.pos.x + "px"
+            );
+
+            state.pointer.style.setProperty(
+                "--tw-translate-y",
+                state.pos.y + "px"
+            );
+
+            // update icon if necessary
+            if (state.updateIcon) {
+                state.pointer.innerHTML = cursors[state.type][state.direction];
+            }
+
+            // update delta
+            state.lastUpdate = timestamp;
+
+            requestAnimationFrame(animate);
+        }
+    })();
 </script>
