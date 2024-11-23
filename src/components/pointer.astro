@@ -91,7 +91,7 @@
         }
 
         function downHandler(e: MouseEvent) {
-            activate();
+            activate(e);
             updatePos(e);
         }
 
@@ -104,7 +104,7 @@
             const isMouseButtonDown = e.buttons & (1 << 0);
 
             if (isMouseButtonDown) {
-                activate();
+                activate(e);
             } else {
                 deactivate();
             }
@@ -117,8 +117,11 @@
             prevScroll = window.scrollY;
         }
 
-        function activate() {
-            updateIcon("state", "active");
+        function activate({ clientX } = { clientX: 0 }) {
+            // only activate when outside center
+            if (clientX < getCenterBound("left") || clientX > getCenterBound("right")) {
+                updateIcon("state", "active");
+            }
         }
 
         function deactivate() {
