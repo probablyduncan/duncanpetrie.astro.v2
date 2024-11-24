@@ -1,12 +1,5 @@
 ---
-// NEXT STEP IS TO GIVE IT BOUNDS
-// SO GIVE IT PAGE BORDERS, KEEP IT AWAY FROM CONTENT, KEEP IT AWAY FROM MOUSE, ETC
 
-// WHAT IF IT CAN"T MOVE WHEN MOUSE IS DOWN
-// SO YOU CAN SORT OF SLINGSHOT IT ACROSS THE SCREEN?
-
-// ALSO MAYBE ROTATION BOUNDS?
-// SO CAN"T BE FULLY VERTICAL?
 ---
 
 <div
@@ -42,7 +35,7 @@
         interface PointerState {
             currentPos: Vec2;
             mousePos: Vec2;
-            boundedPos: Vec2;
+            targetPos: Vec2;
             icon: {
                 state: keyof typeof cursors;
                 dir: keyof (typeof cursors)[keyof typeof cursors];
@@ -60,7 +53,7 @@
 
         const state: PointerState = {
             currentPos: Vec2.Zero,
-            boundedPos: Vec2.Zero,
+            targetPos: Vec2.Zero,
             mousePos: Vec2.Zero,
             icon: {
                 state: "normal",
@@ -114,7 +107,8 @@
         }
 
         function scrollHandler() {
-            state.boundedPos = state.boundedPos.add(Vec2.From(0, window.scrollY - prevScroll));
+            state.mousePos = state.mousePos.add(Vec2.From(0, window.scrollY - prevScroll));
+            updateBoundedPos();
             prevScroll = window.scrollY;
         }
 
@@ -139,8 +133,8 @@
 
         function getCenterBound(side: "left" | "right", includePadding = false) {
             const factor = side === "left" ? -1 : 1;
-            const padding = includePadding ? (64 * factor) : 0
-            const extraWidth = includePadding && side === "left" ? -pointer.clientWidth : 0
+            const padding = includePadding ? 64 * factor : 0;
+            const extraWidth = includePadding && side === "left" ? -pointer.clientWidth : 0;
 
             const bound = (window.innerWidth + 28 * 16 * factor) / 2 + padding + extraWidth;
             return bound;
@@ -152,47 +146,53 @@
                 clientY - pointer.clientHeight / 2 + prevScroll
             );
 
-            // TODO: THIS LINE IS HOW WE STAY A BIT AWAY FROM THE CURSOR
-            // DOESN'T QUITE WORK BC OF ROTATION, MAYBE WE NEED TO STORE mousePos, targetPos, and pos to split up behavior
-            state.boundedPos = state.mousePos.subtract(state.mousePos.subtract(state.currentPos).normalized().multiply(64));
-
             if (clientX < getCenterBound("left")) {
                 state.lastSide = "left";
             } else if (clientX > getCenterBound("right")) {
                 state.lastSide = "right";
             }
 
+            updateBoundedPos();
+
             fadeIn();
+        }
+
+        function updateBoundedPos() {
+            state.targetPos = state.mousePos
+                // keep bounded pos a certain distance (64px radius) away from cursor
+                .subtract(state.mousePos.subtract(state.currentPos).normalized().multiply(64))
+                // keep pos away from edges of screen
+                .clamp(
+                    Vec2.From(0, window.scrollY).add(16),
+                    Vec2.From(window.innerWidth, window.innerHeight + window.scrollY)
+                        .subtract(Vec2.From(pointer.clientWidth, pointer.clientHeight))
+                        .subtract(16)
+                );
+
+            // apply middle bounds
+            if (state.targetPos.x < getCenterBound(state.lastSide === "left" ? "right" : "left", false)) {
+                // if left of center, keep left of middle bound
+                state.targetPos.x = Math.min(state.targetPos.x, getCenterBound("left", true));
+            } else {
+                // if right of center, keep right of middle bound
+                state.targetPos.x = Math.max(state.targetPos.x, getCenterBound("right", true));
+            }
         }
 
         function updateIcon<T extends Exclude<keyof typeof state.icon, "update">>(
             key: T,
             value: (typeof state.icon)[T]
         ): void {
-            if (state.icon[key] === value) {
-                return;
+            if (state.icon[key] !== value) {
+                state.icon[key] = value as any;
+                state.icon.update = true;
             }
-
-            state.icon[key] = value as any;
-            state.icon.update = true;
         }
 
         function animate(timeStamp: number) {
-            //
-
             if (state.icon.state === "normal") {
-                let clampedTarget = state.boundedPos.clone().clamp(Vec2.From(0, window.scrollY).add(16), Vec2.From(window.innerWidth, window.innerHeight + window.scrollY).subtract(Vec2.From(pointer.clientWidth, pointer.clientHeight)).subtract(16));
-
-                // apply middle bounds
-                if (clampedTarget.x < getCenterBound(state.lastSide === "left" ? "right" : "left", false)) {
-                    // if left of center, keep left of middle bound
-                    clampedTarget.x = Math.min(clampedTarget.x, getCenterBound("left", true));
-                } else {
-                    // if right of center, keep right of middle bound
-                    clampedTarget.x = Math.max(clampedTarget.x, getCenterBound("right", true));
-                }
-
-                state.currentPos = Vec2.From(POINTER_SPEED).lerp(state.currentPos, clampedTarget);
+                // don't update current position if active
+                state.currentPos = Vec2.From(POINTER_SPEED).lerp(state.currentPos, state.targetPos);
             }
 
             // represents vector between current position and target position, i.e. direction/distance remaining to target
@@ -212,22 +212,23 @@
             pointer.style.setProperty("--tw-translate-x", state.currentPos.x + "px");
             pointer.style.setProperty("--tw-translate-y", state.currentPos.y + "px");
 
-            pointer.style.setProperty("--tw-scale-x", "1");
-            pointer.style.setProperty("--tw-scale-y", "1");
-
             // update pointer html
             if (state.icon.update) {
                 state.icon.update = false;
                 pointer.innerHTML = cursors[state.icon.state][state.icon.dir];
             }
 
+            // if active, we want to scale up
             if (state.icon.state === "active") {
-                // if active, we want to scale up
-                const distance = dirToMousePos.divide(Vec2.From(window.innerWidth, window.innerHeight)).magnitude() / Math.SQRT2;
+                const distance =
+                    dirToMousePos.divide(Vec2.From(window.innerWidth, window.innerHeight)).magnitude() / Math.SQRT2;
                 const scale = lerp(1, 2, Math.pow(distance, 2), true).toString();
 
                 pointer.style.setProperty("--tw-scale-x", scale);
                 pointer.style.setProperty("--tw-scale-y", scale);
+            } else {
+                pointer.style.setProperty("--tw-scale-x", "1");
+                pointer.style.setProperty("--tw-scale-y", "1");
             }
 
             state.lastUpdate = timeStamp;
