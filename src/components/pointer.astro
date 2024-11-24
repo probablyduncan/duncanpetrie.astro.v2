@@ -18,7 +18,6 @@
         "text-5xl font-serif text-center leading-none",
         "transition-opacity opacity-0",
     ]}></div>
-<!-- <div class="fixed top-4 left-4 right-4 bottom-4 bg-green-400 -z-30 select-none pointer-events-none"></div> -->
 <script>
     import { lerp } from "../lib/mathHelper";
     import Vec2 from "../lib/vector2";
@@ -41,8 +40,9 @@
         type cursor = (typeof cursors)[keyof typeof cursors][keyof (typeof cursors)[keyof typeof cursors]];
 
         interface PointerState {
-            pos: Vec2;
-            targetPos: Vec2;
+            currentPos: Vec2;
+            mousePos: Vec2;
+            boundedPos: Vec2;
             icon: {
                 state: keyof typeof cursors;
                 dir: keyof (typeof cursors)[keyof typeof cursors];
@@ -59,8 +59,9 @@
         let prevScroll: number;
 
         const state: PointerState = {
-            pos: Vec2.Zero,
-            targetPos: Vec2.Zero,
+            currentPos: Vec2.Zero,
+            boundedPos: Vec2.Zero,
+            mousePos: Vec2.Zero,
             icon: {
                 state: "normal",
                 dir: "right",
@@ -113,7 +114,7 @@
         }
 
         function scrollHandler() {
-            state.targetPos = state.targetPos.add(Vec2.From(0, window.scrollY - prevScroll));
+            state.boundedPos = state.boundedPos.add(Vec2.From(0, window.scrollY - prevScroll));
             prevScroll = window.scrollY;
         }
 
@@ -146,14 +147,14 @@
         }
 
         function updatePos({ clientX, clientY }) {
-            state.targetPos = Vec2.From(
+            state.mousePos = Vec2.From(
                 clientX - pointer.clientWidth / 2,
                 clientY - pointer.clientHeight / 2 + prevScroll
             );
 
             // TODO: THIS LINE IS HOW WE STAY A BIT AWAY FROM THE CURSOR
             // DOESN'T QUITE WORK BC OF ROTATION, MAYBE WE NEED TO STORE mousePos, targetPos, and pos to split up behavior
-            state.targetPos = state.targetPos.subtract(state.targetPos.subtract(state.pos).normalized().multiply(64));
+            state.boundedPos = state.mousePos.subtract(state.mousePos.subtract(state.currentPos).normalized().multiply(64));
 
             if (clientX < getCenterBound("left")) {
                 state.lastSide = "left";
@@ -180,7 +181,7 @@
             //
 
             if (state.icon.state === "normal") {
-                let clampedTarget = state.targetPos.clone().clamp(Vec2.From(0, window.scrollY).add(16), Vec2.From(window.innerWidth, window.innerHeight + window.scrollY).subtract(Vec2.From(pointer.clientWidth, pointer.clientHeight)).subtract(16));
+                let clampedTarget = state.boundedPos.clone().clamp(Vec2.From(0, window.scrollY).add(16), Vec2.From(window.innerWidth, window.innerHeight + window.scrollY).subtract(Vec2.From(pointer.clientWidth, pointer.clientHeight)).subtract(16));
 
                 // apply middle bounds
                 if (clampedTarget.x < getCenterBound(state.lastSide === "left" ? "right" : "left", false)) {
@@ -191,25 +192,25 @@
                     clampedTarget.x = Math.max(clampedTarget.x, getCenterBound("right", true));
                 }
 
-                state.pos = Vec2.From(POINTER_SPEED).lerp(state.pos, clampedTarget);
+                state.currentPos = Vec2.From(POINTER_SPEED).lerp(state.currentPos, clampedTarget);
             }
 
             // represents vector between current position and target position, i.e. direction/distance remaining to target
-            const movement: Vec2 = state.targetPos.subtract(state.pos);
+            const dirToMousePos: Vec2 = state.mousePos.subtract(state.currentPos);
 
             // update left/right icon
-            if (movement.x > MOVE_THRESHOLD) {
+            if (dirToMousePos.x > MOVE_THRESHOLD) {
                 updateIcon("dir", "right");
-            } else if (movement.x < -MOVE_THRESHOLD) {
+            } else if (dirToMousePos.x < -MOVE_THRESHOLD) {
                 updateIcon("dir", "left");
             }
 
             // update pointer transform
-            const rotation = Math.atan2(movement.y, movement.x) + (state.icon.dir == "left" ? Math.PI : 0);
+            const rotation = Math.atan2(dirToMousePos.y, dirToMousePos.x) + (state.icon.dir == "left" ? Math.PI : 0);
             pointer.style.setProperty("--tw-rotate", rotation + "rad");
 
-            pointer.style.setProperty("--tw-translate-x", state.pos.x + "px");
-            pointer.style.setProperty("--tw-translate-y", state.pos.y + "px");
+            pointer.style.setProperty("--tw-translate-x", state.currentPos.x + "px");
+            pointer.style.setProperty("--tw-translate-y", state.currentPos.y + "px");
 
             pointer.style.setProperty("--tw-scale-x", "1");
             pointer.style.setProperty("--tw-scale-y", "1");
@@ -222,8 +223,7 @@
 
             if (state.icon.state === "active") {
                 // if active, we want to scale up
-                const distance =
-                    movement.divide(Vec2.From(window.innerWidth, window.innerHeight)).magnitude() / Math.SQRT2;
+                const distance = dirToMousePos.divide(Vec2.From(window.innerWidth, window.innerHeight)).magnitude() / Math.SQRT2;
                 const scale = lerp(1, 2, Math.pow(distance, 2), true).toString();
 
                 pointer.style.setProperty("--tw-scale-x", scale);
