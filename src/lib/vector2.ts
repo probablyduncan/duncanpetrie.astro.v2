@@ -7,9 +7,9 @@ export default class Vec2 {
     public x: number;
     public y: number;
 
-    constructor(v: {x?: number, y?: number});
+    constructor(v: { x?: number, y?: number });
     constructor(x?: number, y?: number);
-    constructor(x?: number | {x?: number, y?: number}, y?: number) {
+    constructor(x?: number | { x?: number, y?: number }, y?: number) {
         if (typeof x === 'object') {
             this.x = x.x ?? 0;
             this.y = x.y ?? 0;
@@ -69,7 +69,7 @@ export default class Vec2 {
     }
 
     private handleScalar(s: Vec2 | number): Vec2 {
-        
+
         if (typeof s === 'number') {
             return new Vec2(s, s);
         }
@@ -85,6 +85,20 @@ export default class Vec2 {
      */
     public clamp(min: Vec2, max: Vec2): Vec2 {
         return new Vec2(clamp(this.x, min.x, max.x), clamp(this.y, min.y, max.y));
+    }
+
+    /**
+     * get this Vec2 outside of the rectangle given by min and max
+     * @param min minimum bounds of forbidden rect
+     * @param max maximum bounds of forbidden rect
+     * @returns a new Vec2 which is at the closest point to the original, outside of the min and max
+     */
+    public unclamp(min: Vec2, max: Vec2) {
+        const middle = max.subtract(min)
+        return new Vec2(
+            this.x > middle.x ? Math.max(this.x, max.x) : Math.min(this.x, min.x), 
+            this.y > middle.y ? Math.max(this.y, max.y) : Math.min(this.y, min.y)
+        );
     }
 
     /**

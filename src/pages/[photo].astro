@@ -10,6 +10,7 @@ import MdImg from "../components/prose_components/mdImg.astro";
 import MdLink from "../components/prose_components/mdLink.astro";
 import Navbar from "../components/layout_components/navbar.astro";
 import BaseHead from "../components/baseHead.astro";
+import Pointer from "../components/pointer.astro";
 
 export async function getStaticPaths() {
     const photoProjects = await getCollection("photo");
@@ -50,6 +51,7 @@ else {
         <BaseHead title={data.title} cover={firstPhotoName} />
     </head>
     <body class="flex flex-col justify-center items-center">
+        <!-- <Pointer centerWidth={0} /> -->
         <Navbar righttext={props.slug.replaceAll("-", " ").toUpperCase()} />
         <main class="px-4 w-full max-w-[856px] flex flex-col items-center">
             {

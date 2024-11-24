@@ -1,15 +1,21 @@
 ---
+interface Props {
+    centerWidth?: number
+}
 
+const { centerWidth = 0 } = Astro.props;
 ---
 
 <div
     data-pointer
+    data-center-width={centerWidth}
     class:list={[
         "absolute -z-10 top-0 left-0 pt-6",
         "select-none pointer-events-none",
         "hidden sm:flex items-center justify-center w-auto h-auto transform-gpu",
         "text-5xl font-serif text-center leading-none",
         "transition-opacity opacity-0",
+        "sm:motion-reduce:hidden",
     ]}></div>
 <script>
     import { lerp } from "../lib/mathHelper";
@@ -49,12 +55,13 @@
         const MOVE_THRESHOLD = 2;
 
         let pointer: HTMLElement;
+        let centerWidth: number;
         let prevScroll: number;
 
         const state: PointerState = {
-            currentPos: Vec2.Zero,
-            targetPos: Vec2.Zero,
-            mousePos: Vec2.Zero,
+            currentPos: Vec2.From(-100),
+            targetPos: Vec2.From(-100),
+            mousePos: Vec2.From(-100),
             icon: {
                 state: "normal",
                 dir: "right",
@@ -71,6 +78,7 @@
                 return;
             }
 
+            centerWidth = parseInt(pointer.dataset.centerWidth) ?? 0;
             prevScroll = window.scrollY;
 
             document.addEventListener("mousemove", moveHandler);
@@ -114,7 +122,7 @@
 
         function activate({ clientX } = { clientX: 0 }) {
             // only activate when outside center
-            if (clientX < getCenterBound("left") || clientX > getCenterBound("right")) {
+            if (centerWidth <= 0 || clientX < getCenterBound("left", true) || clientX > getCenterBound("right", true)) {
                 updateIcon("state", "active");
             }
         }
@@ -136,7 +144,7 @@
             const padding = includePadding ? 64 * factor : 0;
             const extraWidth = includePadding && side === "left" ? -pointer.clientWidth : 0;
 
-            const bound = (window.innerWidth + 28 * 16 * factor) / 2 + padding + extraWidth;
+            const bound = (window.innerWidth + centerWidth * factor) / 2 + padding + extraWidth;
             return bound;
         }
 
@@ -146,10 +154,12 @@
                 clientY - pointer.clientHeight / 2 + prevScroll
             );
 
-            if (clientX < getCenterBound("left")) {
-                state.lastSide = "left";
-            } else if (clientX > getCenterBound("right")) {
-                state.lastSide = "right";
+            if (centerWidth > 0) {
+                if (clientX < getCenterBound("left")) {
+                    state.lastSide = "left";
+                } else if (clientX > getCenterBound("right")) {
+                    state.lastSide = "right";
+                }
             }
 
             updateBoundedPos();
@@ -169,14 +179,16 @@
                         .subtract(16)
                 );
 
-            // apply middle bounds
-            if (state.targetPos.x < getCenterBound(state.lastSide === "left" ? "right" : "left", false)) {
-                // if left of center, keep left of middle bound
-                state.targetPos.x = Math.min(state.targetPos.x, getCenterBound("left", true));
-            } else {
-                // if right of center, keep right of middle bound
-                state.targetPos.x = Math.max(state.targetPos.x, getCenterBound("right", true));
-            }
+                if (centerWidth > 0) {
+                    // apply middle bounds
+                    if (state.targetPos.x < getCenterBound(state.lastSide === "left" ? "right" : "left", false)) {
+                        // if left of center, keep left of middle bound
+                        state.targetPos.x = Math.min(state.targetPos.x, getCenterBound("left", true));
+                    } else {
+                        // if right of center, keep right of middle bound
+                        state.targetPos.x = Math.max(state.targetPos.x, getCenterBound("right", true));
+                    }
+                }
         }
 
         function updateIcon<T extends Exclude<keyof typeof state.icon, "update">>(

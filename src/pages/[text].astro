@@ -6,6 +6,7 @@ import MdLink from "../components/prose_components/mdLink.astro";
 import MdImg from "../components/prose_components/mdImg.astro";
 import BaseHead from "../components/baseHead.astro";
 import Navbar from "../components/layout_components/navbar.astro";
+import Pointer from "../components/pointer.astro";
 
 export async function getStaticPaths() {
     const textProjects = await getCollection("text");
@@ -25,6 +26,7 @@ const { Content } = await props.render();
         <BaseHead title={data.title} cover={data.cover} />
     </head>
     <body class="flex flex-col items-center">
+        <!-- <Pointer centerWidth={540} /> -->
         <Navbar righttext={props.slug.replaceAll("-", " ").toUpperCase()} />
         <main class="px-4 w-full max-w-[856px] flex flex-col items-center mb-[50svh]">
             {
