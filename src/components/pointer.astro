@@ -1,55 +1,251 @@
 ---
+interface Props {
+    centerWidth?: number
+}
 
+const { centerWidth = 0 } = Astro.props;
 ---
 
 <div
-    data-follow-cursor
-    class="fixed z-0 top-0 left-0 w-auto h-auto inline-block text-5xl select-none pointer-events-none bg-green-50 font-serif"
-></div>
+    data-pointer
+    data-center-width={centerWidth}
+    class:list={[
+        "absolute -z-10 top-0 left-0 pt-6",
+        "select-none pointer-events-none",
+        "hidden sm:flex items-center justify-center w-auto h-auto transform-gpu",
+        "text-5xl font-serif text-center leading-none",
+        "transition-opacity opacity-0",
+        "sm:motion-reduce:hidden",
+    ]}></div>
 <script>
-    // const cursors = {
-    //     left: "☜",
-    //     right: "☞",
-    // } as const;
+    import { lerp } from "../lib/mathHelper";
+    import Vec2 from "../lib/vector2";
 
-    // const activeCursors = {
-    //     left: "☚",
-    //     right: "☛",
-    // } as const;
+    (() => {
+        const cursors = {
+            normal: {
+                left: "☜",
+                right: "☞",
+            },
+            active: {
+                left: "☚",
+                right: "☛",
+            },
+        } as const;
 
-    // let currentDir: keyof typeof cursors;
-    // document.addEventListener("DOMContentLoaded", () => {
-    //     const followCursor = document.querySelector("[data-follow-cursor]") as HTMLDivElement;
-    //     if (!followCursor) {
-    //         return;
-    //     }
+        document.addEventListener("DOMContentLoaded", initPointer);
+        document.addEventListener("astro:after-swap", initPointer);
 
-    //     document.addEventListener("mousemove", ({movementX: deltaX, movementY: deltaY, clientX: posX, clientY: posY}) => {
+        type cursor = (typeof cursors)[keyof typeof cursors][keyof (typeof cursors)[keyof typeof cursors]];
 
-    //         setCursor(deltaX);
+        interface PointerState {
+            currentPos: Vec2;
+            mousePos: Vec2;
+            targetPos: Vec2;
+            icon: {
+                state: keyof typeof cursors;
+                dir: keyof (typeof cursors)[keyof typeof cursors];
+                update: boolean;
+            };
+            lastSide: "left" | "right";
+            lastUpdate: number;
+        }
 
-    //         if (deltaX > 0 || deltaY > 0) {
-    //             const pointAngle = Math.atan(deltaY / deltaX);
-    //             followCursor.style.transform = `rotate3d(${pointAngle}rad)`;
+        const POINTER_SPEED = 0.1;
+        const MOVE_THRESHOLD = 2;
 
-    //         }
+        let pointer: HTMLElement;
+        let centerWidth: number;
+        let prevScroll: number;
 
-    //         followCursor.style.left = `calc(${posX}px)`;
-    //         followCursor.style.top = `calc(${posY}px)`;
-    //     });
+        const state: PointerState = {
+            currentPos: Vec2.From(-100),
+            targetPos: Vec2.From(-100),
+            mousePos: Vec2.From(-100),
+            icon: {
+                state: "normal",
+                dir: "right",
+                update: true,
+            },
+            lastSide: "left",
+            lastUpdate: 0,
+        };
 
-    //     function setCursor(deltaX: number) {
+        function initPointer() {
+            pointer = document.querySelector("[data-pointer]") as HTMLElement;
 
-    //         if (deltaX === 0) {
-    //             return;
-    //         }
+            if (!pointer) {
+                return;
+            }
 
-    //         const newDir = deltaX > 0 ? "right" : "left";
+            centerWidth = parseInt(pointer.dataset.centerWidth) ?? 0;
+            prevScroll = window.scrollY;
 
-    //         if (currentDir !== newDir) {
-    //             followCursor.innerHTML = cursors[newDir];
-    //             currentDir = newDir;
-    //         }
-    //     }
-    // });
+            document.addEventListener("mousemove", moveHandler);
+            document.addEventListener("mousedown", downHandler);
+            document.addEventListener("mouseup", upHandler);
+            document.addEventListener("scroll", scrollHandler);
+
+            document.documentElement.addEventListener("mouseleave", fadeOut);
+            document.documentElement.addEventListener("mouseenter", fadeIn);
+
+            requestAnimationFrame(animate);
+        }
+
+        function downHandler(e: MouseEvent) {
+            activate(e);
+            updatePos(e);
+        }
+
+        function upHandler(e: MouseEvent) {
+            deactivate();
+            updatePos(e);
+        }
+
+        function moveHandler(e: MouseEvent) {
+            const isMouseButtonDown = e.buttons & (1 << 0);
+
+            if (isMouseButtonDown) {
+                activate(e);
+            } else {
+                deactivate();
+            }
+
+            updatePos(e);
+        }
+
+        function scrollHandler() {
+            state.mousePos = state.mousePos.add(Vec2.From(0, window.scrollY - prevScroll));
+            updateBoundedPos();
+            prevScroll = window.scrollY;
+        }
+
+        function activate({ clientX } = { clientX: 0 }) {
+            // only activate when outside center
+            if (centerWidth <= 0 || clientX < getCenterBound("left", true) || clientX > getCenterBound("right", true)) {
+                updateIcon("state", "active");
+            }
+        }
+
+        function deactivate() {
+            updateIcon("state", "normal");
+        }
+
+        function fadeOut() {
+            pointer.style.opacity = "0";
+        }
+
+        function fadeIn() {
+            pointer.style.opacity = "1";
+        }
+
+        function getCenterBound(side: "left" | "right", includePadding = false) {
+            const factor = side === "left" ? -1 : 1;
+            const padding = includePadding ? 64 * factor : 0;
+            const extraWidth = includePadding && side === "left" ? -pointer.clientWidth : 0;
+
+            const bound = (window.innerWidth + centerWidth * factor) / 2 + padding + extraWidth;
+            return bound;
+        }
+
+        function updatePos({ clientX, clientY }) {
+            state.mousePos = Vec2.From(
+                clientX - pointer.clientWidth / 2,
+                clientY - pointer.clientHeight / 2 + prevScroll
+            );
+
+            if (centerWidth > 0) {
+                if (clientX < getCenterBound("left")) {
+                    state.lastSide = "left";
+                } else if (clientX > getCenterBound("right")) {
+                    state.lastSide = "right";
+                }
+            }
+
+            updateBoundedPos();
+
+            fadeIn();
+        }
+
+        function updateBoundedPos() {
+            state.targetPos = state.mousePos
+                // keep bounded pos a certain distance (64px radius) away from cursor
+                .subtract(state.mousePos.subtract(state.currentPos).normalized().multiply(64))
+                // keep pos away from edges of screen
+                .clamp(
+                    Vec2.From(0, window.scrollY).add(16),
+                    Vec2.From(window.innerWidth, window.innerHeight + window.scrollY)
+                        .subtract(Vec2.From(pointer.clientWidth, pointer.clientHeight))
+                        .subtract(16)
+                );
+
+                if (centerWidth > 0) {
+                    // apply middle bounds
+                    if (state.targetPos.x < getCenterBound(state.lastSide === "left" ? "right" : "left", false)) {
+                        // if left of center, keep left of middle bound
+                        state.targetPos.x = Math.min(state.targetPos.x, getCenterBound("left", true));
+                    } else {
+                        // if right of center, keep right of middle bound
+                        state.targetPos.x = Math.max(state.targetPos.x, getCenterBound("right", true));
+                    }
+                }
+        }
+
+        function updateIcon<T extends Exclude<keyof typeof state.icon, "update">>(
+            key: T,
+            value: (typeof state.icon)[T]
+        ): void {
+            if (state.icon[key] !== value) {
+                state.icon[key] = value as any;
+                state.icon.update = true;
+            }
+        }
+
+        function animate(timeStamp: number) {
+            if (state.icon.state === "normal") {
+                // don't update current position if active
+                state.currentPos = Vec2.From(POINTER_SPEED).lerp(state.currentPos, state.targetPos);
+            }
+
+            // represents vector between current position and target position, i.e. direction/distance remaining to target
+            const dirToMousePos: Vec2 = state.mousePos.subtract(state.currentPos);
+
+            // update left/right icon
+            if (dirToMousePos.x > MOVE_THRESHOLD) {
+                updateIcon("dir", "right");
+            } else if (dirToMousePos.x < -MOVE_THRESHOLD) {
+                updateIcon("dir", "left");
+            }
+
+            // update pointer transform
+            const rotation = Math.atan2(dirToMousePos.y, dirToMousePos.x) + (state.icon.dir == "left" ? Math.PI : 0);
+            pointer.style.setProperty("--tw-rotate", rotation + "rad");
+
+            pointer.style.setProperty("--tw-translate-x", state.currentPos.x + "px");
+            pointer.style.setProperty("--tw-translate-y", state.currentPos.y + "px");
+
+            // update pointer html
+            if (state.icon.update) {
+                state.icon.update = false;
+                pointer.innerHTML = cursors[state.icon.state][state.icon.dir];
+            }
+
+            // if active, we want to scale up
+            if (state.icon.state === "active") {
+                const distance =
+                    dirToMousePos.divide(Vec2.From(window.innerWidth, window.innerHeight)).magnitude() / Math.SQRT2;
+                const scale = lerp(1, 2, Math.pow(distance, 2), true).toString();
+
+                pointer.style.setProperty("--tw-scale-x", scale);
+                pointer.style.setProperty("--tw-scale-y", scale);
+            } else {
+                pointer.style.setProperty("--tw-scale-x", "1");
+                pointer.style.setProperty("--tw-scale-y", "1");
+            }
+
+            state.lastUpdate = timeStamp;
+
+            requestAnimationFrame(animate);
+        }
+    })();
 </script>

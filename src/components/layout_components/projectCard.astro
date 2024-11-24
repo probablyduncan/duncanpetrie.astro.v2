@@ -150,6 +150,9 @@ const bottomIconSpace = props.data.iconSpace === "both" || props.data.iconSpace 
 
         new Swiper(".swiper", {
             grabCursor: true,
+            preventClicks: false,
+            preventClicksPropagation: false,
+            touchStartPreventDefault: false,
             on: {
                 init: (s) => {
                     requestAnimationFrame(() => {
