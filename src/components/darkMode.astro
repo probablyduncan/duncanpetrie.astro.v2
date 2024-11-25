@@ -1,0 +1,49 @@
+---
+
+---
+
+<button data-dark-mode class="fixed bottom-4 right-4 font-md text-xs text-gray-600 hover:underline z-10 hidden sm:block">
+    <span></span> mode
+</button>
+<script>
+    import { setLocalStorage, getFromLocalStorage } from "../lib/localStorageHelper";
+
+    const DARK_MODE_KEY = "dark_mode";
+    const DARK_MODE_CLASS = "dark";
+    const DARK_LABEL = "☀ Dark";
+    const LIGHT_LABEL = "☼ Light";
+
+    function initDarkMode() {
+        const buttons = Array.from(document.querySelectorAll("[data-dark-mode]")).map(e => {
+            const button = e as HTMLElement;
+            const span = button.getElementsByTagName("span")[0];
+
+            return { button, span };
+        });
+
+        buttons.forEach(({ button }) => {
+            button.addEventListener("click", () => toggleDarkMode());
+        });
+
+        function toggleDarkMode(makeDark: boolean = null) {
+            const toDarkMode = makeDark ?? !document.body.classList.contains(DARK_MODE_CLASS);
+
+            if (toDarkMode) {
+                document.body.classList.add(DARK_MODE_CLASS);
+            } else {
+                document.body.classList.remove(DARK_MODE_CLASS);
+            }
+
+            buttons.forEach(({ span }) => {
+                span.innerHTML = toDarkMode ? LIGHT_LABEL : DARK_LABEL;
+            });
+
+            setLocalStorage(DARK_MODE_KEY, toDarkMode);
+        }
+
+        toggleDarkMode(getFromLocalStorage<boolean>(DARK_MODE_KEY, true));
+    }
+
+    document.addEventListener("astro:after-swap", initDarkMode);
+    initDarkMode();
+</script>

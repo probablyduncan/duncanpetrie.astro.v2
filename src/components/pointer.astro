@@ -15,10 +15,12 @@ const { centerWidth = 0 } = Astro.props;
         "hidden sm:flex items-center justify-center w-auto h-auto transform-gpu",
         "text-5xl font-serif text-center leading-none",
         "transition-opacity opacity-0",
-        "sm:motion-reduce:hidden",
+        "sm:motion-reduce:!hidden",
     ]}></div>
+<button data-toggle-pointer class="fixed bottom-4 left-4 text-center font-md text-xs text-gray-600 hover:underline z-10 hidden sm:block sm:motion-reduce:!hidden"><span></span> Pointer</button>
 <script>
-    import { lerp } from "../lib/mathHelper";
+    import { getFromLocalStorage, setLocalStorage } from "../lib/localStorageHelper";
+import { lerp } from "../lib/mathHelper";
     import Vec2 from "../lib/vector2";
 
     (() => {
@@ -78,6 +80,8 @@ const { centerWidth = 0 } = Astro.props;
                 return;
             }
 
+            initPointerButton();
+
             centerWidth = parseInt(pointer.dataset.centerWidth) ?? 0;
             prevScroll = window.scrollY;
 
@@ -90,6 +94,38 @@ const { centerWidth = 0 } = Astro.props;
             document.documentElement.addEventListener("mouseenter", fadeIn);
 
             requestAnimationFrame(animate);
+        }
+
+        function initPointerButton() {
+
+            const buttons = Array.from(document.querySelectorAll("[data-toggle-pointer]")).map(e => {
+                const button = e as HTMLElement;
+                const span = button.getElementsByTagName("span")[0];
+
+                return { button, span };
+            });
+
+            buttons.forEach(({ button }) => {
+                button.addEventListener("click", () => togglePointer());
+            });
+
+            function togglePointer(hide: boolean = null) {
+                hide ??= !pointer.classList.contains("!hidden");
+
+                if (hide) {
+                    pointer.classList.add("!hidden");
+                } else {
+                    pointer.classList.remove("!hidden");
+                }
+
+                buttons.forEach(({ span }) => {
+                    span.innerHTML = hide ? "Enable" : "Disable";
+                });
+
+                setLocalStorage("hide_pointer", hide);
+            }
+
+            togglePointer(getFromLocalStorage<boolean>("hide_pointer", false));
         }
 
         function downHandler(e: MouseEvent) {

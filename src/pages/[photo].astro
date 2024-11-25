@@ -9,12 +9,11 @@ import SmartImage from "../components/prose_components/smartImage.astro";
 import MdImg from "../components/prose_components/mdImg.astro";
 import MdLink from "../components/prose_components/mdLink.astro";
 import Navbar from "../components/layout_components/navbar.astro";
-import BaseHead from "../components/baseHead.astro";
-import Pointer from "../components/pointer.astro";
+import Layout from "../components/layout_components/layout.astro";
 
 export async function getStaticPaths() {
     const photoProjects = await getCollection("photo");
-    return photoProjects.map((props) => ({
+    return photoProjects.map(props => ({
         params: { photo: props.slug },
         props: { props },
     }));
@@ -25,10 +24,10 @@ const {
 } = Astro.props;
 const { Content } = await props.render();
 
-const photos = getPhotosByNamesAndTags(data).sort((a, b) => (b.rating + Math.random()) - (a.rating + Math.random()));
+const photos = getPhotosByNamesAndTags(data).sort((a, b) => b.rating + Math.random() - (a.rating + Math.random()));
 
 // three cases:
-// cover is not photoname, in which case we use first image in photos 
+// cover is not photoname, in which case we use first image in photos
 // cover is in photos, in which case we remove it from there
 // cover is not in photos, in which case we just use it
 
@@ -36,76 +35,60 @@ let firstPhotoName = data.cover;
 if (!PHOTO_NAMES.includes(data.cover as PhotoName)) {
     // if cover is not valid photo, just use first one
     firstPhotoName = photos.shift()?.name as PhotoName;
-}
-else {
+} else {
     // if photo is valid, and in photos, remove it so it doesn't show up twice
     const coverIndex = photos.findIndex(p => p.name === firstPhotoName);
     if (coverIndex !== -1) {
         photos.splice(coverIndex, 1);
     }
 }
-
 ---
-<html lang="en">
-    <head>
-        <BaseHead title={data.title} cover={firstPhotoName} />
-    </head>
-    <body class="flex flex-col justify-center items-center">
-        <!-- <Pointer centerWidth={0} /> -->
-        <Navbar righttext={props.slug.replaceAll("-", " ").toUpperCase()} />
-        <main class="px-4 w-full max-w-[856px] flex flex-col items-center">
+
+<Layout title={data.title} cover={firstPhotoName} class="justify-center">
+    <Navbar righttext={props.slug.replaceAll("-", " ").toUpperCase()} />
+    <main class="px-4 w-full max-w-[856px] flex flex-col items-center">
+        {
+            firstPhotoName && (
+                <SmartImage
+                    src={firstPhotoName}
+                    alt={data.coverCaption}
+                    class="relative w-full mt-4 sm:mt-8"
+                    caption="right"
+                    size="large"
+                />
+            )
+        }
+        <!-- <div class="text-right text-gray-600 sm:mt-[12svh] mt-12">ↆ <button data-skip class="hover:underline italic">Skip to images</button> ↆ</div> -->
+        <TextContainer {...data} class="sm:mt-[20svh] mt-20 max-w-[600px]">
+            <Content components={{ a: MdLink, img: MdImg }} />
+        </TextContainer>
+        <div data-images class="w-full mt-[50vh]">
             {
-                firstPhotoName && (
-                    <SmartImage
-                        src={firstPhotoName}
-                        alt={data.coverCaption}
-                        class="relative w-full mt-4 sm:mt-8"
-                        caption="right"
-                        size="large"
-                    />
-                )
+                photos.map(p => {
+                    const width = (768 * Math.sqrt(p.ratio)) / Math.sqrt(3 / 2);
+                    const height = width / p.ratio;
+                    return (
+                        <div class="flex justify-center" style={`margin: max(200px, calc(50svh - ${height / 2}px)) 0;`}>
+                            <SmartImage
+                                src={p.name}
+                                class="relative max-w-full"
+                                figStyle={`width: ${width}px;`}
+                                caption="right"
+                                size="medium"
+                            />
+                        </div>
+                    );
+                })
             }
-            <!-- <div class="text-right text-gray-600 sm:mt-[12svh] mt-12">ↆ <button data-skip class="hover:underline italic">Skip to images</button> ↆ</div> -->
-            <TextContainer {...data} class="sm:mt-[20svh] mt-20 max-w-[600px]">
-                <Content components={{ a: MdLink, img: MdImg }} />
-            </TextContainer>
-            <div data-images class="w-full mt-[50vh]">
-                {
-                    photos.map((p) => {
-                        const width = (768 * Math.sqrt(p.ratio)) / Math.sqrt(3 / 2);
-                        const height = width / p.ratio;
-                        return (
-                            <div
-                                class="flex justify-center"
-                                style={`margin: max(200px, calc(50svh - ${height / 2}px)) 0;`}
-                            >
-                                <SmartImage src={p.name} class="relative max-w-full" figStyle={`width: ${width}px;`} caption="right" size="medium" />
-                                {/* <figure
-                                    class="relative max-w-full"
-                                    style={`width: ${width}px;`}
-                                >
-                                    <img src={p.paths.medium} />
-                                    <figcaption class="font-semibold text-sm">
-                                        {p.joinedCaption}
-                                    </figcaption>
-                                </figure> */}
-                            </div>
-                        );
-                    })
-                }
-            </div>
-        </main>
-        <footer class="mb-[50svh] mt-[20vh]">
-            <span>More</span>
-            <AnnotatedLink
-                type="underline"
-                staticUnderline={false}
-                href={LINKS.index}
-                class:list={"hover:mx-1"}>photography</AnnotatedLink
-            >
-            <span>-&gt;</span>
-        </footer>
-    </body>
+        </div>
+    </main>
+    <footer class="mb-[50svh] mt-[20vh]">
+        <span>More</span>
+        <AnnotatedLink type="underline" staticUnderline={false} href={LINKS.index} class:list={"hover:mx-1"}
+            >photography</AnnotatedLink
+        >
+        <span>-&gt;</span>
+    </footer>
     <!-- <script>
         function initSkipToImages() {
             document.querySelector("[data-skip]").addEventListener("click", () => window.scrollTo({
@@ -117,4 +100,4 @@ else {
         document.addEventListener("DOMContentLoaded", initSkipToImages);
         document.addEventListener("astro:after-swap", initSkipToImages);
     </script> -->
-</html>
+</Layout>

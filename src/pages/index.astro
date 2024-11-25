@@ -1,185 +1,178 @@
 ---
-import BaseHead from "../components/baseHead.astro";
 import Navbar from "../components/layout_components/navbar.astro";
 import { LINKS } from "../lib/linkHelper";
 import ProjectCard from "../components/layout_components/projectCard.astro";
 import MdLink from "../components/prose_components/mdLink.astro";
-import Pointer from "../components/pointer.astro";
+import Layout from "../components/layout_components/layout.astro";
 ---
 
-<html lang="en">
-    <head>
-        <BaseHead />
-    </head>
-    <body class="flex flex-col items-center">
-        <Navbar />
-        <Pointer centerWidth={28 * 16} />
-        <main class="w-full flex flex-col gap-5 pt-8">
+<Layout pointerCenterWidth={28*16 + 64}>
+    <Navbar />
+    <main class="w-full flex flex-col gap-5 pt-8">
 
-            <ProjectCard key="about" largeImage={true} shuffle={true} lazy={false} images={[
-                {
-                    photoName: "2024-05-13-high-castle-london",
-                    frame: {
-                        type: "shadow",
-                        color: "black",
-                        size: 4
-                    }
-                },
-                {
-                    photoName: "2021-01-14-north-atlantic-pennance-point",
-                    frame: {
-                        type: "border",
-                        color: "#e2e8f0",
-                        size: 4
-                    }
-                },
-                {
-                    photoName: "film-pigeon-8",
-                    frame: {
-                        type: "border",
-                        color: "#0000000a",
-                        size: 3,
-                    }
-                },
-                {
-                    photoName: "2019-08-31-cycling-gudmundsen-drive-door-county",
-                    frame: {
-                        type: "shadow",
-                        color: "#5762512e",
-                        size: 4,
-                    }
-                },
-                {
-                    photoName: "2021-11-02-jubilee-pool-penzance",
-                    frame: {
-                        type: "border",
-                        color: "#e68d500a",
-                        size: 4
-                    }
-                },
-            ]}>
-                <span slot="bottomright"class="leading-7 select-none">
-                    <span class="text-[#00ffff]">●</span>
-                    <span class="text-[#ff00ff]">●</span>
-                    <span class="text-[#ffff00]">●</span>
-                    <span>●</span>
-                </span>
-            </ProjectCard>
+        <ProjectCard key="about" largeImage={true} shuffle={true} lazy={false} images={[
+            {
+                photoName: "2024-05-13-high-castle-london",
+                frame: {
+                    type: "shadow",
+                    color: "black",
+                    size: 4
+                }
+            },
+            {
+                photoName: "2021-01-14-north-atlantic-pennance-point",
+                frame: {
+                    type: "border",
+                    color: "#e2e8f0",
+                    size: 4
+                }
+            },
+            {
+                photoName: "film-pigeon-8",
+                frame: {
+                    type: "border",
+                    color: "#0000000a",
+                    size: 3,
+                }
+            },
+            {
+                photoName: "2019-08-31-cycling-gudmundsen-drive-door-county",
+                frame: {
+                    type: "shadow",
+                    color: "#5762512e",
+                    size: 4,
+                }
+            },
+            {
+                photoName: "2021-11-02-jubilee-pool-penzance",
+                frame: {
+                    type: "border",
+                    color: "#e68d500a",
+                    size: 4
+                }
+            },
+        ]}>
+            <span slot="bottomright"class="leading-7 select-none">
+                <span class="text-[#00ffff]">●</span>
+                <span class="text-[#ff00ff]">●</span>
+                <span class="text-[#ffff00]">●</span>
+                <span>●</span>
+            </span>
+        </ProjectCard>
 
-            <ProjectCard key="palimpsest" images={[
-                {
-                    photoName: "2024-04-26-treasure-isle-of-wight",
-                    frame: {
-                        type: "shadow",
-                        color: "#020f03",
-                        size: 4
-                    }
-                },
-                {
-                    photoName: "2024-04-26-forest-library-isle-of-wight",
-                    frame: {
-                        type: "border",
-                        size: 3,
-                        color: "#C8CDB9",
-                    }
-                },
-                {
-                    photoName: "2024-05-17-bear-witness-belsize-park",
-                    frame: {
-                        type: "border",
-                        size: 4,
-                        color: "#0A0907",
-                    }
-                },
-                {
-                    photoName: "2024-10-26-tailor-petofi-sandor-street-budapest",
-                    frame: {
-                        type: "border",
-                        color: "#2939256e",
-                        size: 3
-                    }
-                },
-            ]} />
+        <ProjectCard key="palimpsest" images={[
+            {
+                photoName: "2024-04-26-treasure-isle-of-wight",
+                frame: {
+                    type: "shadow",
+                    color: "#020f03",
+                    size: 4
+                }
+            },
+            {
+                photoName: "2024-04-26-forest-library-isle-of-wight",
+                frame: {
+                    type: "border",
+                    size: 3,
+                    color: "#C8CDB9",
+                }
+            },
+            {
+                photoName: "2024-05-17-bear-witness-belsize-park",
+                frame: {
+                    type: "border",
+                    size: 4,
+                    color: "#0A0907",
+                }
+            },
+            {
+                photoName: "2024-10-26-tailor-petofi-sandor-street-budapest",
+                frame: {
+                    type: "border",
+                    color: "#2939256e",
+                    size: 3
+                }
+            },
+        ]} />
 
-            <ProjectCard key="pigeon" images={[
-                {
-                    photoName: "film-pigeon-1",
-                    frame: { type: "border", size: 3, color: "#0000000a" },
-                },
-                {
-                    photoName: "2024-07-30-20240730-dsc_0145",
-                    frame: { type: "border", size: 4, color: "#b8d8f600" }
-                },
-                {
-                    photoName: "pigeon-psd-32",
-                    frame: { type: "shadow", size: 4, color: "#241e20" },
-                },
-            ]} />
+        <ProjectCard key="pigeon" images={[
+            {
+                photoName: "film-pigeon-1",
+                frame: { type: "border", size: 3, color: "#0000000a" },
+            },
+            {
+                photoName: "2024-07-30-20240730-dsc_0145",
+                frame: { type: "border", size: 4, color: "#b8d8f600" }
+            },
+            {
+                photoName: "pigeon-psd-32",
+                frame: { type: "shadow", size: 4, color: "#241e20" },
+            },
+        ]} />
 
-            <ProjectCard key="lingermyth" shuffle={true} photos={[ "2024-05-30-lingermyth-p3233", "2024-05-30-lingermyth-front-back-covers", "2024-05-30-lingermyth-p45", "2024-05-30-lingermyth-p5052", "2024-05-30-lingermyth-p23" ]} />
+        <ProjectCard key="lingermyth" shuffle={true} photos={[ "2024-05-30-lingermyth-p3233", "2024-05-30-lingermyth-front-back-covers", "2024-05-30-lingermyth-p45", "2024-05-30-lingermyth-p5052", "2024-05-30-lingermyth-p23" ]} />
 
-            <ProjectCard key="on-yearning" images={{photoName: "2021-06-20-yearning-door", frame: { type: "shadow", size: 4 }}} />
+        <ProjectCard key="on-yearning" images={{photoName: "2021-06-20-yearning-door", frame: { type: "shadow", size: 4 }}} />
 
-            <ProjectCard key="wiki" images={{src: "/media/wiki.gif", frame: { type: "shadow", size: 4 }, alt: "24 Dutch Children in a Phone Booth. From Wikimedia Commons."}} />
+        <ProjectCard key="wiki" images={{src: "/media/wiki.gif", frame: { type: "shadow", size: 4 }, alt: "24 Dutch Children in a Phone Booth. From Wikimedia Commons."}} />
 
-            <ProjectCard key="horizons" shuffle={true} images={[
-                {
-                    photoName: "2020-07-02-daybreak-door", 
-                    frame: { type: "shadow", size: 4, color: "#bed7f23b" }
-                },
-                {
-                    photoName: "2021-02-26-north-atlantic-facing-south", 
-                    frame: { type: "border", size: 4, color: "#fef1ee57" }
-                },
-                {
-                    photoName: "2021-03-28-moonglow-lake-michigan", 
-                    frame: { type: "border", size: 4 }
-                },
-            ]} />
+        <ProjectCard key="horizons" shuffle={true} images={[
+            {
+                photoName: "2020-07-02-daybreak-door", 
+                frame: { type: "shadow", size: 4, color: "#bed7f23b" }
+            },
+            {
+                photoName: "2021-02-26-north-atlantic-facing-south", 
+                frame: { type: "border", size: 4, color: "#fef1ee57" }
+            },
+            {
+                photoName: "2021-03-28-moonglow-lake-michigan", 
+                frame: { type: "border", size: 4 }
+            },
+        ]} />
 
-            <!-- <ProjectCard key="heartland" images={[
-                {
-                    photoName: "2018-10-21-tall-corn-chimney-swifts-wisconsin", 
-                    frame: { type: "shadow", size: 4, color: "#2e1804" }
-                },
-                {
-                    photoName: "2018-09-01-katydid-cattails-ulau-creek-wisconsin", 
-                    frame: { type: "border", size: 4, color: "#e39c2c29" }
-                },
-                {
-                    photoName: "2020-04-30-last-call-wisconsin", 
-                    frame: { type: "shadow", size: 4 }
-                },
-            ]} /> -->
+        <!-- <ProjectCard key="heartland" images={[
+            {
+                photoName: "2018-10-21-tall-corn-chimney-swifts-wisconsin", 
+                frame: { type: "shadow", size: 4, color: "#2e1804" }
+            },
+            {
+                photoName: "2018-09-01-katydid-cattails-ulau-creek-wisconsin", 
+                frame: { type: "border", size: 4, color: "#e39c2c29" }
+            },
+            {
+                photoName: "2020-04-30-last-call-wisconsin", 
+                frame: { type: "shadow", size: 4 }
+            },
+        ]} /> -->
 
-        </main>
-        <footer class="mt-0.5 mb-96 w-full px-4 flex flex-col items-center">
-            <div class="border-t border-black relative max-w-md">
-                <p class="pt-4">
-                    Well, this is it, kid. End of the line. Bottom of the webpage.
-                </p>
-                <p class="pt-4">
-                    Things are looking grim. But do not despair! This website has <MdLink href={LINKS.index}>other pages</MdLink> to look at.
-                </p>
-                <p class="pt-4">
-                    Or, I suppose, you could go to another website. Here are some of my favorites:
+    </main>
+    <footer class="mt-0.5 mb-96 w-full px-4 flex flex-col items-center">
+        <div class="border-t border-black relative max-w-md">
+            <p class="pt-4">
+                Well, this is it, kid. End of the line. Bottom of the webpage.
+            </p>
+            <p class="pt-4">
+                Things are looking grim. But do not despair! This website has <MdLink href={LINKS.index}>other pages</MdLink> to look at.
+            </p>
+            <p class="pt-4">
+                Or, I suppose, you could go to another website. Here are some of my favorites:
 
-                </p>
-            </div>
-            <ul class="pt-4 [&_>li]:before:content-['->'] [&_>li]:before:pr-2 max-w-md w-full">
-                <li><MdLink href="https://solar.lowtechmagazine.com/">Low Tech Magazine</MdLink></li>
-                <li><MdLink href="https://archive.org/details/rotatingfood2">Rotating Food</MdLink></li>
-                <li><MdLink href="https://motherfuckingwebsite.com/">Website Design Guidelines</MdLink></li>
-                <li><MdLink href="https://en.wikipedia.org/wiki/Category:Obsolete_occupations">Obsolete Occupations</MdLink></li>
-                <li><MdLink href="https://www.saulleiterfoundation.org/color">Saul Leiter's website</MdLink></li>
-                <li><MdLink href="https://commons.wikimedia.org/wiki/File:24_man_in_een_telefooncel-4591445.ogv">24 man in een telefooncel</MdLink></li>
-                <li><MdLink href="https://www.oldbookillustrations.com/">Old Book Illustrations</MdLink></li>
-                <li><MdLink href="https://www.landfallnavigation.com/noaa-nautical-chart-14909-upper-green-bay-jackson-harbor-and-detroit-harbor-detroit-harbor-jackson-harbor-baileys-harbor.html">Map of Death's Door</MdLink></li>
-                <li><MdLink href="https://rsms.me/inter/">Inter, This Font</MdLink></li>
-                <li><MdLink href="https://github.com/psb1558/Junicode-font">Junicode, <span class="font-serif">This Font</span></MdLink></li>
-                <li><MdLink href="wrapmap">Falafel Map</MdLink></li>
-                <li><MdLink href="https://commons.wikimedia.org/wiki/File:7-Eleven,_Orlando,_Florida,_August_1987.ogv">7-Eleven, Florida, 1987</MdLink></li>
-            </ul>
-        </footer>
-    </body>
-</html>
+            </p>
+        </div>
+        <ul class="pt-4 [&_>li]:before:content-['->'] [&_>li]:before:pr-2 max-w-md w-full">
+            <li><MdLink href="https://solar.lowtechmagazine.com/">Low Tech Magazine</MdLink></li>
+            <li><MdLink href="https://archive.org/details/rotatingfood2">Rotating Food</MdLink></li>
+            <li><MdLink href="https://motherfuckingwebsite.com/">Website Design Guidelines</MdLink></li>
+            <li><MdLink href="https://en.wikipedia.org/wiki/Category:Obsolete_occupations">Obsolete Occupations</MdLink></li>
+            <li><MdLink href="https://www.saulleiterfoundation.org/color">Saul Leiter's website</MdLink></li>
+            <li><MdLink href="https://commons.wikimedia.org/wiki/File:24_man_in_een_telefooncel-4591445.ogv">24 man in een telefooncel</MdLink></li>
+            <li><MdLink href="https://www.oldbookillustrations.com/">Old Book Illustrations</MdLink></li>
+            <li><MdLink href="https://www.landfallnavigation.com/noaa-nautical-chart-14909-upper-green-bay-jackson-harbor-and-detroit-harbor-detroit-harbor-jackson-harbor-baileys-harbor.html">Map of Death's Door</MdLink></li>
+            <li><MdLink href="https://rsms.me/inter/">Inter, This Font</MdLink></li>
+            <li><MdLink href="https://github.com/psb1558/Junicode-font">Junicode, <span class="font-serif">This Font</span></MdLink></li>
+            <li><MdLink href="wrapmap">Falafel Map</MdLink></li>
+            <li><MdLink href="https://commons.wikimedia.org/wiki/File:7-Eleven,_Orlando,_Florida,_August_1987.ogv">7-Eleven, Florida, 1987</MdLink></li>
+        </ul>
+    </footer>
+</Layout>

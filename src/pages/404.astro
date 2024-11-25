@@ -1,22 +1,17 @@
 ---
-import BaseHead from "../components/baseHead.astro";
+import Layout from "../components/layout_components/layout.astro";
 import AnnotatedLink from "../components/prose_components/annotatedLink.astro";
 import Space from "../components/prose_components/space.astro";
 import TextContainer from "../components/prose_components/textContainer.astro";
 import { Content } from "../content/snippets/404.mdx";
-
 ---
-<html lang="en">
-    <head>
-        <BaseHead title="404! Page not found!" cover="2022-03-18-lingermyth-greenbank" />
-    </head>
-    <body class="flex flex-col items-center bg-white dark:bg-black text-black dark:text-white">
-        <main class="mt-16 sm:mt-64 mb-[50svh] px-4">
-            <h3>⚠ 404 ⚠</h3>
-            <Space lines={4} />
-            <TextContainer startIcon={false} endIcon={false} title="Hey! Watch it!">
-                <Content components={{ a: AnnotatedLink, }} />
-            </TextContainer>
-        </main>
-    </body>
-</html>
+
+<Layout title="404! Page not found!" cover="2022-03-18-lingermyth-greenbank">
+    <main class="mt-16 sm:mt-64 mb-[50svh] px-4">
+        <h3>⚠ 404 ⚠</h3>
+        <Space lines={4} />
+        <TextContainer startIcon={false} endIcon={false} title="Hey! Watch it!">
+            <Content components={{ a: AnnotatedLink }} />
+        </TextContainer>
+    </main>
+</Layout>

@@ -91,7 +91,7 @@ const bottomIconSpace = props.data.iconSpace === "both" || props.data.iconSpace 
                     { ligatures: props.data.titleLigatures },
                 ]}
             >
-                {props.data.href ? (<a {...resolvedLink} tabindex="-1" data-title={guid} class="hover:underline focus:outline-black">{props.data.title}</a>) : (<>{props.data.title}</>)}<sup class="select-none">{titleIconSpace  ? " " : ""}<button tabindex="-1" class="transition-transform hover:rotate-12" data-icon={guid}>{props.data.icon}</button></sup>
+                {props.data.href ? (<a {...resolvedLink} tabindex="-1" data-title={guid} class="hover:underline focus:outline-black dark:focus:outline-white">{props.data.title}</a>) : (<>{props.data.title}</>)}<sup class="select-none">{titleIconSpace  ? " " : ""}<button tabindex="-1" class="transition-transform hover:rotate-12" data-icon={guid}>{props.data.icon}</button></sup>
             </h1>
             <div
                 class="relative [&_>*]:pt-3 [&_>p:first-of-type]:arrow-indent hyphens-none mx-2"
@@ -104,8 +104,8 @@ const bottomIconSpace = props.data.iconSpace === "both" || props.data.iconSpace 
                 class:list={[
                     "flex justify-between items-end",
                     "mt-36 pt-1 pb-0.5",
-                    "border-b-[3px] border-black",
-                    "focus:outline-dashed outline-offset-4 outline-black",
+                    "border-b-[3px] border-black dark:border-white",
+                    "focus:outline-dashed outline-offset-4 outline-black dark:outline-white",
                 ]}
             >
                 <span>
