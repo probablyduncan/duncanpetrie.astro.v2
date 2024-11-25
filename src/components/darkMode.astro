@@ -41,7 +41,7 @@
             setLocalStorage(DARK_MODE_KEY, toDarkMode);
         }
 
-        toggleDarkMode(getFromLocalStorage<boolean>(DARK_MODE_KEY, true));
+        toggleDarkMode(getFromLocalStorage<boolean>(DARK_MODE_KEY, false));
     }
 
     document.addEventListener("astro:after-swap", initDarkMode);
