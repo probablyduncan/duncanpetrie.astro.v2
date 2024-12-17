@@ -35,10 +35,10 @@ import { lerp } from "../lib/mathHelper";
             },
         } as const;
 
+        // type cursor = (typeof cursors)[keyof typeof cursors][keyof (typeof cursors)[keyof typeof cursors]];
+
         document.addEventListener("DOMContentLoaded", initPointer);
         document.addEventListener("astro:after-swap", initPointer);
-
-        type cursor = (typeof cursors)[keyof typeof cursors][keyof (typeof cursors)[keyof typeof cursors]];
 
         interface PointerState {
             currentPos: Vec2;

@@ -4,12 +4,12 @@ import { resolveImage, type Image } from "../../lib/photoHelper";
 import SmartImage from "../prose_components/smartImage.astro";
 import { toSeveral, type SingleOrSeveral } from "../../lib/singleOrSeveral";
 import { resolveLink } from "../../lib/linkHelper";
-import type { ContentEntryMap } from "astro:content";
 import { getEntry } from "astro:content";
 import MdLink from "../prose_components/mdLink.astro";
+import type { DataEntryMap } from "astro:content";
 
 interface Props {
-    key: ContentEntryMap["homepage"][keyof ContentEntryMap["homepage"]]["slug"];
+    key: DataEntryMap["homepage"][keyof DataEntryMap["homepage"]]["slug"];
     largeImage?: boolean;
     shuffle?: boolean;
     lazy?: boolean;
@@ -113,7 +113,7 @@ const bottomIconSpace = props.data.iconSpace === "both" || props.data.iconSpace 
                         {props.data.icon}
                     </span>
                     <span data-bottom-line class="italic leading-8 select-none">
-                        {props.data.bottomLine.split("").map((char) => <span class="data-[active]:font-serif data-[active]:font-bold] data-[active]:text-xl">{char}</span>)}
+                        {props.data.bottomLine.split("").map((char: string) => <span class="data-[active]:font-serif data-[active]:font-bold] data-[active]:text-xl">{char}</span>)}
                     </span>
                 </span>
                 <slot name="bottomright">
