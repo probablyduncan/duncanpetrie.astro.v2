@@ -30,7 +30,12 @@ const columns: number = 0;
                     "md:ml-20": columns === 1,
                 }}
             >
-                {title}
+                {title.split("//").map((line, i) => (
+                    <>
+                        {i !== 0 && <br />}
+                        {line}
+                    </>
+                ))}
             </h1>
         )
     }
@@ -40,6 +45,7 @@ const columns: number = 0;
             "[&_>h1]:text-5xl [&_>h1]:font-serif [&_>h1]:font-semibold [&_>h1]:mt-8": true,
             "[&_>h2]:text-3xl [&_>h2]:font-serif [&_>h2]:font-semibold [&_>h2]:mt-8": true,
             "[&_>h3]:text-2xl [&_>h3]:font-serif [&_>h3]:font-semibold [&_>h3]:mt-8": true,
+            "[&_>blockquote]:flex [&_>blockquote]:justify-center [&_>blockquote]:italic [&_>blockquote]:text-sm [&_>blockquote]:font-serif [&_>blockquote]:mt-4": true,
             "[&_>p:first-of-type]:arrow-indent": startIcon,
             "[&_>p:last-of-type]:end-bullet": endIcon,
             "lg:columns-2 gap-8": columns === 2,
