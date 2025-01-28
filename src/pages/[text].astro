@@ -21,7 +21,7 @@ const {
 const { Content } = await props.render();
 ---
 
-<Layout title={data.title} cover={data.cover}>
+<Layout title={data.title.replaceAll("//", " ")} cover={data.cover}>
     <Navbar righttext={props.slug.replaceAll("-", " ").toUpperCase()} />
     <main class="px-4 w-full max-w-[856px] flex flex-col items-center mb-[50svh]">
         {
