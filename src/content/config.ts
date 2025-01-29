@@ -29,6 +29,7 @@ const photo = defineCollection({
         tags: z.array(z.enum(PHOTO_TAGS)).optional(),
         excludeNames: z.array(z.enum(PHOTO_NAMES)).optional(),
         excludeTags: z.array(z.enum(PHOTO_TAGS)).optional(),
+        folder: z.string().optional(),
     }),
 });
 

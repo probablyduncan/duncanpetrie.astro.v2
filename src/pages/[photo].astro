@@ -1,19 +1,21 @@
 ---
 import { getCollection } from "astro:content";
-import { getPhotosByNamesAndTags } from "../lib/photoHelper";
+import { getPhotosByNamesAndTags, resolveImage } from "../lib/photoHelper";
 import AnnotatedLink from "../components/prose_components/annotatedLink.astro";
 import TextContainer from "../components/prose_components/textContainer.astro";
 import { LINKS } from "../lib/linkHelper";
-import { PHOTO_NAMES, type PhotoName } from "../data/photoTypes.generated";
 import SmartImage from "../components/prose_components/smartImage.astro";
 import MdImg from "../components/prose_components/mdImg.astro";
 import MdLink from "../components/prose_components/mdLink.astro";
 import Navbar from "../components/layout_components/navbar.astro";
 import Layout from "../components/layout_components/layout.astro";
+import fs from "fs";
+import path from "path";
+import { type Image } from "../lib/photoHelper";
 
 export async function getStaticPaths() {
     const photoProjects = await getCollection("photo");
-    return photoProjects.map(props => ({
+    return photoProjects.map((props) => ({
         params: { photo: props.slug },
         props: { props },
     }));
@@ -24,37 +26,67 @@ const {
 } = Astro.props;
 const { Content } = await props.render();
 
-const photos = getPhotosByNamesAndTags(data).sort((a, b) => b.rating + Math.random() - (a.rating + Math.random()));
+let imagePromises: Promise<Image>[];
 
-// three cases:
-// cover is not photoname, in which case we use first image in photos
-// cover is in photos, in which case we remove it from there
-// cover is not in photos, in which case we just use it
-
-let firstPhotoName = data.cover;
-if (!PHOTO_NAMES.includes(data.cover as PhotoName)) {
-    // if cover is not valid photo, just use first one
-    firstPhotoName = photos.shift()?.name as PhotoName;
-} else {
-    // if photo is valid, and in photos, remove it so it doesn't show up twice
-    const coverIndex = photos.findIndex(p => p.name === firstPhotoName);
-    if (coverIndex !== -1) {
-        photos.splice(coverIndex, 1);
+// first, try getting photos from
+if (data.folder) {
+    const folderPath = path.join(process.cwd(), "public", data.folder);
+    if (fs.existsSync(folderPath)) {
+        imagePromises = fs
+            .readdirSync(folderPath)
+            .filter((name) =>
+                // only include images in this folder
+                [".webp", ".jpg", ".jpeg", ".png"].includes(
+                    path.parse(name).ext,
+                ),
+            )
+            .map((name) =>
+                // transform into image object
+                resolveImage({
+                    src: path.join(data.folder, name),
+                }),
+            );
     }
+}
+
+// if the folder didn't work, now try getting from photo data
+if (!imagePromises || !imagePromises.length) {
+    imagePromises = getPhotosByNamesAndTags(data)
+        .sort((a, b) => b.rating + Math.random() - (a.rating + Math.random()))
+        .map((p) => resolveImage({ photoData: p }));
+}
+
+const images = await Promise.all(imagePromises);
+
+let coverImage: Image;
+let coverIndex = -1;
+if (data.cover) {
+    // if cover is specified, try and resolve it
+    coverImage = await resolveImage({ src: data.cover });
+    coverIndex = images.findIndex((p) => p.src === coverImage.src);
+}
+
+if (!coverImage) {
+    // if that didn't work, use first image
+    coverImage = images[0];
+    coverIndex = 0;
+}
+
+if (coverIndex !== -1) {
+    // if cover is in list, remove it
+    images.splice(coverIndex, 1);
 }
 ---
 
-<Layout title={data.title} cover={firstPhotoName} class="justify-center">
+<Layout title={data.title} cover={coverImage.src} class="justify-center">
     <Navbar righttext={props.slug.replaceAll("-", " ").toUpperCase()} />
     <main class="px-4 w-full max-w-[856px] flex flex-col items-center">
         {
-            firstPhotoName && (
+            coverImage && (
                 <SmartImage
-                    src={firstPhotoName}
-                    alt={data.coverCaption}
+                    {...coverImage}
                     class="relative w-full mt-4 sm:mt-8"
                     caption="right"
-                    size="large"
                 />
             )
         }
@@ -64,17 +96,19 @@ if (!PHOTO_NAMES.includes(data.cover as PhotoName)) {
         </TextContainer>
         <div data-images class="w-full mt-[50vh]">
             {
-                photos.map(p => {
-                    const width = (768 * Math.sqrt(p.ratio)) / Math.sqrt(3 / 2);
-                    const height = width / p.ratio;
+                images.map((image) => {
+                    const width = (768 * Math.sqrt(image.ratio)) / Math.sqrt(3 / 2);
+                    const height = width / image.ratio;
                     return (
-                        <div class="flex justify-center" style={`margin: max(200px, calc(50svh - ${height / 2}px)) 0;`}>
+                        <div
+                            class="flex justify-center"
+                            style={`margin: max(200px, calc(50svh - ${height / 2}px)) 0;`}
+                        >
                             <SmartImage
-                                src={p.name}
+                                {...image}
                                 class="relative max-w-full"
                                 figStyle={`width: ${width}px;`}
                                 caption="right"
-                                size="medium"
                             />
                         </div>
                     );
@@ -84,8 +118,11 @@ if (!PHOTO_NAMES.includes(data.cover as PhotoName)) {
     </main>
     <footer class="mb-[50svh] mt-[20vh]">
         <span>More</span>
-        <AnnotatedLink type="underline" staticUnderline={false} href={LINKS.index} class:list={"hover:mx-1"}
-            >photography</AnnotatedLink
+        <AnnotatedLink
+            type="underline"
+            staticUnderline={false}
+            href={LINKS.index}
+            class:list={"hover:mx-1"}>photography</AnnotatedLink
         >
         <span>-&gt;</span>
     </footer>
