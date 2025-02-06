@@ -30,6 +30,8 @@ export const LINKS = {
     wrapmap: "https://www.google.com/maps/d/viewer?mid=15A5_e_KS2Es4xs3ZhXmYR31dRmc0cpA",
     mnhp: "https://www.falmouth.ac.uk/study/undergraduate/marine-natural-history-photography",
     source: "https://github.com/probablyduncan/duncanpetrie.astro.v2",
+    bsky: "https://bsky.app/profile/duncanpetrie.com",
+    sancho: "/sancho",
 } as const;
 
 
