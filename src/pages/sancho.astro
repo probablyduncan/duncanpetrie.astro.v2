@@ -29,10 +29,11 @@ import MdLink from "../components/prose_components/mdLink.astro";
     <main class="prose dark:prose-invert font-serif text-justify text-lg">
         <div class="min-h-[calc(100vh-80px)] flex flex-col justify-center">
             <div data-proverb-container class="mb-4 iindent-4"></div>
-            <div>
+            <div class="mb-4">
                 <button
                     data-proverb-refresh
                     class="font-sans text-base transition-opacity opacity-0"
+                    title="Click or press the 'R' key to refresh proverbs."
                 >
                     ↻
                 </button>
@@ -42,7 +43,7 @@ import MdLink from "../components/prose_components/mdLink.astro";
             <ul data-footnotes class="list-none pl-0"></ul>
         </aside>
         <section class="mb-40">
-            <Content components={{a: MdLink}} />
+            <Content components={{ a: MdLink }} />
         </section>
     </main>
 </Layout>
@@ -56,6 +57,7 @@ import MdLink from "../components/prose_components/mdLink.astro";
         }
 
         let buttons: HTMLButtonElement[];
+        let generating = false;
         function initProverbs() {
             buttons = [
                 ...document.querySelectorAll("button[data-proverb-refresh]"),
@@ -65,10 +67,22 @@ import MdLink from "../components/prose_components/mdLink.astro";
                 button.addEventListener("click", refreshProverbs);
             });
 
+            window.addEventListener("keypress", ({key}) => {
+                if (key.toLowerCase() === "r") {
+                    refreshProverbs();
+                }
+            })
+
             refreshProverbs();
         }
 
         function refreshProverbs() {
+            if (generating) {
+                return;
+            }
+
+            generating = true;
+
             const footnoteContainer =
                 document.querySelector("ul[data-footnotes]");
 
@@ -145,6 +159,7 @@ import MdLink from "../components/prose_components/mdLink.astro";
                         b.classList.add("transition-opacity");
                         b.style.opacity = "1";
                     });
+                    generating = false;
                 },
             )();
         }
@@ -156,21 +171,21 @@ import MdLink from "../components/prose_components/mdLink.astro";
             const beginning = r([
                 {
                     firstLine:
-                        '"And that\'s what I think of that," said Sancho,',
-                    leadIn: '"for',
+                        "“And that's what I think of that,” said Sancho,",
+                    leadIn: "“for",
                 },
                 {
                     firstLine:
-                        '"Right now some proverbs have come to mind,//like pears in a wicker basket," said Sancho.',
-                    leadIn: '"For example:',
+                        "“Right now some proverbs have come to mind,//like pears in a wicker basket,” said Sancho.",
+                    leadIn: "“For example:",
                 },
                 {
-                    firstLine: '"And all I shall say," said Sancho,',
-                    leadIn: '"is that',
+                    firstLine: "“And all I shall say,” said Sancho,",
+                    leadIn: "“is that",
                 },
                 {
                     firstLine:
-                        '"I have more proverbs in me than a book, said Sancho,//"and when I speak they come so thick together into my mouth//that they fall to fighting among themselves to get out.',
+                        "“I have more proverbs in me than a book,” said Sancho,//“and when I speak they come so thick together into my mouth//that they fall to fighting among themselves to get out.",
                     leadIn: "For example:",
                 },
             ]);
@@ -199,10 +214,10 @@ import MdLink from "../components/prose_components/mdLink.astro";
                             const split = p.split("//");
                             p = split[0] + " . . . ";
                             const footnoteTemplates = [
-                                'The second part of the proverb is: " . . . {p}."',
-                                'The rest of the proverb is: "{p}."',
-                                'The proverb concludes with: " . . . {p}."',
-                                '" . . . {p}."',
+                                "The second part of the proverb is: “ . . . {p}.”",
+                                "The rest of the proverb is: “{p}.”",
+                                "The proverb concludes with: “ . . . {p}.”",
+                                "“ . . . {p}.”",
                             ];
                             footnotes.push(
                                 r(footnoteTemplates).replace("{p}", split[1]),
@@ -225,12 +240,12 @@ import MdLink from "../components/prose_components/mdLink.astro";
                 .forEach((p) => clauses.push(p));
 
             const endings = [
-                "and that's all I have to say about that.\"",
-                "and that's that.\"",
-                "and now it's time for bed.\"",
-                'and is it about time for supper?"',
-                "and that's the end of that\".",
-                "and I think I've said enough.\"",
+                "and that's all I have to say about that.”",
+                "and that's that.”",
+                "and now it's time for bed.”",
+                "and is it about time for supper?”",
+                "and that's the end of that”.",
+                "and I think I've said enough.”",
             ];
 
             const link = resolveLink({
@@ -453,7 +468,7 @@ import MdLink from "../components/prose_components/mdLink.astro";
             "to {verb} is to {verb}",
             "to {verb} is futile",
             "as the {occupation} desires",
-            "as the {occupation} is wont to do . . .",
+            "as the {occupation} is wont to do . . . ",
             "the {animal} never followed a well-travelled road",
             "the {occupation} resents the {animal}",
             "there are never enough {clothing}s in the {locale}",
@@ -555,6 +570,7 @@ import MdLink from "../components/prose_components/mdLink.astro";
                 "shoe",
                 "bag hat",
                 "nightcap",
+                "wig",
                 "nabcheat",
                 "cape",
                 "hood",
