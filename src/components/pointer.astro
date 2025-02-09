@@ -12,7 +12,7 @@ const { centerWidth = 0 } = Astro.props;
     class:list={[
         "absolute -z-10 top-0 left-0 pt-6",
         "select-none pointer-events-none",
-        "hidden sm:flex items-center justify-center w-auto h-auto transform-gpu",
+        "hidden sm:flex items-center justify-center w-auto h-auto translate-full scale-0",
         "text-5xl font-serif font-semibold text-center leading-none",
         "transition-opacity opacity-0",
         "sm:motion-reduce:!hidden",
@@ -255,7 +255,10 @@ import { lerp } from "../lib/mathHelper";
 
             // update pointer transform
             const rotation = Math.atan2(dirToMousePos.y, dirToMousePos.x) + (state.icon.dir == "left" ? Math.PI : 0);
-            pointer.style.setProperty("--tw-rotate", rotation + "rad");
+            // pointer.style.setProperty("--tw-rotate-x", `rotateX(${rotation}rad)`);
+            // pointer.style.setProperty("--tw-rotate-y", `rotateY(${rotation}rad)`);
+            // pointer.style.setProperty("--tw-rotate-z", `rotateZ(${rotation}rad)`);
+            pointer.style.rotate = rotation + "rad";
 
             pointer.style.setProperty("--tw-translate-x", state.currentPos.x + "px");
             pointer.style.setProperty("--tw-translate-y", state.currentPos.y + "px");
