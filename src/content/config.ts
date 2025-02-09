@@ -54,4 +54,6 @@ const homepage = defineCollection({
     })
 });
 
-export const collections = { photo, text, homepage };
+const snippets = defineCollection({});
+
+export const collections = { photo, text, homepage, snippets };

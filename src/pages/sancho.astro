@@ -1,5 +1,5 @@
 ---
-import { Content } from "../content/snippets/sancho.mdx";
+import { Content as AboutText } from "../content/snippets/sancho.mdx";
 import Layout from "../components/layout_components/layout.astro";
 import MdLink from "../components/prose_components/mdLink.astro";
 
@@ -12,15 +12,18 @@ import MdLink from "../components/prose_components/mdLink.astro";
 
 <Layout>
     <header
-        class="prose dark:prose-invert font-serif mt-4 grid grid-cols-[1fr_auto_1fr] justify-between w-[65ch]"
+        class="prose dark:prose-invert font-serif mt-4 grid grid-cols-[1fr_auto_1fr] justify-between w-[65ch] max-w-[90vw] gap-4"
     >
         <span class="text-xs text-left">
             <a href="/" title="Retreat to the home page!" class="no-underline">
                 ☜
             </a>
         </span>
-        <span class="text-xs text-center">
+        <span class="text-xs text-center hidden sm:inline">
             THE INGENIOUS GENTLEMAN OF MILWAUKEE
+        </span>
+        <span class="text-xs text-center sm:hidden">
+            DUNC QUIXOTE
         </span>
         <span class="text-xs text-right">
             {Math.floor(Math.random() * 498) + 401}
@@ -43,7 +46,7 @@ import MdLink from "../components/prose_components/mdLink.astro";
             <ul data-footnotes class="list-none pl-0"></ul>
         </aside>
         <section class="mb-40">
-            <Content components={{ a: MdLink }} />
+            <AboutText components={{ a: MdLink }} />
         </section>
     </main>
 </Layout>
