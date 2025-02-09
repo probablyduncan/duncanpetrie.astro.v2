@@ -86,7 +86,7 @@ const bottomIconSpace = props.data.iconSpace === "both" || props.data.iconSpace 
             </div>
             <h1
                 class:list={[
-                    "font-serif mt-8 mx-2",
+                    "font-serif mt-8 mx-2 font-semibold",
                     props.data.smallTitle ? "sm:text-4xl text-3xl" : "text-5xl",
                     { ligatures: props.data.titleLigatures },
                 ]}
@@ -109,15 +109,15 @@ const bottomIconSpace = props.data.iconSpace === "both" || props.data.iconSpace 
                 ]}
             >
                 <span>
-                    <span class:list={["font-serif text-lg select-none", bottomIconSpace ? "pr-1" : "pr-0"]}>
+                    <span class:list={["font-serif font-semibold text-lg select-none", bottomIconSpace ? "pr-1" : "pr-0"]}>
                         {props.data.icon}
                     </span>
                     <span data-bottom-line class="italic leading-8 select-none">
-                        {props.data.bottomLine.split("").map((char: string) => <span class="data-[active]:font-serif data-[active]:font-bold] data-[active]:text-xl">{char}</span>)}
+                        {props.data.bottomLine.split("").map((char: string) => <span class="data-[active]:font-serif data-[active]:font-semibold] data-[active]:text-xl">{char}</span>)}
                     </span>
                 </span>
                 <slot name="bottomright">
-                    <span class="text-xl leading-8 data-[active]:leading-6 data-[active]:text-lg data-[active]:font-serif select-none" data-bottom-arrow data-inactive-content="->" data-active-content="☛">-&gt;</span>
+                    <span class="text-xl leading-8 data-[active]:leading-6 data-[active]:text-lg data-[active]:font-serif data-[active]:font-semibold select-none" data-bottom-arrow data-inactive-content="->" data-active-content="☛">-&gt;</span>
                 </slot>
             </a>
         </div>

@@ -28,7 +28,7 @@
   @font-face {
     font-family: Junicode;
     font-style: normal;
-    font-weight: 600;
+    font-weight: 300, 700;
     font-display: swap;
     src: url("/fonts/junicode.woff2") format("woff2");
   }
