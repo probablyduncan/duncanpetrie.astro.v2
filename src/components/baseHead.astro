@@ -5,16 +5,16 @@ import { resolveImage } from "../lib/photoHelper";
 interface Props {
     title?: string;
     cover?: string;
+    description?: string;
 }
 
 const {
     title = "Duncan Petrie",
     cover = "2024-05-13-high-castle-london",
+    description = "Duncan Petrie is a London-based photographer and writer from Milwaukee, Wisconsin. He explores nature in the human landscape, and what the world might look like when we are gone.",
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-const description =
-    "Duncan Petrie is a London-based photographer and writer from Milwaukee, Wisconsin. He explores nature in the human landscape, and what the world might look like when we are gone.";
 const coverImage = await resolveImage({ src: cover });
 ---
 
