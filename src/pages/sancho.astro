@@ -15,21 +15,23 @@ import MdLink from "../components/prose_components/mdLink.astro";
         class="prose dark:prose-invert font-serif mt-4 grid grid-cols-[1fr_auto_1fr] text-lg justify-between w-[90vw] gap-4"
     >
         <span class="text-xs text-left">
-            <a href="/" title="Retreat to the home page!" class="no-underline inline-block transition-transform hover:-translate-x-1 hover:pr-1">
+            <a
+                href="/"
+                title="Retreat to the home page!"
+                class="no-underline inline-block transition-transform hover:-translate-x-1 hover:pr-1"
+            >
                 ☜
             </a>
         </span>
         <span class="text-xs text-center hidden sm:inline">
             THE INGENIOUS GENTLEMAN OF MILWAUKEE
         </span>
-        <span class="text-xs text-center sm:hidden">
-            DUNC QUIXOTE
-        </span>
-        <span class="text-xs text-right">
-            {Math.floor(Math.random() * 498) + 401}
-        </span>
+        <span class="text-xs text-center sm:hidden"> DUNC QUIXOTE </span>
+        <span class="text-xs text-right" data-page-number title="Page number">0</span>
     </header>
-    <main class="prose dark:prose-invert font-serif text-justify text-lg w-[90vw]">
+    <main
+        class="prose dark:prose-invert font-serif text-justify text-lg w-[90vw]"
+    >
         <div class="min-h-[calc(100vh-80px)] flex flex-col justify-center">
             <div data-proverb-container class="mb-4 iindent-4"></div>
             <div class="sm:mb-4 sm:mt-0 mt-4 text-center sm:text-left">
@@ -70,11 +72,11 @@ import MdLink from "../components/prose_components/mdLink.astro";
                 button.addEventListener("click", refreshProverbs);
             });
 
-            window.addEventListener("keypress", ({key}) => {
+            window.addEventListener("keypress", ({ key }) => {
                 if (key.toLowerCase() === "r") {
                     refreshProverbs();
                 }
-            })
+            });
 
             refreshProverbs();
         }
@@ -83,6 +85,8 @@ import MdLink from "../components/prose_components/mdLink.astro";
             if (generating) {
                 return;
             }
+
+            setPageNumber();
 
             generating = true;
 
@@ -307,6 +311,16 @@ import MdLink from "../components/prose_components/mdLink.astro";
             }
 
             return proverb;
+        }
+
+        let pageNum: HTMLElement;
+        function setPageNumber() {
+            pageNum ??= document.querySelector("[data-page-number]");
+            if (pageNum) {
+                pageNum.innerHTML = (
+                    Math.floor(Math.random() * 498) + 401
+                ).toString();
+            }
         }
 
         document.addEventListener("DOMContentLoaded", initProverbs);
