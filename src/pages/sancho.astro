@@ -12,10 +12,10 @@ import MdLink from "../components/prose_components/mdLink.astro";
 
 <Layout>
     <header
-        class="prose dark:prose-invert font-serif mt-4 grid grid-cols-[1fr_auto_1fr] justify-between w-[65ch] max-w-[90vw] gap-4"
+        class="prose dark:prose-invert font-serif mt-4 grid grid-cols-[1fr_auto_1fr] text-lg justify-between w-[90vw] gap-4"
     >
         <span class="text-xs text-left">
-            <a href="/" title="Retreat to the home page!" class="no-underline">
+            <a href="/" title="Retreat to the home page!" class="no-underline inline-block transition-transform hover:-translate-x-1 hover:pr-1">
                 ☜
             </a>
         </span>
@@ -29,13 +29,13 @@ import MdLink from "../components/prose_components/mdLink.astro";
             {Math.floor(Math.random() * 498) + 401}
         </span>
     </header>
-    <main class="prose dark:prose-invert font-serif text-justify text-lg max-w-[90vw]">
+    <main class="prose dark:prose-invert font-serif text-justify text-lg w-[90vw]">
         <div class="min-h-[calc(100vh-80px)] flex flex-col justify-center">
             <div data-proverb-container class="mb-4 iindent-4"></div>
-            <div class="mb-4">
+            <div class="sm:mb-4 sm:mt-0 mt-4 text-center sm:text-left">
                 <button
                     data-proverb-refresh
-                    class="font-sans text-base transition-opacity opacity-0"
+                    class="font-sans sm:text-base text-2xl opacity-0 hover:scale-125 active:scale-100 transition-all p-4 sm:p-0"
                     title="Click or press the 'R' key to refresh proverbs."
                 >
                     ↻
@@ -98,8 +98,8 @@ import MdLink from "../components/prose_components/mdLink.astro";
             ] as HTMLButtonElement[];
 
             buttons.forEach((b) => {
+                b.classList.remove("transition-all");
                 b.style.opacity = "0";
-                b.classList.remove("transition-opacity");
             });
             proverbWrapper.innerHTML = "";
             footnoteContainer.innerHTML = "";
@@ -159,7 +159,7 @@ import MdLink from "../components/prose_components/mdLink.astro";
                 () => {
                     // this is called after all text is made visible
                     buttons.forEach((b) => {
-                        b.classList.add("transition-opacity");
+                        b.classList.add("transition-all");
                         b.style.opacity = "1";
                     });
                     generating = false;
@@ -189,7 +189,7 @@ import MdLink from "../components/prose_components/mdLink.astro";
                 {
                     firstLine:
                         "“I have more proverbs in me than a book,” said Sancho,//“and when I speak they come so thick together into my mouth//that they fall to fighting among themselves to get out.",
-                    leadIn: "For example:",
+                    leadIn: "Here are some now:",
                 },
             ]);
             clauses.push(...beginning.firstLine.split("//"));
