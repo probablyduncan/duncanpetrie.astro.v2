@@ -1,0 +1,282 @@
+---
+import { resolveImage, type Image } from "../../lib/photoHelper";
+import { toSeveral, type SingleOrSeveral } from "../../lib/singleOrSeveral";
+import Vec2 from "../../lib/vector2";
+import MdLink from "./mdLink.astro";
+import { randomUUID } from "crypto";
+
+const props = Astro.props;
+
+interface HoverImage extends Image {
+    // shoudl this be a percentage
+    // like percent of image off the page
+    // when the cursor is in the middle of the link
+    // so 0.5 is middle of image on edge of page
+    // and 0 is edge of image at edge of page
+    // maybe this is unnecessary idk
+
+    side?: "left" | "right";
+    vert?: "top" | "bottom";
+
+    // how much is showing - neg means gap
+    percentOverhang?: Vec2;
+}
+
+const hoverImagesByLink: Record<string, SingleOrSeveral<HoverImage>> = {
+    duncan: [
+        // {
+        //     photoName: "2019-11-12-fingerprint-falmouth",
+        //     vert: "bottom",
+        //     side: "right",
+        //     percentOverhang: Vec2.From(20, 50),
+        // },
+        {
+            src: "/media/self.webp",
+            vert: "bottom",
+            side: "right",
+            percentOverhang: Vec2.From(10, 35),
+        }
+    ],
+    photography: [
+        {
+            photoName: "2024-04-26-treasure-isle-of-wight",
+            percentOverhang: Vec2.From(30, -30),
+            vert: "top",
+        },
+        // { photoName: "2023-12-30-boyle-fredrickson-milwaukee" },
+        // { photoName: "2024-07-04-beach-huts-v-aldwick-bay" },
+    ],
+    lingermyth: [
+        // { photoName: "2022-03-18-lingermyth-greenbank" },
+        {
+            photoName: "2021-11-02-vacant-post-penzance",
+            side: "right",
+            vert: "top",
+            percentOverhang: Vec2.From(-40),
+        },
+        // { photoName: "2021-10-30-longnecked-pine-falmouth" },
+    ],
+    sancho: {
+        photoName: "2022-03-22-lost-crusade-penzance",
+        percentOverhang: Vec2.From(50, -20),
+    },
+    pigeon: [
+        {
+            photoName: "film-pigeon-back-cover",
+            side: "right",
+            vert: "top",
+            percentOverhang: Vec2.From(-10, -40),
+        },
+        // {
+        //     photoName: "2024-07-30-20240730-dsc_0145",
+        //     side: "right",
+        //     vert: "top",
+        //     percentOverhang: Vec2.From(-100, -100),
+        // },
+        // {
+        //     photoName: "pigeon-psd-32",
+        //     side: "right",
+        //     percentOverhang: Vec2.From(10),
+        // }
+    ],
+    wiki: {
+        src: "/media/wiki.gif",
+        vert: "top",
+        percentOverhang: Vec2.From(20, -50),
+    },
+    pizza: {
+        src: "/media/pizza.gif",
+        side: "right",
+        percentOverhang: Vec2.From(20, -50),
+    },
+    wind: {
+        photoName: "2023-11-23-oak-leaf-rothamstead",
+        percentOverhang: Vec2.From(45, -15),
+        side: "right",
+        vert: "top",
+    },
+    stars: {
+        photoName: "2020-12-24-snowfall-pine-wood-i",
+        percentOverhang: Vec2.From(-5),
+    },
+    horizons: [
+        {
+            photoName: "2021-10-15-melted-moon-falmouth-bay",
+            percentOverhang: Vec2.From(-20, 10),
+            vert: "top",
+        },
+        {
+            photoName: "2021-11-13-horizon-line-falmouth-bay",
+            percentOverhang: Vec2.From(-20, -20),
+            side: "right",
+        },
+    ],
+    "photography?tag=london": {
+        photoName: "2024-07-12-science-classroom-catholic-school-north-london",
+        side: "right",
+        percentOverhang: Vec2.From(40, -40),
+    },
+    // "#colophon": { photoName: "famous sausage" },
+    "#cv": {
+        photoName: "2021-11-19-birthday-dawlish",
+        side: "right",
+        percentOverhang: Vec2.From(35, -50),
+    },
+    "fluffy-cloud": { photoName: "2021-11-02-cloudswells-falmouth" },
+    "a-la-cart": {
+        photoName: "2019-10-01-cart-vii",
+        percentOverhang: Vec2.From(-10),
+        side: "right",
+        vert: "top",
+    },
+    "https://duncans.world": { src: "/media/bigmapW4_small.jpg" },
+    "https://www.dodho.com/winners-color-awards-2024/": {
+        photoName: "2021-11-02-jubilee-pool-penzance",
+    },
+    // "https://bsky.app/profile/duncanpetrie.com/post/3lgsrvkcwi224/": { photoName: "cycling-screenprint" },
+};
+
+let data: HoverImage[] = [];
+if (props.imgKey && props.imgKey in hoverImagesByLink) {
+    data = toSeveral(hoverImagesByLink[props.imgKey]);
+} else if (props.href && props.href in hoverImagesByLink) {
+    data = toSeveral(hoverImagesByLink[props.href]);
+}
+
+const images = await Promise.all(
+    data.map(async (hoverImage) => await resolveImage(hoverImage)),
+);
+
+const uuid = randomUUID();
+---
+
+{
+    props.span ? (
+        <span
+            data-hover-link={uuid}
+            {...props}
+            class:list={{
+                "underline decoration-dotted hover:decoration-solid cursor-default":
+                    data.length,
+            }}
+        >
+            <slot />
+        </span>
+    ) : (
+        <MdLink data-hover-link={uuid} {...props}>
+            <slot />
+        </MdLink>
+    )
+}
+{
+    !!images?.length && (
+        <img
+            class="fixed -z-50 pointer-events-none select-none opacity-0 transition-opacity"
+            data-hover-img={uuid}
+            data-images={JSON.stringify(images)}
+        />
+    )
+}
+<script>
+    import Vec2 from "../../lib/vector2";
+
+    function initHoverLinks() {
+        const links = new Map<
+            string,
+            { linkEl: HTMLElement; imgEl: HTMLImageElement; imgs: any[] }
+        >();
+
+        document.querySelectorAll("[data-hover-link]").forEach((_e) => {
+            const linkEl = _e as HTMLElement;
+            const uuid = linkEl.dataset.hoverLink;
+            const imgEl = document.querySelector(
+                `img[data-hover-img='${uuid}']`,
+            ) as HTMLImageElement;
+
+            if (!imgEl) {
+                return;
+            }
+
+            const imgs = JSON.parse(imgEl.dataset.images);
+
+            links.set(uuid, { linkEl, imgEl, imgs });
+        });
+
+        links.forEach(({ linkEl, imgEl, imgs }) => {
+            const img = imgs[Math.floor(Math.random() * imgs.length)];
+
+            imgEl.src = img.src;
+
+            const width = 400 * Math.sqrt(img.ratio);
+            const height = width / img.ratio;
+
+            imgEl.style.width = width + "px";
+
+            const overhang: Vec2 = img.percentOverhang ?? Vec2.From(20);
+
+            imgEl.style[img.side ?? "left"] =
+                (overhang.x / 100) * width * -1 + "px";
+
+            imgEl.style[img.vert ?? "bottom"] =
+                (overhang.y / 100) * height * -1 + "px";
+
+            type State = {
+                translate: Vec2;
+            };
+
+            const defaultState: State = { translate: Vec2.Zero };
+            let targetState: State = { ...defaultState };
+            let currentState: State = { ...defaultState };
+
+            function getPos({ offsetX, offsetY, target }): Vec2 {
+                const { offsetHeight, offsetWidth } = target as HTMLElement;
+
+                return Vec2.From(
+                    offsetX / offsetWidth,
+                    offsetY / offsetHeight,
+                ).lerp(Vec2.From(-20, -5), Vec2.From(20, 5));
+            }
+
+            linkEl.addEventListener("mouseenter", (e) => {
+
+                if (window.innerWidth < 512) {
+                    return;
+                }
+
+                currentState.translate = getPos(e);
+                imgEl.classList.remove("opacity-0");
+            });
+
+            linkEl.addEventListener("mouseleave", (e) => {
+                imgEl.classList.add("opacity-0");
+            });
+
+            linkEl.addEventListener("mousemove", (e) => {
+                targetState.translate = getPos(e);
+
+                requestAnimationFrame(animate);
+            });
+
+            let prevTimestamp = 0;
+            function animate(timestamp: number) {
+                const elapsed = timestamp - prevTimestamp;
+                prevTimestamp = timestamp;
+
+                currentState.translate = Vec2.From(elapsed / 500).lerp(
+                    currentState.translate,
+                    targetState.translate,
+                );
+                imgEl.style.transform = `translate(${currentState.translate.x}px, ${currentState.translate.y}px)`;
+
+                if (imgEl.classList.contains("opacity-0")) {
+                    return;
+                }
+
+                requestAnimationFrame(animate);
+            }
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", initHoverLinks);
+    document.addEventListener("astro:after-swap", initHoverLinks);
+</script>

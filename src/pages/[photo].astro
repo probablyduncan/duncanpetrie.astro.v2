@@ -7,7 +7,7 @@ import { LINKS } from "../lib/linkHelper";
 import SmartImage from "../components/prose_components/smartImage.astro";
 import MdImg from "../components/prose_components/mdImg.astro";
 import MdLink from "../components/prose_components/mdLink.astro";
-import Navbar from "../components/layout_components/navbar.astro";
+import Navbar from "../components/navbar.astro";
 import Layout from "../components/layout_components/layout.astro";
 import fs from "fs";
 import path from "path";
@@ -58,30 +58,31 @@ if (!imagePromises || !imagePromises.length) {
 
 const images = await Promise.all(imagePromises);
 
-let coverImage: Image;
-let coverIndex = -1;
-if (data.cover) {
-    // if cover is specified, try and resolve it
-    coverImage = await resolveImage({ src: data.cover });
-    coverIndex = images.findIndex((p) => p.src === coverImage.src);
-}
+// let coverImage: Image;
+// let coverIndex = -1;
+// if (data.cover) {
+//     // if cover is specified, try and resolve it
+//     coverImage = await resolveImage({ src: data.cover });
+//     coverIndex = images.findIndex((p) => p.src === coverImage.src);
+// }
 
-if (!coverImage) {
-    // if that didn't work, use first image
-    coverImage = images[0];
-    coverIndex = 0;
-}
+// if (!coverImage) {
+//     // if that didn't work, use first image
+//     coverImage = images[0];
+//     coverIndex = 0;
+// }
 
-if (coverIndex !== -1) {
-    // if cover is in list, remove it
-    images.splice(coverIndex, 1);
-}
+// if (coverIndex !== -1) {
+//     // if cover is in list, remove it
+//     images.splice(coverIndex, 1);
+// }
 ---
 
-<Layout title={data.title} cover={coverImage.src} class="justify-center">
-    <Navbar righttext={props.slug.replaceAll("-", " ").toUpperCase()} />
+<Layout title={data.title} cover={images[0].src} class="justify-center">
+    <!-- <Navbar righttext={props.slug.replaceAll("-", " ").toUpperCase()} /> -->
+    <Navbar />
     <main class="px-4 w-full max-w-[856px] flex flex-col items-center">
-        {
+        <!-- {
             coverImage && (
                 <SmartImage
                     {...coverImage}
@@ -89,7 +90,7 @@ if (coverIndex !== -1) {
                     caption="right"
                 />
             )
-        }
+        } -->
         <!-- <div class="text-right text-gray-600 sm:mt-[12svh] mt-12">ↆ <button data-skip class="hover:underline italic">Skip to images</button> ↆ</div> -->
         <TextContainer {...data} class="sm:mt-[20svh] mt-20 max-w-[600px]">
             <Content components={{ a: MdLink, img: MdImg }} />
@@ -108,7 +109,7 @@ if (coverIndex !== -1) {
                                 {...image}
                                 class="relative max-w-full"
                                 figStyle={`width: ${width}px;`}
-                                caption="right"
+                                caption="none"
                             />
                         </div>
                     );

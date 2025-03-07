@@ -1,0 +1,238 @@
+---
+import { resolveImage, type Image } from "../lib/photoHelper";
+import EqualAreaSlide from "./home_slideshow_components/equalAreaSlide.astro";
+import SmartImage from "./prose_components/smartImage.astro";
+
+const headerImages = [
+    {
+        photoName: "2024-05-13-high-castle-london",
+        frame: {
+            type: "shadow",
+            color: "black",
+            size: 4,
+        },
+    },
+    {
+        photoName: "2021-01-14-north-atlantic-pennance-point",
+        frame: {
+            type: "border",
+            color: "#e2e8f0",
+            size: 4,
+        },
+    },
+    {
+        photoName: "film-pigeon-8",
+        frame: {
+            type: "border",
+            color: "#0000000a",
+            size: 3,
+        },
+    },
+    {
+        photoName: "2019-08-31-cycling-gudmundsen-drive-door-county",
+        frame: {
+            type: "shadow",
+            color: "#5762512e",
+            size: 4,
+        },
+    },
+    {
+        photoName: "2021-11-02-jubilee-pool-penzance",
+        frame: {
+            type: "border",
+            color: "#e68d500a",
+            size: 4,
+        },
+    },
+] as Image[];
+
+const allImages = await Promise.all(
+    headerImages.map(async (image) => await resolveImage(image)),
+);
+---
+
+<header
+    data-header-image
+    class="w-full md:h-[calc(94vh-58px)] h-auto md:mt-[3vh] mt-24 flex justify-center items-center"
+>
+    <div class:list={"swiper shuffle opacity-0 transition-opacity"}>
+        {
+            ["prev", "next"].map((k) => (
+                <div
+                    class:list={[
+                        "absolute",
+                        {
+                            "left-4": k === "prev",
+                            "right-4": k === "next",
+                        },
+                        "hidden md:flex justify-center items-center h-full",
+                        "font-medium text-sm",
+                    ]}
+                >
+                    <button
+                        data-swiper-control={k}
+                        data-inactive={k === "prev"}
+                        tabindex={k === "prev" ? -1 : 0}
+                        class:list={[
+                            "group",
+                            {
+                                "-rotate-90 cursor-w-resize": k === "prev",
+                                "rotate-90 cursor-e-resize": k === "next",
+                            },
+                            // "cursor-pointer",
+                            "transition-opacity data-[inactive]:opacity-40",
+                            "z-50 data-[inactive]:z-0",
+                            "data-[inactive]:select-none",
+                            "data-[inactive]:pointer-events-none",
+                            "px-2",
+                        ]}
+                    >
+                        <div class="group-hover:-translate-y-1 transition-transform">
+                            ↑
+                        </div>
+                        <div>{k.toUpperCase()}</div>
+                    </button>
+                </div>
+            ))
+        }
+        <div class="swiper-wrapper">
+            {
+                allImages.map((image, index) => (
+                    <div class="swiper-slide">
+                        <div class="flex justify-center px-4 w-full h-full">
+                            <div class="w-full max-w-xl">
+                                {/* <EqualAreaSlide photoName={image.photoName} /> */}
+                                <SmartImage
+                                    {...image}
+                                    caption="none"
+                                    lazy={false}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                ))
+            }
+        </div>
+    </div>
+</header>
+<script>
+    import Swiper from "swiper";
+    import "swiper/css";
+    // import { shuffleRef } from "../lib/shuffle";
+    import { clamp } from "../lib/mathHelper";
+    // import { isMotionReduced } from "../lib/globals";
+
+    document.addEventListener("DOMContentLoaded", initSwiper);
+    document.addEventListener("astro:after-swap", initSwiper);
+
+    function initSwiper() {
+        // document.querySelectorAll(".swiper.shuffle").forEach((e) => {
+        //     const slideContainer = e.querySelector(".swiper-wrapper");
+        //     const slides = Array.from(slideContainer.children);
+        //     shuffleRef(slides);
+        //     slideContainer.replaceChildren(...slides);
+        // });
+
+        const swiper = new Swiper(".swiper", {
+            grabCursor: false,
+            simulateTouch: false,
+            preventClicks: false,
+            preventClicksPropagation: false,
+            touchStartPreventDefault: false,
+            on: {
+                init: (s) => {
+                    requestAnimationFrame(() => {
+                        s.el.style.opacity = "1";
+                    });
+                },
+                slideChange: () => {
+                    setControlsStyle();
+                },
+                slideChangeTransitionEnd: () => {
+                    sliding = false;
+                },
+            },
+        });
+
+        let sliding = false;
+        type Dir = "next" | "prev";
+        function slide(dir: Dir) {
+            if (sliding) {
+                return;
+            }
+
+            if (dir === "next") {
+                if (!swiper.isEnd) {
+                    sliding = true;
+                    swiper.slideNext(0);
+                }
+            } else {
+                if (!swiper.isBeginning) {
+                    sliding = true;
+                    swiper.slidePrev(0);
+                }
+            }
+        }
+
+        const controls = document.querySelectorAll(
+            "button[data-swiper-control]",
+        );
+
+        function setControlsStyle() {
+            controls.forEach((_e) => {
+                const e = _e as HTMLButtonElement;
+                setControlStyle(e, e.dataset.swiperControl as Dir);
+            });
+        }
+
+        function setControlStyle(e: HTMLButtonElement, dir: Dir) {
+            if (
+                (dir === "prev" && swiper.isBeginning) ||
+                (dir === "next" && swiper.isEnd)
+            ) {
+                e.dataset.inactive = "true";
+                e.tabIndex = -1;
+                e.blur();
+            } else {
+                delete e.dataset.inactive;
+                e.tabIndex = 0;
+            }
+        }
+
+        controls.forEach((_e) => {
+            const e = _e as HTMLButtonElement;
+            const dir = e.dataset.swiperControl as Dir;
+            setControlStyle(e, dir);
+            e.addEventListener("click", () => slide(dir));
+        });
+
+        document.addEventListener("keydown", ({ key }) => {
+            switch (key) {
+                case "ArrowRight":
+                    slide("next");
+                    break;
+                case "ArrowLeft":
+                    slide("prev");
+                    break;
+            }
+        });
+
+        window.addEventListener("scroll", (e) => {
+            if (window.innerWidth < 768) {
+                return;
+            }
+
+            const start = swiper.el.offsetTop + swiper.el.clientHeight;
+            const end = swiper.el.parentElement.clientHeight;
+            const distance = (end - start) * 2;
+
+            const lerp = clamp(
+                window.scrollY / swiper.el.parentElement.clientHeight,
+                0,
+                1,
+            );
+
+            swiper.el.style.translate = "0 " + -1 * distance * lerp + "px";
+        });
+    }
+</script>

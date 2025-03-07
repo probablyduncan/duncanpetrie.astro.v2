@@ -1,0 +1,111 @@
+---
+import SmartLink from "./prose_components/smartLink.astro";
+
+const linkClass = "hover:font-semibold";
+---
+
+<footer
+    class:list={[
+        "fixed bottom-0 z-50 w-full",
+        "bg-gray-300/40 dark:bg-black/40 backdrop-blur-xs",
+        "border-black/40 dark:border-white/40 border-t-2",
+        "py-1 px-2",
+        // "flex justify-between text-center",
+        "grid grid-cols-[1fr_auto_1fr]",
+        "font-mono font-light text-xs",
+    ]}
+>
+    <div class="flex items-center gap-1">
+        <div class="h-2 w-4 rounded-xs bg-c"></div>
+        <div class="h-2 w-4 rounded-xs bg-m"></div>
+        <div class="h-2 w-4 rounded-xs bg-y"></div>
+        <div class="h-2 w-4 rounded-xs bg-k dark:bg-white"></div>
+        <div>&nbsp;</div>
+        <button data-dark-mode class="hover:font-semibold cursor-pointer">theme</button>
+    </div>
+    <nav class="flex gap-4 justify-center">
+        <!-- <button class="hover:font-semibold cursor-pointer">dark mode</button> -->
+        <SmartLink href="instagram" class={linkClass}>instagram</SmartLink>
+        <SmartLink href="mailto" class={linkClass}>email</SmartLink>
+        <SmartLink href="bsky" class={linkClass}>bsky</SmartLink>
+        <!-- <SmartLink href="linkedin" class={linkClass}>linkedin</SmartLink> -->
+        <SmartLink href="youtube" class={linkClass}>yt</SmartLink>
+    </nav>
+    <div data-href-preview class="text-right">
+        <SmartLink class={linkClass} href="#" title="# (Scroll)">{Astro.url.href}</SmartLink>
+    </div>
+</footer>
+<script>
+    import { setLocalStorage, getFromLocalStorage } from "../lib/localStorageHelper";
+
+    const DARK_MODE_KEY = "dark_mode";
+    const DARK_MODE_CLASS = "dark";
+
+    function initDarkMode() {
+        document.querySelectorAll("[data-dark-mode]").forEach(e => {
+            e.addEventListener("click", () => toggleDarkMode());
+        });
+
+        function toggleDarkMode(makeDark: boolean = null) {
+            const toDarkMode = makeDark ?? !document.body.classList.contains(DARK_MODE_CLASS);
+            document.body.classList.toggle(DARK_MODE_CLASS, toDarkMode);
+            setLocalStorage(DARK_MODE_KEY, toDarkMode);
+        }
+
+        toggleDarkMode(getFromLocalStorage<boolean>(DARK_MODE_KEY, window.matchMedia('(prefers-color-scheme: dark)').matches));
+    }
+
+    document.addEventListener("DOMContentLoaded", initDarkMode);
+    document.addEventListener("astro:after-swap", initDarkMode);
+</script>
+<!-- <script>
+    function initFooterLinkPreview() {
+        const previewContainer = document.querySelector("[data-href-preview") as HTMLElement;
+        if (!previewContainer) {
+            return;
+        }
+
+        document.querySelectorAll("a[href]").forEach(_a => {
+            const a = _a as HTMLAnchorElement;
+            
+            const href = a.href;
+            const title = a.title;
+            let over = false;
+
+            a.addEventListener("mouseenter", () => {
+
+                if (over) {
+                    return;
+                }
+
+                over = true;
+                previewContainer.innerHTML = href.split("").map(char => `<span style="display: none;">${char}</span>`).join("");
+
+                const spans = previewContainer.querySelectorAll("span").values().toArray();
+                function showNext(i: number) {
+                    if (i >= spans.length || !over) {
+                        over = false;
+                        return;
+                    }
+
+                    spans[i].style.display = "unset";
+                    setTimeout(() => showNext(i + 1), 20);
+                }
+
+                showNext(0)
+                
+                previewContainer.childNodes.forEach(e => {
+                    (e as HTMLElement).classList.remove("hidden");
+                    
+                })
+            });
+            a.addEventListener("mouseleave", () => {
+                over = false;
+                previewContainer.innerHTML = "";
+            });
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", initFooterLinkPreview);
+    document.addEventListener("astro:after-swap", initFooterLinkPreview);
+</script> -->

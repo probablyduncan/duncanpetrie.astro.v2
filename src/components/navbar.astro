@@ -1,0 +1,258 @@
+---
+import SmartLink from "./prose_components/smartLink.astro";
+
+const currentPage = Astro.url.pathname;
+
+const navbarAClass =
+    "inline-block relative hover:underline decoration-dotted pl-3 pb-2 pt-2 focus:-outline-offset-6 cursor-pointer";
+const iconClass =
+    "font-serif inline-block pointer-events-none mix-blend-difference text-white ml-1";
+const footerLinkClass = "hover:font-semibold";
+---
+
+<nav
+    data-bottom-bar
+    class:list={[
+        "hidden sm:block",
+        "fixed top-4 z-50",
+        "bg-white/80 dark:bg-black/60 backdrop-blur-sm max-w-[95vw]",
+        "border-3 rounded-full px-6",
+        "overflow-x-scroll overflow-y-hidden",
+        "data-[hidden]:not-focus-within:-translate-y-16 transition-transform",
+        "focus-within:transiate-y-0",
+        "shadow-md",
+    ]}
+>
+    <ul class="flex gap-1 font-semibold whitespace-nowrap select-none">
+        <li>
+            <SmartLink
+                href={currentPage === "/" ? "#work" : "/"}
+                title="Home"
+                class={navbarAClass}>INDEX<sup class={iconClass}>*</sup></SmartLink
+            >
+        </li>
+        <li>
+            <SmartLink
+                href="/photography"
+                title="Photography Gallery"
+                class={navbarAClass}>GALLERY<sup class={iconClass}>∆</sup></SmartLink
+            >
+        </li>
+        <li>
+            <SmartLink href="/shop" title="Print Shop" class={navbarAClass}
+                >GIFT SHOP<sup class={iconClass}></sup></SmartLink
+            >
+        </li>
+        <li>
+            <SmartLink href="/guestbook" title="Guestbook" class={navbarAClass}
+                >GUESTBOOK<sup class={iconClass}></sup></SmartLink
+            >
+        </li>
+        <li>
+            <SmartLink
+                href="https://duncans.world"
+                title="Duncan's World"
+                class={navbarAClass}>WORLD<sup class={iconClass}>Ϡ</sup></SmartLink
+            >
+        </li>
+        <li>
+            <SmartLink
+                href="https://www.are.na/duncan-petrie/blocks"
+                title="Weblinks"
+                class={navbarAClass}>WEBLINKS<sup class={iconClass}>ↂ</sup></SmartLink
+            >
+        </li>
+        <li>
+            <SmartLink
+                href="instagram"
+                title="Instagram"
+                class={navbarAClass}>SOCIAL<sup class={iconClass}>†</sup></SmartLink
+            >
+            <!-- <button title="Social links" class={aClass}
+                >SOCIAL<sup class={supClass}>†</sup></button
+            > -->
+        </li>
+    </ul>
+</nav>
+<footer
+    class:list={[
+        "hidden sm:flex",
+        "fixed bottom-0 z-50 w-full",
+        "bg-gray-300/40 dark:bg-black/40 backdrop-blur-xs",
+        "border-black/40 dark:border-white/40 border-t-2",
+        "py-1 px-2",
+        "justify-between text-center",
+        // "grid grid-cols-[auto_auto]",
+        "font-mono font-light text-xs",
+    ]}
+>
+    <div class="flex items-center gap-1">
+        <div class="h-2 w-4 rounded-xs bg-c"></div>
+        <div class="h-2 w-4 rounded-xs bg-m"></div>
+        <div class="h-2 w-4 rounded-xs bg-y"></div>
+        <div class="h-2 w-4 rounded-xs bg-k dark:bg-white"></div>
+        <div>&nbsp;</div>
+        <button data-dark-mode class="hover:font-semibold cursor-pointer">theme</button>
+    </div>
+    <div data-href-preview class="text-right">
+        <SmartLink class={footerLinkClass} href="#" title="# (Scroll)">{Astro.url.href}</SmartLink>
+    </div>
+    <nav class="flex gap-4 justify-end">
+        <SmartLink href="instagram" class={footerLinkClass}>instagram</SmartLink>
+        <SmartLink href="mailto" class={footerLinkClass}>email</SmartLink>
+        <SmartLink href="bsky" class={footerLinkClass}>bsky</SmartLink>
+        <SmartLink href="youtube" class={footerLinkClass}>yt</SmartLink>
+    </nav>
+</footer>
+<script>
+    import { isMotionReduced } from "../lib/globals";
+    import { lerp } from "../lib/mathHelper";
+    import Vec2 from "../lib/vector2";
+
+    //#region navbar icon animation
+
+    function navbarAnimationInit() {
+        if (isMotionReduced()) {
+            return;
+        }
+
+        const navbar = document.querySelector(
+            "[data-bottom-bar]",
+        ) as HTMLElement;
+
+        if (!navbar) {
+            return;
+        }
+
+        let showing = window.scrollY < 100;
+        let prev = window.scrollY;
+
+        // min delta for change, and distance from bottom of page that bar appears again
+        const threshold = 20;
+
+        // hide/show navbar on scroll
+        document.addEventListener("scroll", () => {
+            const curr = window.scrollY;
+            const delta = curr - prev;
+            prev = curr;
+
+            if (delta > threshold && showing) {
+                showing = false;
+                navbar.dataset.hidden = "true";
+            } else if (
+                (delta < -threshold ||
+                    curr >=
+                        document.body.scrollHeight -
+                            window.innerHeight -
+                            threshold ||
+                    curr <= threshold) &&
+                !showing
+            ) {
+                showing = true;
+                delete navbar.dataset.hidden;
+            }
+        });
+
+        navbar.querySelectorAll("a, button").forEach((_e) => {
+            const e = _e as HTMLElement;
+            const icon = e.querySelector("sup, span") as HTMLElement;
+
+            if (!icon) {
+                return;
+            }
+
+            type State = {
+                translate: Vec2;
+                scale: number;
+            };
+
+            let defaultState: State = {
+                translate: Vec2.Zero,
+                scale: 1,
+            };
+
+            let currentState: State = { ...defaultState };
+            let targetState: State = { ...defaultState };
+
+            e.classList.remove("cursor-pointer");
+            e.classList.add("cursor-none");
+
+            e.addEventListener("mouseenter", () => {
+                targetState.scale = 4;
+                requestAnimationFrame(animate);
+            });
+
+            e.addEventListener("mouseleave", () => {
+                targetState = { ...defaultState };
+            });
+
+            e.addEventListener("mousemove", (e) => {
+                const tl = e.offsetX - icon.offsetLeft - 4;
+                const tt = e.offsetY - icon.offsetTop + 4;
+
+                targetState.translate = Vec2.From(tl, tt);
+            });
+
+            function animate(delta: number) {
+                currentState.translate = Vec2.From(0.1).lerp(
+                    currentState.translate,
+                    targetState.translate,
+                );
+
+                currentState.scale = lerp(
+                    currentState.scale,
+                    targetState.scale,
+                    0.1,
+                );
+
+                icon.style.transform = `translate(${currentState.translate.x}px, ${currentState.translate.y}px) scale(${currentState.scale})`;
+
+                // prevent floating point shenanigans
+                const scaleDiff = Math.abs(
+                    currentState.scale - defaultState.scale,
+                );
+                const transDiff = currentState.translate
+                    .subtract(defaultState.translate)
+                    .abs();
+
+                // reset and stop animating
+                if (scaleDiff < 0.1 && transDiff.x < 0.1 && transDiff.y < 0.1) {
+                    currentState = { ...defaultState };
+                    return;
+                }
+
+                requestAnimationFrame(animate);
+            }
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", navbarAnimationInit);
+    document.addEventListener("astro:after-swap", navbarAnimationInit);
+
+    //#endregion
+    //#region dark mode
+
+    import { setLocalStorage, getFromLocalStorage } from "../lib/localStorageHelper";
+
+    const DARK_MODE_KEY = "dark_mode";
+    const DARK_MODE_CLASS = "dark";
+
+    function initDarkMode() {
+        document.querySelectorAll("[data-dark-mode]").forEach(e => {
+            e.addEventListener("click", () => toggleDarkMode());
+        });
+
+        function toggleDarkMode(makeDark: boolean = null) {
+            const toDarkMode = makeDark ?? !document.body.classList.contains(DARK_MODE_CLASS);
+            document.body.classList.toggle(DARK_MODE_CLASS, toDarkMode);
+            setLocalStorage(DARK_MODE_KEY, toDarkMode);
+        }
+
+        toggleDarkMode(getFromLocalStorage<boolean>(DARK_MODE_KEY, window.matchMedia('(prefers-color-scheme: dark)').matches));
+    }
+
+    document.addEventListener("DOMContentLoaded", initDarkMode);
+    document.addEventListener("astro:after-swap", initDarkMode);
+
+    //#endregion
+</script>
