@@ -1,6 +1,6 @@
 ---
 import Layout from "../components/layout_components/layout.astro";
-import AnnotatedLink from "../components/prose_components/annotatedLink.astro";
+import MdLink from "../components/prose_components/mdLink.astro";
 import Space from "../components/prose_components/space.astro";
 import TextContainer from "../components/prose_components/textContainer.astro";
 import { Content } from "../content/snippets/404.mdx";
@@ -11,7 +11,7 @@ import { Content } from "../content/snippets/404.mdx";
         <h3>⚠ 404 ⚠</h3>
         <Space lines={4} />
         <TextContainer startIcon={false} endIcon={false} title="Hey! Watch it!">
-            <Content components={{ a: AnnotatedLink }} />
+            <Content components={{ a: MdLink }} />
         </TextContainer>
     </main>
 </Layout>

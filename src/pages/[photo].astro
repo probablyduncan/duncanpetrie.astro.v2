@@ -1,7 +1,6 @@
 ---
 import { getCollection } from "astro:content";
 import { getPhotosByNamesAndTags, resolveImage } from "../lib/photoHelper";
-import AnnotatedLink from "../components/prose_components/annotatedLink.astro";
 import TextContainer from "../components/prose_components/textContainer.astro";
 import { LINKS } from "../lib/linkHelper";
 import SmartImage from "../components/prose_components/smartImage.astro";
@@ -118,11 +117,11 @@ if (coverIndex !== -1) {
     </main>
     <footer class="mb-[50svh] mt-[20vh]">
         <span>More</span>
-        <AnnotatedLink
+        <MdLink
             type="underline"
             staticUnderline={false}
             href={LINKS.index}
-            class:list={"hover:mx-1"}>photography</AnnotatedLink
+            class:list={"hover:mx-1"}>photography</MdLink
         >
         <span>-&gt;</span>
     </footer>

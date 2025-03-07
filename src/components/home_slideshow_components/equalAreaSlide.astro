@@ -1,7 +1,7 @@
 ---
 import type { PhotoName } from "../../data/photoTypes.generated";
 import { getPhotoByName } from "../../lib/photoHelper";
-import AnnotatedLink from "../prose_components/annotatedLink.astro";
+import MdLink from "../prose_components/mdLink.astro";
 
 interface Props {
     photoName?: PhotoName;
@@ -66,8 +66,8 @@ style.push(
         draggable="false"
     />
     <figcaption class="font-semibold text-sm sm:hidden m-2">
-        {photo.joinedCaption} From <AnnotatedLink href={fromHref}
-            >{fromText}</AnnotatedLink
+        {photo.joinedCaption} From <MdLink href={fromHref}
+            >{fromText}</MdLink
         >.
     </figcaption>
 </figure>

@@ -1,6 +1,6 @@
 ---
 import { LINKS } from "../../lib/linkHelper";
-import AnnotatedLink from "../prose_components/annotatedLink.astro";
+import SmartLink from "../prose_components/smartLink.astro";
 
 interface Props {
     righttext?: string;
@@ -29,24 +29,20 @@ const { righttext = "INDEX", rightlink = LINKS.index } = Astro.props;
     >
         <slot name="left">
             <span>
-                <AnnotatedLink
+                <SmartLink
                     href={LINKS.home}
-                    staticUnderline={false}
                     title="https://duncanpetrie.com"
-                >
-                    DUNCANPETRIE.COM
-                </AnnotatedLink>
+                    class="hover:decoration-dotted hover:underline"
+                >DUNCANPETRIE.COM</SmartLink>
                 &nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;
             </span>
         </slot>
         <slot name="right">
-            <AnnotatedLink
+            <SmartLink
                 href={rightlink}
-                staticUnderline={false}
-                title="All works."
-            >
-                {righttext}
-            </AnnotatedLink>
+                title="All pages."
+                class="hover:decoration-dotted hover:underline"
+            >{righttext}</SmartLink>
         </slot>
     </div>
 </nav>
