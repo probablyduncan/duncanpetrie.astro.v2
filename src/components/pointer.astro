@@ -17,10 +17,10 @@ const { centerWidth = 0 } = Astro.props;
         "transition-opacity opacity-0",
         "sm:motion-reduce:!hidden",
     ]}></div>
-<button data-toggle-pointer class="fixed bottom-4 left-4 text-center font-md text-xs text-gray-600 hover:underline z-10 hidden sm:block sm:motion-reduce:!hidden"><span></span> Pointer</button>
+<button data-toggle-pointer class="fixed bottom-4 left-4 text-center font-md text-xs text-gray-600 hover:underline z-20 hidden sm:block sm:motion-reduce:!hidden"><span></span> Pointer</button>
 <script>
     import { getFromLocalStorage, setLocalStorage } from "../lib/localStorageHelper";
-import { lerp } from "../lib/mathHelper";
+    import { lerp } from "../lib/mathHelper";
     import Vec2 from "../lib/vector2";
 
     (() => {

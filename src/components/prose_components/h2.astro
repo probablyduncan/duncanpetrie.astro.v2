@@ -1,0 +1,23 @@
+---
+interface Props {
+    id?: string;
+    class?: string;
+    ligatures?: boolean;
+}
+
+const { id = null, class: classes = "", ligatures = false } = Astro.props;
+const idResolved =
+    id ??
+    (await Astro.slots.render("default"))?.replace(" ", "-")?.toLowerCase();
+---
+
+<h2
+    id={idResolved}
+    class:list={[
+        "font-serif font-bold text-2xl scroll-mt-20",
+        classes,
+        { ligatures },
+    ]}
+>
+    <slot />
+</h2>

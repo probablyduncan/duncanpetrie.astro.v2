@@ -1,10 +1,17 @@
 ---
-import AnnotatedLink from "./annotatedLink.astro";
+import SmartLink from "./smartLink.astro";
 const props = Astro.props;
 ---
 
-<AnnotatedLink
+<SmartLink
     {...props}
-    class:list={"text-blue-600 dark:text-blue-300 hover:text-black dark:hover:text-white active:text-purple-800 visited:text-purple-800 dark:active:text-purple-400 dark:visited:text-purple-400"}
-    ><slot /></AnnotatedLink
+    class:list={[
+        // "text-b dark:text-blue-400",
+        //"focus:outline-b dark:focus:outline-blue-400",
+        //"visited:text-purple-700 dark:visited:text-purple-400",
+        //"focus:visited:outline-purple-700 dark:focus:visited:outline-purple-400",
+        "font-semibold",
+        "underline decoration-dotted hover:decoration-solid",
+        "outline-offset-2 focus:outline-2",
+    ]}><slot /></SmartLink
 >

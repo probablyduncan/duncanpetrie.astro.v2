@@ -84,7 +84,7 @@ export function resolveLink({ href, title, innerHtml, forceNewTab }: {
 
     // basically, if we got the link from the inner text
     // (like "[writing]()", not like "[google.com]()")
-    if (!isExternalLink && !href.startsWith("/")) {
+    if (!isExternalLink && !href.startsWith("/") && !href.startsWith("#")) {
         href = "/" + href;
     }
 
