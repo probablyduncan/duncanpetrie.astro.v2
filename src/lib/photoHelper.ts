@@ -31,7 +31,7 @@ import path from 'path';
 import exifr from 'exifr'
 import sharp from 'sharp'
 import { PHOTO_NAMES, type PhotoName, type PhotoTag } from '../data/photoTypes.generated';
-import { toSeveral, type SingleOrSeveral } from './singleOrSeveral';
+import { toSeveral, type SingleOrSeveral } from '@probablyduncan/common/sos';
 
 //#region PhotoData types
 

@@ -20,8 +20,8 @@ const { centerWidth = 0 } = Astro.props;
 <button data-toggle-pointer class="fixed bottom-4 left-4 text-center font-md text-xs text-gray-600 hover:underline z-20 hidden sm:block sm:motion-reduce:!hidden"><span></span> Pointer</button>
 <script>
     import { getFromLocalStorage, setLocalStorage } from "../lib/localStorageHelper";
-    import { lerp } from "../lib/mathHelper";
-    import Vec2 from "../lib/vector2";
+    import { lerp } from "@probablyduncan/common/math";
+    import Vec2 from "@probablyduncan/common/vec2";
 
     (() => {
         const cursors = {

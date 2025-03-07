@@ -1,5 +1,5 @@
 import path from "path";
-import { cmd } from "../src/lib/cmdHelper";
+import { cmd } from "@probablyduncan/common/cmd"
 
 const srcDir = path.join(process.cwd(), "src/assets/fonts");
 const targetDir = path.join(process.cwd(), "public/fonts");

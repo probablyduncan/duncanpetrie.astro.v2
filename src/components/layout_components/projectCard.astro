@@ -2,7 +2,7 @@
 import type { PhotoName } from "../../data/photoTypes.generated";
 import { resolveImage, type Image } from "../../lib/photoHelper";
 import SmartImage from "../prose_components/smartImage.astro";
-import { toSeveral, type SingleOrSeveral } from "../../lib/singleOrSeveral";
+import { toSeveral, type SingleOrSeveral } from "@probablyduncan/common/sos";
 import { resolveLink } from "../../lib/linkHelper";
 import { getEntry } from "astro:content";
 import MdLink from "../prose_components/mdLink.astro";
@@ -138,7 +138,7 @@ const bottomIconSpace = props.data.iconSpace === "both" || props.data.iconSpace 
 
     import Swiper from "swiper";
     import "swiper/css";
-    import { shuffleRef } from "../../lib/shuffle"
+    import { shuffleRef } from "@probablyduncan/common/shuffle";
 
     function initSwiper() {
         document.querySelectorAll(".swiper.shuffle").forEach((e) => {

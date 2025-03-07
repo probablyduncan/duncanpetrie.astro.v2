@@ -1,5 +1,5 @@
 import fs from "fs";
-import { cmd } from "../src/lib/cmdHelper";
+import { cmd } from "@probablyduncan/common/cmd";
 
 const isWindows = process.platform === 'win32';
 const pythonCommand = isWindows ? 'python' : 'python3';
