@@ -32,6 +32,7 @@ export const LINKS = {
     source: "https://github.com/probablyduncan/duncanpetrie.astro.v2",
     bsky: "https://bsky.app/profile/duncanpetrie.com",
     sancho: "/sancho",
+    rats: "/rats",
 } as const;
 
 
