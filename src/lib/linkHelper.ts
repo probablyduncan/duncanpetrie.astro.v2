@@ -31,7 +31,7 @@ export const LINKS = {
     mnhp: "https://www.falmouth.ac.uk/study/undergraduate/marine-natural-history-photography",
     source: "https://github.com/probablyduncan/duncanpetrie.astro.v2",
     bsky: "https://bsky.app/profile/duncanpetrie.com",
-    sancho: "/sancho",
+    sancho: "https://sancho.duncanpetrie.com",
     rats: "/rats",
 } as const;
 

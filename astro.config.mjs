@@ -18,4 +18,8 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
   },
+
+  redirects: {
+    "/sancho": "https://sancho.duncanpetrie.com",
+  }
 });
