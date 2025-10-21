@@ -34,6 +34,8 @@ export const LINKS = {
     sancho: "https://sancho.duncanpetrie.com",
     spider: "https://spider.duncanpetrie.com",
     rats: "/rats",
+    bugs: "/bugs",
+    lamps: "/lamps",
 } as const;
 
 

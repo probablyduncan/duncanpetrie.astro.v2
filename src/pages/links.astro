@@ -5,15 +5,37 @@ import { LINKS } from "../lib/linkHelper";
 
 const INDEX_LINKS = {
     Photo: {
-        "order": 1,
+        order: 1,
         "Palimpsest": LINKS.palimpsest,
         "To Pigeon-Fill the Sky": LINKS.pigeon,
         "Lingermyth": LINKS.lingermyth,
         "Horizons": LINKS.horizons,
         "Heartland": LINKS.heartland,
     },
-    Links: {
+    Text: {
+        order: 2,
+        "On Yearning": LINKS.yearn,
+        "The List of the Wind": LINKS.wind,
+        "Ten Thousand Lamps": LINKS.lamps,
+        "Where Bugs Can Scream": LINKS.bugs,
+        "The Man Upstairs": LINKS.upstairs,
+        "A Necklace of Stars": LINKS.stars,
+        "Rats: Oh Boy!": LINKS.rats,
+        // "Fluffy Cloud": LINKS.fluffy,
+    },
+    Film: {
+        order: 3,
+        "The Triumph of the Commons": LINKS.wiki,
+        "Pizza, really fast": LINKS.pizza,
+    },
+    Sundry: {
         order: 4,
+        "Sancho Simulator": LINKS.sancho,
+        "Website Spider": LINKS.spider,
+        "Wrap Map": LINKS.wrapmap,
+    },
+    Links: {
+        order: 5,
         Bluesky: LINKS.bsky,
         Youtube: LINKS.youtube,
         Instagram: LINKS.instagram,
@@ -21,26 +43,6 @@ const INDEX_LINKS = {
         Linkedin: LINKS.linkedin,
         Email: LINKS.email,
         // Info: LINKS.info,
-    },
-    Text: {
-        "order": 2,
-        "On Yearning": LINKS.yearn,
-        "The List of the Wind": LINKS.wind,
-        "The Man Upstairs": LINKS.upstairs,
-        "A Necklace of Stars": LINKS.stars,
-        "Rats: Oh Boy!": LINKS.rats,
-        // "Fluffy Cloud": LINKS.fluffy,
-    },
-    Film: {
-        "order": 3,
-        "The Triumph of the Commons": LINKS.wiki,
-        "Pizza, really fast": LINKS.pizza,
-    },
-    Sundry: {
-        "order": 5,
-        "Sancho Simulator": LINKS.sancho,
-        "Website Spider": LINKS.spider,
-        "Wrap Map": LINKS.wrapmap,
     },
 } as const;
 ---
