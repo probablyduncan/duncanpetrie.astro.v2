@@ -27,7 +27,7 @@ export const LINKS = {
     youtube: "https://www.youtube.com/channel/UCdyoMZUOsWzPmZN-H916jxg",
     linkedin: "https://www.linkedin.com/in/probablyduncan/",
     github: "https://github.com/probablyduncan",
-    wrapmap: "https://www.google.com/maps/d/viewer?mid=15A5_e_KS2Es4xs3ZhXmYR31dRmc0cpA",
+    wrapmap: "https://maps.app.goo.gl/5hjkGUCrRjS33YDs9",
     mnhp: "https://www.falmouth.ac.uk/study/undergraduate/marine-natural-history-photography",
     source: "https://github.com/probablyduncan/duncanpetrie.astro.v2",
     bsky: "https://bsky.app/profile/duncanpetrie.com",
