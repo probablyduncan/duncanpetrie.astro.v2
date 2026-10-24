@@ -27,12 +27,13 @@ export const LINKS = {
     youtube: "https://www.youtube.com/channel/UCdyoMZUOsWzPmZN-H916jxg",
     linkedin: "https://www.linkedin.com/in/probablyduncan/",
     github: "https://github.com/probablyduncan",
-    wrapmap: "https://maps.app.goo.gl/5hjkGUCrRjS33YDs9",
+    arena: "https://www.are.na/puncan-detrie",
+    wrapmap: "https://falafel.fyi",
     mnhp: "https://www.falmouth.ac.uk/study/undergraduate/marine-natural-history-photography",
     source: "https://github.com/probablyduncan/duncanpetrie.astro.v2",
     bsky: "https://bsky.app/profile/duncanpetrie.com",
     sancho: "https://sancho.duncanpetrie.com",
-    spider: "https://spider.duncanpetrie.com",
+    spider: "https://spiders.duncanpetrie.com",
     rats: "/rats",
     bugs: "/bugs",
     lamps: "/lamps",
@@ -45,7 +46,7 @@ export function resolveMarkdownLinks(markdownInput: string) {
 
 export function markedRendererWithLink(renderer = new marked.Renderer()) {
     renderer.link = ({ href, title, text }) => {
-        const { href: hrefResolved, title: titleResolved, rel, target } = resolveLink({ href, title, innerHtml: text });
+        const { href: hrefResolved, title: titleResolved, rel, target } = resolveLink({ href, title: title ?? undefined, innerHtml: text });
         return `<a href="${hrefResolved}" title="${titleResolved}" target="${target}" rel="${rel}">${text}</a>`;
     }
     return renderer;
@@ -62,14 +63,14 @@ export function resolveLink({ href, title, innerHtml, forceNewTab }: {
     target: '_blank' | '_self',
     rel: 'noopener noreferrer' | '',
 } {
-    const innerText = stripHtmlTags(innerHtml);
+    const innerText = stripHtmlTags(innerHtml ?? "");
     const innerTextLower = innerText.toLowerCase();
 
     if (!href) {
         if (innerTextLower in LINKS) {
             // if the text fits one of the presets, use that href (prefil links to socials, for example)
             // i.e. "my [Linkedin]()" should go to linkedin.com
-            href = LINKS[innerTextLower];
+            href = LINKS[innerTextLower as keyof typeof LINKS];
         }
         else {
             // otherwise, assume we're linking to a page that's the same name as the text
@@ -80,7 +81,7 @@ export function resolveLink({ href, title, innerHtml, forceNewTab }: {
     else if (href.toLowerCase() in LINKS) {
         // if href exists, but is the key to a preset link, get the real link
         // i.e. "my [Linkedin profile](linkedin)" should go to https://linkedin..etc
-        href = LINKS[href.toLowerCase()];
+        href = LINKS[href.toLowerCase() as keyof typeof LINKS];
     }
 
     const isExternalLink = href.startsWith("http") || href.startsWith("mailto") || href.endsWith("pdf");

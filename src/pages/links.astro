@@ -3,9 +3,8 @@ import Layout from "../components/layout_components/layout.astro";
 import AnnotatedLink from "../components/prose_components/annotatedLink.astro";
 import { LINKS } from "../lib/linkHelper";
 
-const INDEX_LINKS = {
+const INDEX_LINKS: Record<string, Record<string, string>> = {
     Photo: {
-        order: 1,
         "Palimpsest": LINKS.palimpsest,
         "To Pigeon-Fill the Sky": LINKS.pigeon,
         "Lingermyth": LINKS.lingermyth,
@@ -13,7 +12,6 @@ const INDEX_LINKS = {
         "Heartland": LINKS.heartland,
     },
     Text: {
-        order: 2,
         "On Yearning": LINKS.yearn,
         "The List of the Wind": LINKS.wind,
         "Ten Thousand Lamps": LINKS.lamps,
@@ -24,27 +22,24 @@ const INDEX_LINKS = {
         // "Fluffy Cloud": LINKS.fluffy,
     },
     Film: {
-        order: 3,
         "The Triumph of the Commons": LINKS.wiki,
         "Pizza, really fast": LINKS.pizza,
     },
     Sundry: {
-        order: 4,
         "Sancho Simulator": LINKS.sancho,
         "Website Spider": LINKS.spider,
         "Wrap Map": LINKS.wrapmap,
     },
-    Links: {
-        order: 5,
-        Bluesky: LINKS.bsky,
-        Youtube: LINKS.youtube,
+    Elsewhere: {
+        // Bluesky: LINKS.bsky,
+        // Linkedin: LINKS.linkedin,
         Instagram: LINKS.instagram,
+        Youtube: LINKS.youtube,
         Github: LINKS.github,
-        Linkedin: LINKS.linkedin,
+        ["Are.na"]: LINKS.arena,
         Email: LINKS.email,
-        // Info: LINKS.info,
     },
-} as const;
+};
 ---
 
 <Layout title="Work" cover="2021-11-23-time-store-window-fowey" class="justify-center w-full min-h-svh">
@@ -53,22 +48,21 @@ const INDEX_LINKS = {
     </div>
     <main class="flex flex-col sm:block sm:columns-2 w-full sm:w-auto mt-8 mb-24 ml-8">
         {
-            Object.keys(INDEX_LINKS).map(g => {
-                const links = Object.keys(INDEX_LINKS[g]);
-                const order = INDEX_LINKS[g][links.shift()];
+            Object.keys(INDEX_LINKS).map(groupName => {
+                const linkNames = Object.keys(INDEX_LINKS[groupName]);
                 return (
-                    <div class="pb-4" style={`order: ${order};`}>
-                        <h2 class="font-serif font-semibold text-xl ligatures">{g}</h2>
+                    <div class="pb-4">
+                        <h2 class="font-serif font-semibold text-xl ligatures">{groupName}</h2>
                         <ul>
-                            {links.map(l => (
+                            {linkNames.map(linkName => (
                                 <li>
                                     <AnnotatedLink
                                         type="circle"
                                         staticUnderline={false}
-                                        href={INDEX_LINKS[g][l]}
+                                        href={INDEX_LINKS[groupName][linkName]}
                                         class:list={"text-sm"}
                                     >
-                                        {l}
+                                        {linkName}
                                     </AnnotatedLink>
                                 </li>
                             ))}

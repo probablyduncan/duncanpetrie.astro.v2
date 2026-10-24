@@ -59,6 +59,42 @@ import Layout from "../components/layout_components/layout.astro";
             </span>
         </ProjectCard>
 
+        <ProjectCard key="falafel" images={[
+            {
+                src: "/media/falafel1.webp",
+                frame: { type: "shadow", size: 3, color: "#fac96a" },
+                alt: "a screenshot of https://falafel.fyi",
+            },
+            {
+                src: "/media/falafel2.webp",
+                frame: { type: "shadow", size: 3, color: "#fac96a" },
+                alt: "a screenshot of https://falafel.fyi",
+            },
+        ]} />
+
+        <ProjectCard key="spiders" images={[
+            {
+                src: "/media/spider-ext.webp",
+                frame: { type: "border", size: 3, color: "black" },
+                alt: "a screenshot of a lot of spiders crawling over the wikipedia page for \"arachnophobia\"",
+            }
+        ]} />
+
+        <ProjectCard key="pigeon" images={[
+            {
+                src: "/media/pigeon/glitch-screenshot-3.webp",
+                frame: { type: "shadow", size: 4, color: "#241e20" },
+            },
+            {
+                photoName: "film-pigeon-cover",
+                frame: { type: "border", size: 3, color: "#0000000a" },
+            },
+            {
+                photoName: "2024-07-31-20240731-dsc_0008",
+                frame: { type: "border", size: 4, color: "#b8d8f600" }
+            },
+        ]} />
+
         <ProjectCard key="palimpsest" images={[
             {
                 photoName: "2024-04-26-treasure-isle-of-wight",
@@ -91,21 +127,6 @@ import Layout from "../components/layout_components/layout.astro";
                     color: "#2939256e",
                     size: 3
                 }
-            },
-        ]} />
-
-        <ProjectCard key="pigeon" images={[
-            {
-                src: "/media/pigeon/glitch-screenshot-3.webp",
-                frame: { type: "shadow", size: 4, color: "#241e20" },
-            },
-            {
-                photoName: "film-pigeon-cover",
-                frame: { type: "border", size: 3, color: "#0000000a" },
-            },
-            {
-                photoName: "2024-07-31-20240731-dsc_0008",
-                frame: { type: "border", size: 4, color: "#b8d8f600" }
             },
         ]} />
 

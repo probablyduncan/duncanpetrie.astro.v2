@@ -28,7 +28,7 @@ const {
     images = [],
 } = Astro.props;
 
-const props = await getEntry("homepage", key);
+const props = await getEntry("homepage", key)!;
 const { Content } = await props.render();
 
 const resolvedImages = Promise.all(toSeveral(images).map(async image => await resolveImage(image)))
@@ -48,7 +48,7 @@ else if (props.data.href === false) {
     href = "";
 }
 else {
-    href = props.data.href;
+    href = props.data.href ?? "";
 }
 
 const resolvedLink = props.data.href ? resolveLink({ href, title: props.data.title }) : {};
@@ -113,7 +113,7 @@ const bottomIconSpace = props.data.iconSpace === "both" || props.data.iconSpace 
                         {props.data.icon}
                     </span>
                     <span data-bottom-line class="italic leading-8 select-none">
-                        {props.data.bottomLine.split("").map((char: string) => <span class="data-[active]:font-serif data-[active]:font-semibold] data-[active]:text-xl">{char}</span>)}
+                        {props.data.bottomLine?.split("").map((char: string) => <span class="data-[active]:font-serif data-[active]:font-semibold] data-[active]:text-xl">{char}</span>)}
                     </span>
                 </span>
                 <slot name="bottomright">
@@ -192,7 +192,7 @@ const bottomIconSpace = props.data.iconSpace === "both" || props.data.iconSpace 
             const state: AnimationState = {
                 link,
                 arrow: e.querySelector("[data-bottom-arrow]") as HTMLElement,
-                letters: Array.from(e.querySelector("[data-bottom-line]").children) as HTMLElement[],
+                letters: Array.from(e.querySelector("[data-bottom-line]")!.children) as HTMLElement[],
                 on: false,
                 index: 0,
                 lastUpdateTimestamp: 0,
@@ -353,11 +353,11 @@ const bottomIconSpace = props.data.iconSpace === "both" || props.data.iconSpace 
 
         if (active) {
             arrow.dataset.active = "true";
-            arrow.innerHTML = arrow.dataset.activeContent;
+            arrow.innerHTML = arrow.dataset.activeContent ?? "";
         }
         else {
             delete arrow.dataset.active;
-            arrow.innerHTML = arrow.dataset.inactiveContent;
+            arrow.innerHTML = arrow.dataset.inactiveContent ?? "";
         }
 
     }
